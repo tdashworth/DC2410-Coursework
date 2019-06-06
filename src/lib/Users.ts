@@ -1,4 +1,4 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
 
 export interface IUser {
@@ -15,12 +15,13 @@ export const UserSchema = new mongoose.Schema(
   { strict: 'throw' },
 );
 
+export interface IUserModel extends IUser, mongoose.Document { }
+
 UserSchema.pre('save', async function (this: IUserModel) {
   this.username = sanitizeHtml(this.username);
   this.passwordHash = sanitizeHtml(this.passwordHash);
 });
 
-export interface IUserModel extends IUser, mongoose.Document { }
 // tslint:disable-next-line:variable-name
 let User: mongoose.Model<IUserModel, {}>;
 
