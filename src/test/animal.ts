@@ -1,19 +1,17 @@
 import chai from 'chai';
+import mongoose from 'mongoose';
 import Animals, { IAnimal, Gender, AnimalType } from '../lib/Animals';
 const expect = chai.expect;
-
-const config = {
-  db: {
-    url: 'mongodb://localhost:27017/test',
-  },
-};
 
 describe('Animals library', () => {
   let animals: Animals;
 
   before(async () => {
+    await mongoose.connect('mongodb://localhost:27017/test', {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+    });
     animals = new Animals();
-    await animals.conect(config.db.url);
   });
 
   beforeEach(async () => {
@@ -27,7 +25,7 @@ describe('Animals library', () => {
   it(
     'animals.create() can create a animal given data with name, description, dob, and ' +
     'gender properties. It returns a copy of the message with matching name, ' +
-    'description, dob, and gender properties and an _id property.',
+    'description, dob, and gender properties and an id property.',
     async () => {
       const animal = {
         name: 'Holly',
@@ -40,7 +38,7 @@ describe('Animals library', () => {
       const result = await animals.create(animal);
 
       expect(result).to.be.an('object');
-      if (result == null) return;
+      if (result == null) throw new Error('Result return null');
       expect(result).to.have.property('name');
       expect(result.name).to.equal(animal.name);
       expect(result).to.have.property('description');
@@ -49,13 +47,13 @@ describe('Animals library', () => {
       expect(result.dob).to.equal(animal.dob);
       expect(result).to.have.property('gender');
       expect(result.gender).to.equal(animal.gender);
-      expect(result).to.have.property('_id');
+      expect(result).to.have.property('id');
     },
   );
 
   it(
     'animals.get() reads a single animal created by animals.create() ' +
-    'using the _id property returned by the latter.',
+    'using the id property returned by the latter.',
     async () => {
       const animal = {
         name: 'Holly',
@@ -68,13 +66,13 @@ describe('Animals library', () => {
 
       const readResult = await animals.get(createResult._id);
 
-      if (readResult == null) return;
+      if (readResult == null) throw new Error('Result return null');
       expect(readResult).to.have.property('name');
       expect(readResult.name).to.equal(animal.name);
       expect(readResult).to.have.property('description');
       expect(readResult.description).to.equal(animal.description);
       expect(readResult).to.have.property('dob');
-      expect(readResult.dob).to.equal(animal.dob);
+      expect(readResult.dob).to.deep.equal(animal.dob);
       expect(readResult).to.have.property('gender');
       expect(readResult.gender).to.equal(animal.gender);
     },
@@ -82,7 +80,7 @@ describe('Animals library', () => {
 
   it(
     'animals.update() updates a single animal created by animal.create()' +
-    ' using the _id property returned by the latter.',
+    ' using the id property returned by the latter.',
     async () => {
       const animal1 = {
         name: 'Holly',
@@ -102,11 +100,11 @@ describe('Animals library', () => {
 
       const updateResult = await animals.update(createResult._id, animal2);
       expect(updateResult).to.be.an('object');
-      if (updateResult == null) return;
-      expect(updateResult).to.have.property('_id');
+      if (updateResult == null) throw new Error('Result return null');
+      expect(updateResult).to.have.property('id');
 
       const readResult = await animals.get(updateResult._id);
-      if (readResult == null) return;
+      if (readResult == null) throw new Error('Result return null');
       expect(readResult.name).to.equal(animal2.name);
       expect(readResult.description).to.equal(animal2.description);
       expect(readResult.dob).to.deep.equal(animal2.dob);

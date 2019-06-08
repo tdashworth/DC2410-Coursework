@@ -1,19 +1,17 @@
 import chai from 'chai';
+import mongoose from 'mongoose';
 import Users, { IUser, UserType } from '../lib/Users';
 const expect = chai.expect;
-
-const config = {
-  db: {
-    url: 'mongodb://localhost:27017/test',
-  },
-};
 
 describe('Users library', () => {
   let users: Users;
 
   before(async () => {
+    await mongoose.connect('mongodb://localhost:27017/test', {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+    });
     users = new Users();
-    await users.conect(config.db.url);
   });
 
   beforeEach(async () => {
@@ -27,7 +25,7 @@ describe('Users library', () => {
   it(
     'users.create() can create a user given data with username, passwordHash and' +
     ' displayName properties. It returns a copy of the message with matching username,' +
-    ' passwordHash and displayName properties and an _id property.',
+    ' passwordHash and displayName properties and an id property.',
     async () => {
       const user = {
         username: 'alice',
@@ -38,7 +36,7 @@ describe('Users library', () => {
       const result = await users.create(user);
 
       expect(result).to.be.an('object');
-      if (result == null) return;
+      if (result == null) throw new Error('Result return null');
       expect(result).to.have.property('username');
       expect(result.username).to.equal(user.username);
       expect(result).to.have.property('passwordHash');
@@ -64,7 +62,7 @@ describe('Users library', () => {
 
       const readResult = await users.get(createResult._id);
 
-      if (readResult == null) return;
+      if (readResult == null) throw new Error('Result return null');
       expect(readResult).to.have.property('username');
       expect(readResult.username).to.equal(user.username);
       expect(readResult).to.have.property('passwordHash');
@@ -72,7 +70,7 @@ describe('Users library', () => {
       expect(readResult).to.have.property('displayName');
       expect(readResult.displayName).to.equal(user.displayName);
       expect(readResult).to.have.property('type');
-      expect(readResult.type).to.equal(UserType.External);
+      expect(readResult.type).to.equal(UserType.External.toString());
     },
   );
 
@@ -170,7 +168,7 @@ describe('Users library', () => {
     'HTML before being stored',
     async () => {
       const dangerousHTML = '<script>maliciousCode()</script>';
-      const user = {
+      const testUser = {
         username: 'bob',
         passwordHash: 'Password2',
         displayName: 'Bob',
@@ -178,33 +176,29 @@ describe('Users library', () => {
 
       const testCreateSanitized = async (user: IUser) => {
         const createResult = await users.create(user);
-        expect(createResult).to.be.an('object');
-        expect(createResult).to.have.property('_id');
-
-        const readResult = await users.get(createResult._id);
-        if (readResult == null) return;
-        expect(readResult.username).to.equal(user.username);
-        expect(readResult.passwordHash).to.equal(user.passwordHash);
-        expect(readResult.displayName).to.equal(user.displayName);
-        expect(readResult).to.have.property('type');
-        expect(readResult.type).to.equal(UserType.External);
+        if (createResult == null) throw new Error('Result return null');
+        expect(createResult.username).to.equal(testUser.username);
+        expect(createResult.passwordHash).to.equal(testUser.passwordHash);
+        expect(createResult.displayName).to.equal(testUser.displayName);
+        expect(createResult).to.have.property('type');
+        expect(createResult.type).to.equal(UserType.External.toString());
       };
 
       return Promise.all([
         testCreateSanitized({
-          username: user.username + dangerousHTML,
-          passwordHash: user.passwordHash,
-          displayName: user.displayName,
+          username: testUser.username + dangerousHTML,
+          passwordHash: testUser.passwordHash,
+          displayName: testUser.displayName,
         }),
         testCreateSanitized({
-          username: user.username,
-          passwordHash: user.passwordHash + dangerousHTML,
-          displayName: user.displayName,
+          username: testUser.username,
+          passwordHash: testUser.passwordHash + dangerousHTML,
+          displayName: testUser.displayName,
         }),
         testCreateSanitized({
-          username: user.username,
-          passwordHash: user.passwordHash,
-          displayName: user.displayName + dangerousHTML,
+          username: testUser.username,
+          passwordHash: testUser.passwordHash,
+          displayName: testUser.displayName + dangerousHTML,
         }),
       ]);
     },

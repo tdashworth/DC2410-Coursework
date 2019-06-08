@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
+import { ObjectId } from 'mongodb';
 
 export enum AnimalType {
   Cat,
@@ -46,24 +47,16 @@ AnimalSchema.pre('save', async function (this: IAnimalModel) {
 
 // tslint:disable-next-line:variable-name
 let Animal: mongoose.Model<IAnimalModel, {}>;
+Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
 
 export default class Animals {
-  async conect(url: string) {
-    await mongoose.connect(
-      url, {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-      },
-    );
-    Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
-  }
 
   create(newAnimal: IAnimal): Promise<IAnimalModel> {
     return new Animal(newAnimal).save();
   }
 
   get(id: any): Promise<IAnimalModel | null> {
-    if (typeof id !== 'number') return Promise.resolve(null);
+    if (!(id instanceof ObjectId)) return Promise.resolve(null);
     return Animal.findById(id).exec();
   }
 
@@ -75,7 +68,12 @@ export default class Animals {
     return Animal.find({ adoptedBy: null }).exec();
   }
 
-  update(id: any, updatedAnimal: IAnimal) {
+  async update(id: any, updatedAnimal: IAnimal) {
+    const orginal = await this.get(id);
+    if (orginal !== null && orginal.adoptedBy === null) {
+      throw new Error('Animal is locked because it has already been adopted.');
+    }
+    
     return Animal.findOneAndUpdate(id, updatedAnimal).exec();
   }
 

@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
+import { ObjectId } from 'mongodb';
 
 export enum UserType {
   Internal,
@@ -35,24 +36,16 @@ UserSchema.pre('save', async function (this: IUserModel) {
 
 // tslint:disable-next-line:variable-name
 let User: mongoose.Model<IUserModel, {}>;
+User = mongoose.model<IUserModel>('User', UserSchema);
 
 export default class Users {
-  async conect(url: string) {
-    await mongoose.connect(
-      url, {
-        useNewUrlParser: true,
-        useFindAndModify: false,
-      },
-    );
-    User = mongoose.model<IUserModel>('User', UserSchema);
-  }
 
   create(newUser: IUser): Promise<IUserModel> {
     return new User(newUser).save();
   }
 
   get(id: any): Promise<IUserModel | null> {
-    if (typeof id !== 'number') return Promise.resolve(null);
+    if (!(id instanceof ObjectId)) return Promise.resolve(null);
     return User.findById(id).exec();
   }
 
