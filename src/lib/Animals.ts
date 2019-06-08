@@ -8,11 +8,11 @@ export enum Gender {
 
 export interface IAnimal {
   name: string;
-  description: string;
   dob: Date;
-  picture?: string;
+  description: string;
   gender: Gender;
-  adoptedBy?: Number;
+  picture?: string;
+  adoptedBy?: string;
 }
 
 export interface IAnimalModel extends IAnimal, mongoose.Document { }
@@ -21,11 +21,11 @@ export interface IAnimalModel extends IAnimal, mongoose.Document { }
 export const AnimalSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    description: { type: String, required: true },
     dob: { type: Date, required: true },
-    picture: { type: String, required: false },
+    description: { type: String, required: true },
     gender: { type: Gender, required: true },
-    adoptedBy: { type: Number },
+    picture: { type: String, required: false },
+    adoptedBy: { type: String, required: false },
   },
   { strict: 'throw' },
 );
@@ -53,13 +53,17 @@ export default class Animals {
     return new Animal(newAnimal).save();
   }
 
-  readId(id: any): Promise<IAnimalModel | null> {
+  get(id: any): Promise<IAnimalModel | null> {
     if (typeof id !== 'number') return Promise.resolve(null);
     return Animal.findById(id).exec();
   }
 
-  readAll(): Promise<IAnimalModel[]> {
+  listAll(): Promise<IAnimalModel[]> {
     return Animal.find({}).exec();
+  }
+
+  listAllAvailable(): Promise<IAnimalModel[]> {
+    return Animal.find({ adoptedBy: null }).exec();
   }
 
   update(id: any, updatedAnimal: IAnimal) {
