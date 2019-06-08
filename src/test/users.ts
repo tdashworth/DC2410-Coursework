@@ -1,5 +1,5 @@
 import chai from 'chai';
-import Users, { IUser } from '../lib/Users';
+import Users, { IUser, UserType } from '../lib/Users';
 const expect = chai.expect;
 
 const config = {
@@ -45,6 +45,8 @@ describe('Users library', () => {
       expect(result.passwordHash).to.equal(user.passwordHash);
       expect(result).to.have.property('displayName');
       expect(result.displayName).to.equal(user.displayName);
+      expect(result).to.have.property('type');
+      expect(result.type).to.equal(UserType.External.toString());
       expect(result).to.have.property('_id');
     },
   );
@@ -69,6 +71,8 @@ describe('Users library', () => {
       expect(readResult.passwordHash).to.equal(user.passwordHash);
       expect(readResult).to.have.property('displayName');
       expect(readResult.displayName).to.equal(user.displayName);
+      expect(readResult).to.have.property('type');
+      expect(readResult.type).to.equal(UserType.External);
     },
   );
 
@@ -182,6 +186,8 @@ describe('Users library', () => {
         expect(readResult.username).to.equal(user.username);
         expect(readResult.passwordHash).to.equal(user.passwordHash);
         expect(readResult.displayName).to.equal(user.displayName);
+        expect(readResult).to.have.property('type');
+        expect(readResult.type).to.equal(UserType.External);
       };
 
       return Promise.all([

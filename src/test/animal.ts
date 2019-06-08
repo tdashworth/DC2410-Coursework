@@ -1,5 +1,5 @@
 import chai from 'chai';
-import Animals, { IAnimal, Gender } from '../lib/Animals';
+import Animals, { IAnimal, Gender, AnimalType } from '../lib/Animals';
 const expect = chai.expect;
 
 const config = {
@@ -10,26 +10,6 @@ const config = {
 
 describe('Animals library', () => {
   let animals: Animals;
-  // const validanimals: IAnimal[] = [
-    // {
-    //   name: 'Holly',
-    //   description: 'Short haired domestic cat.',
-    //   dob: new Date(2003, 11, 5),
-    //   gender: Gender.Female,
-    // },
-  //   {
-  //     name: 'Mya',
-  //     description: 'Black dog raised by Welsh family.',
-  //     dob: new Date(2006, 6, 28),
-  //     gender: Gender.Female,
-  //   },
-  // ];
-
-  // const testEmpty = async () => {
-  //   const result = await animals.readAll();
-  //   expect(result).to.be.an('array');
-  //   expect(result).to.be.empty;
-  // };
 
   before(async () => {
     animals = new Animals();
@@ -51,6 +31,7 @@ describe('Animals library', () => {
     async () => {
       const animal = {
         name: 'Holly',
+        type: AnimalType.Cat,
         description: 'Short haired domestic cat.',
         dob: new Date(2003, 11, 5),
         gender: Gender.Female,
@@ -78,6 +59,7 @@ describe('Animals library', () => {
     async () => {
       const animal = {
         name: 'Holly',
+        type: AnimalType.Cat,
         description: 'Short haired domestic cat.',
         dob: new Date(2003, 11, 5),
         gender: Gender.Female,
@@ -104,12 +86,14 @@ describe('Animals library', () => {
     async () => {
       const animal1 = {
         name: 'Holly',
+        type: AnimalType.Cat,
         description: 'Short haired domestic cat.',
         dob: new Date(2003, 11, 5),
         gender: Gender.Female,
       };
       const animal2 = {
         name: 'Mya',
+        type: AnimalType.Dog,
         description : 'Black dog raised by Welsh family.',
         dob : new Date(2006, 6, 28),
         gender : Gender.Female,
@@ -135,12 +119,14 @@ describe('Animals library', () => {
     async () => {
       const animal1 = {
         name: 'Holly',
+        type: AnimalType.Cat,
         description: 'Short haired domestic cat.',
         dob: new Date(2003, 11, 5),
         gender: Gender.Female,
       };
       const animal2 = {
         name: 'Mya',
+        type: AnimalType.Dog,
         description : 'Black dog raised by Welsh family.',
         dob : new Date(2006, 6, 28),
         gender : Gender.Female,
@@ -175,12 +161,14 @@ describe('Animals library', () => {
     async () => {
       const animal1 = {
         name: 'Holly',
+        type: AnimalType.Cat,
         description: 'Short haired domestic cat.',
         dob: new Date(2003, 11, 5),
         gender: Gender.Female,
       };
       const animal2 = {
         name: 'Mya',
+        type: AnimalType.Dog,
         description : 'Black dog raised by Welsh family.',
         dob : new Date(2006, 6, 28),
         gender : Gender.Female,

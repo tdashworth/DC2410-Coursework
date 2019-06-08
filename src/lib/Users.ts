@@ -1,10 +1,16 @@
 import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
 
+export enum UserType {
+  Internal,
+  External,
+}
+
 export interface IUser {
   username: string;
   passwordHash: string;
   displayName: string;
+  type?: UserType;
 }
 
 // tslint:disable-next-line:variable-name
@@ -13,6 +19,7 @@ export const UserSchema = new mongoose.Schema(
     username: { type: String, required: true },
     passwordHash: { type: String, required: true },
     displayName: { type: String, required: true },
+    type: { type: String, required: false },
   },
   { strict: 'throw' },
 );
@@ -23,6 +30,7 @@ UserSchema.pre('save', async function (this: IUserModel) {
   this.username = sanitizeHtml(this.username);
   this.passwordHash = sanitizeHtml(this.passwordHash);
   this.displayName = sanitizeHtml(this.displayName);
+  this.type = this.type || UserType.External;
 });
 
 // tslint:disable-next-line:variable-name

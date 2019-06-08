@@ -1,6 +1,13 @@
 import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
 
+export enum AnimalType {
+  Cat,
+  Dog,
+  Bird,
+  Pig,
+}
+
 export enum Gender {
   Male,
   Female,
@@ -8,6 +15,7 @@ export enum Gender {
 
 export interface IAnimal {
   name: string;
+  type: AnimalType;
   dob: Date;
   description: string;
   gender: Gender;
@@ -21,6 +29,7 @@ export interface IAnimalModel extends IAnimal, mongoose.Document { }
 export const AnimalSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
+    type: { type: AnimalType, required: true },
     dob: { type: Date, required: true },
     description: { type: String, required: true },
     gender: { type: Gender, required: true },
