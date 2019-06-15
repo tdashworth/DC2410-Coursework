@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Aston Animal Sanctuary</title>
+  </head>
+
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+          <span class="navbar-brand mb-0 h1">
+            Aston Animal Sanctuary
+          </span>
+          🐶 🐱 🐦 🐷
+          <div id="nav-right">
+            <form class="form-inline">
+              <span class="navbar-text text-light mr-sm-3">
+                Welcome, Tom.
+              </span>
+              <button
+                class="btn btn-outline-light btn-sm my-2 my-sm-0"
+                type="submit"
+              >
+                Sign out
+              </button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="container mt-3">
+      <div class="row">
+        <section class="col-md-12 col-lg-8" id="animal-details">
+          <h3 class="">Available Animals</h3>
+
+          <div class="mb-3">
+            <form class="row">
+              <div class="input-group col-6">
+                <div class="input-group-prepend">
+                  <label
+                    class="input-group-text bg-primary text-light"
+                    for="filter"
+                    >Filter By</label
+                  >
+                </div>
+                <select class="custom-select" id="filter">
+                  <option selected>All</option>
+                  <option value="cat">Cat</option>
+                  <option value="dog">Dog</option>
+                  <option value="bird">Bird</option>
+                  <option value="pig">Pig</option>
+                </select>
+              </div>
+              <div class="input-group col-6">
+                <div class="input-group-prepend">
+                  <label
+                    class="input-group-text bg-primary text-light"
+                    for="sort"
+                    >Sort By</label
+                  >
+                </div>
+                <select class="custom-select" id="sort">
+                  <option selected>Choose...</option>
+                  <option value="y2o">Youngest to Oldest</option>
+                  <option value="o2y">Oldest to Youngest</option>
+                  <option value="t">Type</option>
+                  <option value="g">Gender</option>
+                </select>
+              </div>
+            </form>
+          </div>
+
+          <div class="card mb-3">
+            <img
+              src="http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title"><a href="#">{Animal Name}</a></h5>
+              <p class="card-text">
+                Animal Description: Some quick example text to build on the card
+                title and make up the bulk of the card's content.
+              </p>
+              <p class="card-text">
+                <button type="button" class="btn btn-primary">
+                  View more 👀
+                </button>
+              </p>
+            </div>
+          </div>
+
+          <div class="card mb-3">
+            <img
+              src="https://www.greenepet.org/wp-content/uploads/2012/12/dog-adopt-1024x680.jpg"
+              class="card-img-top"
+              alt="..."
+            />
+            <div class="card-body">
+              <h5 class="card-title"><a href="#">{Animal Name}</a></h5>
+              <p class="card-text">
+                Animal Description: Some quick example text to build on the card
+                title and make up the bulk of the card's content.
+              </p>
+              <p class="card-text">
+                <button type="button" class="btn btn-primary">
+                  View more 👀
+                </button>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section class="col-md-12 col-lg-4" id="animal-requests">
+          <h3 class="">Your Adoption Requests</h3>
+
+          <div class="list-group mb-3">
+            <div class="list-group-item text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+              </div>
+              <p class="mb-1">
+                Interested? Make a request for adoption now.
+              </p>
+              <div class="mt-2">
+                <button type="button" class="btn btn-primary">
+                  Request Adoption 📃
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-primary text-light mb-3"
+                >Filter By</span
+              >
+            </div>
+            <label
+              for="filter-requests-pending"
+              class="form-control d-flex justify-content-around"
+              >⏳<span class="badge badge-danger position-absolute ml-4 d-none"> </span></label
+            >
+            <label
+              for="filter-requests-approved"
+              class="form-control d-flex justify-content-around"
+              >✔<span class="badge badge-danger position-absolute ml-4 d-none"> </span></label
+            >
+            <label
+              for="filter-requests-denied"
+              class="form-control d-flex justify-content-around"
+              >❌<span class="badge badge-danger position-absolute ml-4 d-none"> </span></label
+            >
+            <input
+              id="filter-requests-pending"
+              type="checkbox"
+              class="d-none"
+            />
+            <input
+              id="filter-requests-approved"
+              type="checkbox"
+              class="d-none"
+            />
+            <input id="filter-requests-denied" type="checkbox" class="d-none" />
+          </div>
+
+          <div class="list-group mb-3">
+            <div class="list-group-item text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+                <small>Pending ⏳</small>
+              </div>
+              <p class="mb-1">
+                Animal description: Donec id elit non mi porta gravida at eget
+                metus. Maecenas sed diam eget risus varius blandit.
+              </p>
+            </div>
+
+            <div class="list-group-item list-group-item-danger text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+                <small>Denied ❌</small>
+              </div>
+              <p class="mb-1">
+                Animal description: Donec id elit non mi porta gravida at eget
+                metus. Maecenas sed diam eget risus varius blandit.
+              </p>
+            </div>
+
+            <div class="list-group-item list-group-item-success text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+                <small>Approved ✔</small>
+              </div>
+              <p class="mb-1">
+                Animal description: Donec id elit non mi porta gravida at eget
+                metus. Maecenas sed diam eget risus varius blandit.
+              </p>
+            </div>
+          </div>
+
+          <h4>Pending Adoption Requests</h4>
+
+          <div class="list-group mb-3">
+            <div class="list-group-item text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+                <small>Pending ⏳</small>
+              </div>
+              <p class="mb-1">
+                <span style="font-weight: bold;">{User Display Name}</span>
+                has made a request for adoption.
+              </p>
+              <div class="mt-2">
+                <button type="button" class="btn btn-success">
+                  Approve ✔
+                </button>
+                <button type="button" class="btn btn-danger">
+                  Deny ❌
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-primary mb-3">View all requests</button>
+
+          <div class="list-group mb-3">
+            <div class="list-group-item list-group-item-success text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+                <small>Approved ✔</small>
+              </div>
+              <p class="mb-1">
+                <span style="font-weight: bold;">{User Display Name}</span>
+                has made a request for adoption.
+              </p>
+            </div>
+
+            <div class="list-group-item list-group-item-danger text-dark">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><a href="#">{Animal Name}</a></h5>
+                <small>Denied ❌</small>
+              </div>
+              <p class="mb-1">
+                <span style="font-weight: bold;">{User Display Name}</span>
+                has made a request for adoption.
+              </p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
