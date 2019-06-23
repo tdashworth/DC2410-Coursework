@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
-import { ObjectId } from 'mongodb';
 
 export enum AnimalType {
   Cat,
@@ -50,24 +49,25 @@ const Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
 
 export default class Animals {
 
-  create(newAnimal: IAnimal): Promise<IAnimalModel> {
+  static create(newAnimal: IAnimal): Promise<IAnimalModel> {
     return new Animal(newAnimal).save();
   }
 
-  get(id: any): Promise<IAnimalModel | null> {
-    if (!(id instanceof ObjectId)) return Promise.resolve(null);
+  static get(id: any): Promise<IAnimalModel | null> {
+    if (!(typeof(id) === 'string')) return Promise.resolve(null);
     return Animal.findById(id).exec();
   }
 
-  listAll(): Promise<IAnimalModel[]> {
+  static listAll(): Promise<IAnimalModel[]> {
     return Animal.find({}).exec();
   }
 
-  listAllAvailable(): Promise<IAnimalModel[]> {
+  static listAllAvailable(): Promise<IAnimalModel[]> {
     return Animal.find({ adoptedBy: null }).exec();
   }
 
-  async update(id: any, updatedAnimal: IAnimal) {
+  static async update(id: any, updatedAnimal: IAnimal) {
+    if (!(typeof(id) === 'string')) return Promise.resolve(null);
     const orginal = await this.get(id);
     if (orginal !== null && orginal.adoptedBy === null) {
       throw new Error('Animal is locked because it has already been adopted.');
@@ -76,15 +76,15 @@ export default class Animals {
     return Animal.findOneAndUpdate(id, updatedAnimal).exec();
   }
 
-  delete(id: any) {
+  static delete(id: any) {
     return Animal.findByIdAndDelete(id).exec();
   }
 
-  deleteAll() {
+  static deleteAll() {
     return Animal.deleteMany({}).exec();
   }
 
-  disconnect() {
+  static disconnect() {
     return mongoose.disconnect();
   }
 }

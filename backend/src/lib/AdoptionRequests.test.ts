@@ -9,30 +9,24 @@ const expect = chai.expect;
 
 describe('Adoption Requests library', function () {
   this.timeout(3000);
-  let adoptionRequests: AdoptionRequests;
-  let users: Users;
-  let animals: Animals;
 
   before(async () => {
     await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
       useNewUrlParser: true,
       useFindAndModify: false,
     });
-    adoptionRequests = new AdoptionRequests();
-    users = new Users();
-    animals = new Animals();
   });
 
   beforeEach(async () => {
-    await adoptionRequests.deleteAll();
-    await users.deleteAll();
-    await animals.deleteAll();
+    await AdoptionRequests.deleteAll();
+    await Users.deleteAll();
+    await Animals.deleteAll();
   });
 
   after(async () => {
-    await adoptionRequests.disconnect();
-    await users.disconnect();
-    await animals.disconnect();
+    await AdoptionRequests.disconnect();
+    await Users.disconnect();
+    await Animals.disconnect();
   });
 
   it(
@@ -40,12 +34,12 @@ describe('Adoption Requests library', function () {
       'properties. It returns a copy of the message with matching user, and animal properties ' +
       'and an id property.',
     async () => {
-      const user = await users.create({
+      const user = await Users.create({
         username: 'a',
         passwordHash: 'p',
         displayName: 'A',
       });
-      const animal = await animals.create({
+      const animal = await Animals.create({
         name: 'A',
         type: AnimalType.Cat,
         description: 'd',
@@ -57,7 +51,7 @@ describe('Adoption Requests library', function () {
         animal: animal.id,
       };
 
-      const result = await adoptionRequests.create(adoptionRequest);
+      const result = await AdoptionRequests.create(adoptionRequest);
 
       expect(result).to.be.an('object');
       if (result == null) throw new Error('Result return null');
@@ -75,12 +69,12 @@ describe('Adoption Requests library', function () {
     'adoptionRequests.get() reads a single adoption request created by adoptionRequests.create() ' +
       'using the id property returned by the latter.',
     async () => {
-      const user = await users.create({
+      const user = await Users.create({
         username: 'a',
         passwordHash: 'p',
         displayName: 'A',
       });
-      const animal = await animals.create({
+      const animal = await Animals.create({
         name: 'A',
         type: AnimalType.Cat,
         description: 'd',
@@ -91,9 +85,9 @@ describe('Adoption Requests library', function () {
         user: user.id,
         animal: animal.id,
       };
-      const createResult = await adoptionRequests.create(adoptionRequest);
+      const createResult = await AdoptionRequests.create(adoptionRequest);
 
-      const readResult = await adoptionRequests.get(createResult._id);
+      const readResult = await AdoptionRequests.get(createResult._id);
 
       expect(readResult).to.be.an('object');
       if (readResult == null) throw new Error('Result return null');
@@ -111,12 +105,12 @@ describe('Adoption Requests library', function () {
     'adoptionRequests.approve() approves a single adoption request created by ' +
       'adoptionRequest.create() using the id property returned by the latter.',
     async () => {
-      const user1 = await users.create({
+      const user1 = await Users.create({
         username: 'u1',
         passwordHash: 'p',
         displayName: 'U1',
       });
-      const animal1 = await animals.create({
+      const animal1 = await Animals.create({
         name: 'A1',
         type: AnimalType.Cat,
         description: 'd',
@@ -127,7 +121,7 @@ describe('Adoption Requests library', function () {
         user: user1.id,
         animal: animal1.id,
       };
-      const user2 = await users.create({
+      const user2 = await Users.create({
         username: 'u2',
         passwordHash: 'p',
         displayName: 'U2',
@@ -136,15 +130,15 @@ describe('Adoption Requests library', function () {
         user: user2.id,
         animal: animal1.id,
       };
-      const createResult1 = await adoptionRequests.create(adoptionRequest1);
-      const createResult2 = await adoptionRequests.create(adoptionRequest2);
+      const createResult1 = await AdoptionRequests.create(adoptionRequest1);
+      const createResult2 = await AdoptionRequests.create(adoptionRequest2);
 
-      await adoptionRequests.approve(createResult1._id);
+      await AdoptionRequests.approve(createResult1._id);
 
-      const readResult1 = await adoptionRequests.get(createResult1._id);
+      const readResult1 = await AdoptionRequests.get(createResult1._id);
       if (readResult1 == null) throw new Error('Result return null');
       expect(readResult1.status).to.equal(AdoptionRequestStatus.Approved);
-      const readResult2 = await adoptionRequests.get(createResult2._id);
+      const readResult2 = await AdoptionRequests.get(createResult2._id);
       if (readResult2 == null) throw new Error('Result return null');
       expect(readResult2.status).to.equal(AdoptionRequestStatus.Denied);
     },
@@ -154,12 +148,12 @@ describe('Adoption Requests library', function () {
     'adoptionRequests.deny() denys a single adoption request created by ' +
       'adoptionRequest.create() using the id property returned by the latter.',
     async () => {
-      const user = await users.create({
+      const user = await Users.create({
         username: 'u1',
         passwordHash: 'p',
         displayName: 'U1',
       });
-      const animal = await animals.create({
+      const animal = await Animals.create({
         name: 'A1',
         type: AnimalType.Cat,
         description: 'd',
@@ -170,11 +164,11 @@ describe('Adoption Requests library', function () {
         user: user.id,
         animal: animal.id,
       };
-      const createResult = await adoptionRequests.create(adoptionRequest);
+      const createResult = await AdoptionRequests.create(adoptionRequest);
 
-      await adoptionRequests.deny(createResult._id);
+      await AdoptionRequests.deny(createResult._id);
 
-      const readResult = await adoptionRequests.get(createResult._id);
+      const readResult = await AdoptionRequests.get(createResult._id);
       if (readResult == null) throw new Error('Result return null');
       expect(readResult.status).to.equal(AdoptionRequestStatus.Denied);
     },
@@ -182,40 +176,40 @@ describe('Adoption Requests library', function () {
 
   // tslint:disable-next-line: max-line-length
   it('adoptionRequests.listAll() reads all adoption requests created by adoptionRequests.create()', async () => {
-    const user1 = await users.create({
+    const user1 = await Users.create({
       username: 'u1',
       passwordHash: 'p',
       displayName: 'U1',
     });
-    const animal1 = await animals.create({
+    const animal1 = await Animals.create({
       name: 'A1',
       type: AnimalType.Cat,
       description: 'd',
       gender: Gender.Female,
       dob: new Date(),
     });
-    const adoptionRequest1 = await adoptionRequests.create({
+    const adoptionRequest1 = await AdoptionRequests.create({
       user: user1.id,
       animal: animal1.id,
     });
-    const user2 = await users.create({
+    const user2 = await Users.create({
       username: 'u2',
       passwordHash: 'p',
       displayName: 'U2',
     });
-    const animal2 = await animals.create({
+    const animal2 = await Animals.create({
       name: 'A2',
       type: AnimalType.Cat,
       description: 'd',
       gender: Gender.Female,
       dob: new Date(),
     });
-    const adoptionRequest2 = await adoptionRequests.create({
+    const adoptionRequest2 = await AdoptionRequests.create({
       user: user2.id,
       animal: animal2.id,
     });
 
-    const result = await adoptionRequests.listAll();
+    const result = await AdoptionRequests.listAll();
 
     expect(result).to.be.an('array');
     expect(result.length).to.equal(2);
@@ -237,40 +231,40 @@ describe('Adoption Requests library', function () {
     'adoptionRequests.listAllForUser() reads all adoption requests created by ' +
       'adoptionRequests.create() for a single user given',
     async () => {
-      const user1 = await users.create({
+      const user1 = await Users.create({
         username: 'u1',
         passwordHash: 'p',
         displayName: 'U1',
       });
-      const animal1 = await animals.create({
+      const animal1 = await Animals.create({
         name: 'A1',
         type: AnimalType.Cat,
         description: 'd',
         gender: Gender.Female,
         dob: new Date(),
       });
-      const adoptionRequest1 = await adoptionRequests.create({
+      const adoptionRequest1 = await AdoptionRequests.create({
         user: user1.id,
         animal: animal1.id,
       });
-      const user2 = await users.create({
+      const user2 = await Users.create({
         username: 'u2',
         passwordHash: 'p',
         displayName: 'U2',
       });
-      const animal2 = await animals.create({
+      const animal2 = await Animals.create({
         name: 'A2',
         type: AnimalType.Cat,
         description: 'd',
         gender: Gender.Female,
         dob: new Date(),
       });
-      const adoptionRequest2 = await adoptionRequests.create({
+      const adoptionRequest2 = await AdoptionRequests.create({
         user: user2.id,
         animal: animal2.id,
       });
 
-      const result = await adoptionRequests.listAllForUser(user1.id);
+      const result = await AdoptionRequests.listAllForUser(user1.id);
 
       expect(result).to.be.an('array');
       expect(result.length).to.equal(1);
@@ -287,40 +281,40 @@ describe('Adoption Requests library', function () {
     'adoptionRequests.listAllForAnimal() reads all adoption requests created by ' +
       'adoptionRequests.create() for a single animal given',
     async () => {
-      const user1 = await users.create({
+      const user1 = await Users.create({
         username: 'u1',
         passwordHash: 'p',
         displayName: 'U1',
       });
-      const animal1 = await animals.create({
+      const animal1 = await Animals.create({
         name: 'A1',
         type: AnimalType.Cat,
         description: 'd',
         gender: Gender.Female,
         dob: new Date(),
       });
-      const adoptionRequest1 = await adoptionRequests.create({
+      const adoptionRequest1 = await AdoptionRequests.create({
         user: user1.id,
         animal: animal1.id,
       });
-      const user2 = await users.create({
+      const user2 = await Users.create({
         username: 'u2',
         passwordHash: 'p',
         displayName: 'U2',
       });
-      const animal2 = await animals.create({
+      const animal2 = await Animals.create({
         name: 'A2',
         type: AnimalType.Cat,
         description: 'd',
         gender: Gender.Female,
         dob: new Date(),
       });
-      const adoptionRequest2 = await adoptionRequests.create({
+      const adoptionRequest2 = await AdoptionRequests.create({
         user: user2.id,
         animal: animal2.id,
       });
 
-      const result = await adoptionRequests.listAllForAnimal(animal1.id);
+      const result = await AdoptionRequests.listAllForAnimal(animal1.id);
 
       expect(result).to.be.an('array');
       expect(result.length).to.equal(1);

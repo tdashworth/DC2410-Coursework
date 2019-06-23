@@ -5,22 +5,20 @@ const expect = chai.expect;
 
 describe('Users library', function () {
   this.timeout(3000);
-  let users: Users;
 
   before(async () => {
     await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
       useNewUrlParser: true,
       useFindAndModify: false,
     });
-    users = new Users();
   });
 
   beforeEach(async () => {
-    return users.deleteAll();
+    return Users.deleteAll();
   });
 
   after(async () => {
-    return users.disconnect();
+    return Users.disconnect();
   });
 
   it(
@@ -34,7 +32,7 @@ describe('Users library', function () {
         displayName: 'Alice',
       };
 
-      const result = await users.create(user);
+      const result = await Users.create(user);
 
       expect(result).to.be.an('object');
       if (result == null) throw new Error('Result return null');
@@ -59,9 +57,9 @@ describe('Users library', function () {
         passwordHash: 'Password1',
         displayName: 'Alice',
       };
-      const createResult = await users.create(user);
+      const createResult = await Users.create(user);
 
-      const readResult = await users.get(createResult._id);
+      const readResult = await Users.get(createResult._id);
 
       if (readResult == null) throw new Error('Result return null');
       expect(readResult).to.have.property('username');
@@ -83,7 +81,7 @@ describe('Users library', function () {
       const usernameMessage = { username: 'carol' };
       const passwordMessage = { passwordHash: 'Password10' };
       const testCreateFail = async (user: any) => {
-        await users.create(user)
+        await Users.create(user)
           .catch(err => expect(err.message).to.contain('User validation failed:'));
       };
 
@@ -100,7 +98,7 @@ describe('Users library', function () {
     'properties which are not convertible to string.',
     async () => {
       const testCreateFail = async (user: any) => {
-        await users.create(user)
+        await Users.create(user)
           .catch(err => expect(err.message).to.contain('User validation failed:'));
       };
 
@@ -120,7 +118,7 @@ describe('Users library', function () {
         displayName: { prop: 'val' },
       });
 
-      const result = await users.listAll();
+      const result = await Users.listAll();
       expect(result).to.be.an('array');
       expect(result).to.be.empty;
     },
@@ -138,7 +136,7 @@ describe('Users library', function () {
       };
 
       try {
-        await users.create(newUser);
+        await Users.create(newUser);
       } catch (err) {
         // tslint:disable-next-line:max-line-length
         expect(err.message).to.equal('Field `moreData` is not in schema and strict mode is set to throw.');
@@ -154,10 +152,10 @@ describe('Users library', function () {
         passwordHash: 'Password2',
         displayName: 'Bob',
       };
-      await users.create(user);
+      await Users.create(user);
       const fakeId = '000000000000000000000000';
 
-      const readResult = await users.get(fakeId);
+      const readResult = await Users.get(fakeId);
 
       expect(readResult).to.be.null;
     },
@@ -176,7 +174,7 @@ describe('Users library', function () {
       };
 
       const testCreateSanitized = async (user: IUser) => {
-        const createResult = await users.create(user);
+        const createResult = await Users.create(user);
         if (createResult == null) throw new Error('Result return null');
         expect(createResult.username).to.equal(testUser.username);
         expect(createResult.passwordHash).to.equal(testUser.passwordHash);
@@ -214,10 +212,10 @@ describe('Users library', function () {
         passwordHash: 'Password1',
         displayName: 'Alice',
       };
-      await users.create(user);
+      await Users.create(user);
 
       const invalidId = { $ne: '' };
-      const result = await users.get(invalidId);
+      const result = await Users.get(invalidId);
       expect(result).to.not.be.an('object');
     },
   );

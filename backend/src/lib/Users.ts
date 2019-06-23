@@ -40,37 +40,37 @@ User = mongoose.model<IUserModel>('User', UserSchema);
 
 export default class Users {
 
-  create(newUser: IUser): Promise<IUserModel> {
+  static create(newUser: IUser): Promise<IUserModel> {
     return new User(newUser).save();
   }
 
-  get(id: any): Promise<IUserModel | null> {
+  static get(id: any): Promise<IUserModel | null> {
     if (!(id instanceof ObjectId)) return Promise.resolve(null);
     return User.findById(id).exec();
   }
 
-  async validateLogin(username: string, passwordHash: string): Promise<IUserModel | null> {
+  static async validateLogin(username: string, passwordHash: string): Promise<IUserModel | null> {
     const users = await User.find({ username, passwordHash }).exec();
     return users.length > 0 ? users[0] : null;
   }
 
-  listAll(): Promise<IUserModel[]> {
+  static listAll(): Promise<IUserModel[]> {
     return User.find({}).exec();
   }
 
-  update(id: any, updatedUser: IUser) {
+  static update(id: any, updatedUser: IUser) {
     return User.findOneAndUpdate(id, updatedUser).exec();
   }
 
-  delete(id: any) {
+  static delete(id: any) {
     return User.findByIdAndDelete(id).exec();
   }
 
-  deleteAll() {
+  static deleteAll() {
     return User.deleteMany({}).exec();
   }
 
-  disconnect() {
+  static disconnect() {
     return mongoose.disconnect();
   }
 }

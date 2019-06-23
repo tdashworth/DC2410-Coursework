@@ -39,16 +39,16 @@ AdoptionRequest = mongoose.model<IAdoptionRequestModel>(
 );
 
 export default class AdoptionRequests {
-  create(newAdoptionRequest: IAdoptionRequest): Promise<IAdoptionRequestModel> {
+  static create(newAdoptionRequest: IAdoptionRequest): Promise<IAdoptionRequestModel> {
     return new AdoptionRequest(newAdoptionRequest).save();
   }
 
-  get(id: any): Promise<IAdoptionRequestModel | null> {
+  static get(id: any): Promise<IAdoptionRequestModel | null> {
     if (!(id instanceof ObjectId)) return Promise.resolve(null);
     return AdoptionRequest.findById(id).exec();
   }
 
-  async approve(id: any): Promise<IAdoptionRequestModel | null> {
+  static async approve(id: any): Promise<IAdoptionRequestModel | null> {
     const adoptionRequest = await this.get(id);
 
     if (adoptionRequest === null) {
@@ -71,7 +71,7 @@ export default class AdoptionRequests {
     return adoptionRequest;
   }
 
-  async deny(id: any): Promise<IAdoptionRequestModel | null> {
+  static async deny(id: any): Promise<IAdoptionRequestModel | null> {
     const adoptionRequest = await this.get(id);
 
     if (adoptionRequest === null) {
@@ -82,27 +82,27 @@ export default class AdoptionRequests {
     return adoptionRequest.save();
   }
 
-  listAll(): Promise<IAdoptionRequestModel[]> {
+  static listAll(): Promise<IAdoptionRequestModel[]> {
     return AdoptionRequest.find({}).exec();
   }
 
-  listAllForUser(userId: string): Promise<IAdoptionRequestModel[]> {
+  static listAllForUser(userId: string): Promise<IAdoptionRequestModel[]> {
     return AdoptionRequest.find({ user: userId }).exec();
   }
 
-  listAllForAnimal(animalId: string): Promise<IAdoptionRequestModel[]> {
+  static listAllForAnimal(animalId: string): Promise<IAdoptionRequestModel[]> {
     return AdoptionRequest.find({ animal: animalId }).exec();
   }
 
-  delete(id: any) {
+  static delete(id: any) {
     return AdoptionRequest.findByIdAndDelete(id).exec();
   }
 
-  deleteAll() {
+  static deleteAll() {
     return AdoptionRequest.deleteMany({}).exec();
   }
 
-  disconnect() {
+  static disconnect() {
     return mongoose.disconnect();
   }
 }
