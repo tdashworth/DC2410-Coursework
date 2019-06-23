@@ -1,5 +1,5 @@
 import chai from 'chai';
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 import AdoptionRequests, {
   AdoptionRequestStatus,
 } from '../lib/AdoptionRequests';
@@ -7,22 +7,20 @@ import Users from '../lib/Users';
 import Animals, { AnimalType, Gender } from '../lib/Animals';
 const expect = chai.expect;
 
-describe('Adoption Requests library', () => {
+describe('Adoption Requests library', function () {
+  this.timeout(3000);
   let adoptionRequests: AdoptionRequests;
   let users: Users;
   let animals: Animals;
 
   before(async () => {
-    await mongoose.connect('mongodb://localhost:27017/test', {
+    await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
       useNewUrlParser: true,
       useFindAndModify: false,
     });
     adoptionRequests = new AdoptionRequests();
     users = new Users();
     animals = new Animals();
-    // await adoptionRequests.conect(config.db.url);
-    // await users.connect(config.db.url);
-    // await animals.conect(config.db.url);
   });
 
   beforeEach(async () => {

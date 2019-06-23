@@ -46,8 +46,7 @@ AnimalSchema.pre('save', async function (this: IAnimalModel) {
 });
 
 // tslint:disable-next-line:variable-name
-let Animal: mongoose.Model<IAnimalModel, {}>;
-Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
+const Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
 
 export default class Animals {
 
@@ -73,7 +72,7 @@ export default class Animals {
     if (orginal !== null && orginal.adoptedBy === null) {
       throw new Error('Animal is locked because it has already been adopted.');
     }
-    
+
     return Animal.findOneAndUpdate(id, updatedAnimal).exec();
   }
 

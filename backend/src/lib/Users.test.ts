@@ -3,11 +3,12 @@ import mongoose from 'mongoose';
 import Users, { IUser, UserType } from '../lib/Users';
 const expect = chai.expect;
 
-describe('Users library', () => {
+describe('Users library', function () {
+  this.timeout(3000);
   let users: Users;
 
   before(async () => {
-    await mongoose.connect('mongodb://localhost:27017/test', {
+    await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
       useNewUrlParser: true,
       useFindAndModify: false,
     });

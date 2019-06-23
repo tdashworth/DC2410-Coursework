@@ -1,13 +1,14 @@
 import chai from 'chai';
 import mongoose from 'mongoose';
-import Animals, { IAnimal, Gender, AnimalType } from '../lib/Animals';
+import Animals, { Gender, AnimalType } from './Animals';
 const expect = chai.expect;
 
-describe('Animals library', () => {
+describe('Animals library', function () {
+  this.timeout(3000);
   let animals: Animals;
 
   before(async () => {
-    await mongoose.connect('mongodb://localhost:27017/test', {
+    await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
       useNewUrlParser: true,
       useFindAndModify: false,
     });

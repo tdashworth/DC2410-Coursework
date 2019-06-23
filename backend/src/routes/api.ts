@@ -1,4 +1,4 @@
-import express = require('express');
+import express from 'express';
 import httpStatus from 'http-status';
 
 const router = express.Router();
