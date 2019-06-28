@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getAuthHeaders } from './session';
-import { UserApi, User } from 'Users';
+import { UserApi, User } from 'dc2410-coursework-common';
 
 const users: UserApi = {
   login: (username, password) =>

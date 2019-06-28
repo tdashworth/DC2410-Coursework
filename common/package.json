@@ -1,9 +1,6 @@
 {
   "name": "dc2410-coursework-common",
   "version": "1.0.0",
-  "description": "",
-  "main": "",
-  "keywords": [],
-  "author": "",
+  "main": "index.js",
   "license": "ISC"
 }

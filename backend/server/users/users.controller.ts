@@ -7,7 +7,7 @@ import { authorize } from '../config';
 import User from './user.model';
 
 passport.use(
-  new Strategy({ usernameField: 'email' }, async (username, password, done) => {
+  new Strategy({ usernameField: 'username' }, async (username, password, done) => {
     try {
       // Tries to find the user matching the given username
       const user = await User.findOne({ email: username });

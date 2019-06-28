@@ -13,7 +13,7 @@ import usersController from './users/users.controller';
 const app = express();
 
 // Assign controllers to routes
-app.use('/api/items', itemsController);
+// app.use('/api/items', itemsController);
 app.use('/api/users', usersController);
 
 // Declare the path to frontend's static assets
