@@ -1,8 +1,8 @@
-import { pbkdf2Sync, randomBytes } from "crypto";
-import { sign } from "jsonwebtoken";
-import { Document, model, Schema } from "mongoose";
-import { SchemaDef } from "../../types";
-import { User } from "dc2410-coursework-common";
+import { pbkdf2Sync, randomBytes } from 'crypto';
+import { sign } from 'jsonwebtoken';
+import { Document, model, Schema } from 'mongoose';
+import { SchemaDef } from '../../types';
+import { User } from 'dc2410-coursework-common';
 
 // Declare the model interface
 interface UserDoc extends User, Document {
@@ -16,20 +16,20 @@ const userSchemaDef: SchemaDef<User> = {
     type: String,
     // Important! We want users to be unique
     unique: true,
-    required: true
+    required: true,
   },
   displayName: {
     type: String,
-    required: true
+    required: true,
   },
   hash: {
     type: String,
-    required: true
+    required: true,
   },
   salt: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 };
 
 // Declare the model schema
@@ -44,9 +44,9 @@ class UserClass {
 
   // Create a salt and hash from the password
   public setPassword(password: string) {
-    this.salt = randomBytes(16).toString("hex");
-    this.hash = pbkdf2Sync(password, this.salt, 100000, 512, "sha512").toString(
-      "hex"
+    this.salt = randomBytes(16).toString('hex');
+    this.hash = pbkdf2Sync(password, this.salt, 100000, 512, 'sha512').toString(
+      'hex',
     );
   }
 
@@ -57,8 +57,8 @@ class UserClass {
       this.salt,
       100000,
       512,
-      "sha512"
-    ).toString("hex");
+      'sha512',
+    ).toString('hex');
     return this.hash === hash;
   }
 
@@ -71,9 +71,9 @@ class UserClass {
       {
         _id: this.id,
         email: this.email,
-        exp: Math.round(expiry.getTime() / 1000)
+        exp: Math.round(expiry.getTime() / 1000),
       },
-      process.env.AUTH_SHARED_SECRET
+      process.env.AUTH_SHARED_SECRET,
     );
 
     return { token, expiry };
@@ -83,4 +83,4 @@ class UserClass {
 // Important! Don't forget to use loadClass so your new methods will be included in the model
 userSchema.loadClass(UserClass);
 
-export default model<UserDoc>("User", userSchema);
+export default model<UserDoc>('User', userSchema);

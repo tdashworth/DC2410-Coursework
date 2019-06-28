@@ -1,6 +1,6 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import FormInput from "./FormInput";
+import React from 'react';
+import FormInput from './FormInput';
 
 class RegisterForm extends React.Component<{ className: string }> {
   public render = () => (
@@ -50,7 +50,7 @@ class RegisterForm extends React.Component<{ className: string }> {
         </form>
       </div>
     </div>
-  );
+  )
 }
 
 export default RegisterForm;

@@ -1,11 +1,11 @@
 // tslint:disable-next-line: import-name
-import React from "react";
+import React from 'react';
 
 class WelcomeJumbotron extends React.Component {
   public render = () => (
     <section
       className="jumbotron card"
-      style={{ background: "white", color: "black" }}
+      style={{ background: 'white', color: 'black' }}
     >
       <h1 className="display-4">Welcome!</h1>
       <p className="lead">
@@ -18,7 +18,7 @@ class WelcomeJumbotron extends React.Component {
         become a member by creating an account.
       </p>
     </section>
-  );
+  )
 }
 
 export default WelcomeJumbotron;

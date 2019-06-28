@@ -1,7 +1,7 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import Emoji from "../Emoji";
-import { Animal } from "dc2410-coursework-common";
+import React from 'react';
+import Emoji from '../Emoji';
+import { Animal } from 'dc2410-coursework-common';
 
 class AnimalSummaryCard extends React.Component<{ animal: Animal }> {
   public render = () => (
@@ -19,7 +19,7 @@ class AnimalSummaryCard extends React.Component<{ animal: Animal }> {
         </p>
       </div>
     </div>
-  );
+  )
 }
 
 export default AnimalSummaryCard;

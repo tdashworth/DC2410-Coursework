@@ -1,8 +1,8 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import AdoptionRequestCard from "./AdoptionRequestCard";
-import Emoji from "../Emoji";
-import { AdoptionRequestStatus } from "dc2410-coursework-common";
+import React from 'react';
+import AdoptionRequestCard from './AdoptionRequestCard';
+import Emoji from '../Emoji';
+import { AdoptionRequestStatus } from 'dc2410-coursework-common';
 
 class AdoptionRequestInternalCard extends AdoptionRequestCard {
   public render = () => (
@@ -15,8 +15,8 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
       </div>
 
       <p className="mb-1">
-        <span style={{ fontWeight: "bold" }}>
-          {this.props.request.user.displayName}{" "}
+        <span style={{ fontWeight: 'bold' }}>
+          {this.props.request.user.displayName}{' '}
         </span>
         has made a request for adoption.
       </p>
@@ -32,7 +32,7 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
         </div>
       ) : null}
     </div>
-  );
+  )
 }
 
 export default AdoptionRequestInternalCard;

@@ -1,6 +1,6 @@
-import { Document, model, Schema } from "mongoose";
-import { SchemaDef } from "../../types";
-import { Item } from "dc2410-coursework-common";
+import { Document, model, Schema } from 'mongoose';
+import { SchemaDef } from '../../types';
+import { Item } from 'dc2410-coursework-common';
 
 // Declare model interface
 interface ItemDoc extends Item, Document {}
@@ -9,12 +9,12 @@ interface ItemDoc extends Item, Document {}
 const itemSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   value: {
     type: Number,
-    required: true
-  }
+    required: true,
+  },
 });
 
-export default model<ItemDoc>("Item", itemSchema);
+export default model<ItemDoc>('Item', itemSchema);

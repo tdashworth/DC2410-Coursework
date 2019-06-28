@@ -1,5 +1,5 @@
 // tslint:disable-next-line: import-name
-import React from "react";
+import React from 'react';
 
 export interface Props
   extends React.DetailedHTMLProps<
@@ -32,7 +32,7 @@ class FormInput extends React.Component<Props> {
         />
       </div>
     </div>
-  );
+  )
 }
 
 export default FormInput;

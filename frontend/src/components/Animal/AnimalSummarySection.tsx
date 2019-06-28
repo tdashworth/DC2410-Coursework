@@ -1,7 +1,7 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import AnimalSummaryCard from "./AnimalSummaryCard";
-import { Animal } from "dc2410-coursework-common";
+import React from 'react';
+import AnimalSummaryCard from './AnimalSummaryCard';
+import { Animal } from 'dc2410-coursework-common';
 
 export class AnimalSummarySection extends React.Component<{
   animals: Animal[];
@@ -53,7 +53,7 @@ export class AnimalSummarySection extends React.Component<{
         <AnimalSummaryCard key={animal.id!} animal={animal} />
       ))}
     </section>
-  );
+  )
 }
 
 export default AnimalSummarySection;

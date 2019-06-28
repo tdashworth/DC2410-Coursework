@@ -1,18 +1,18 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 // tslint:disable-next-line: import-name
-import MongodbMemoryServer from "mongodb-memory-server";
-import * as mongoose from "mongoose";
-import * as request from "supertest";
-import app from "../app";
+import MongodbMemoryServer from 'mongodb-memory-server';
+import * as mongoose from 'mongoose';
+import * as request from 'supertest';
+import app from '../app';
 // tslint:disable-next-line: import-name
-import User from "./user.model";
+import User from './user.model';
 
-describe("/api/users tests", () => {
+describe('/api/users tests', () => {
   const mongod = new MongodbMemoryServer();
   const registerNewUser = (): request.Test => {
     return request(app)
-      .post("/api/users/register")
-      .send({ email: "new@user.com", password: "test-password" });
+      .post('/api/users/register')
+      .send({ email: 'new@user.com', password: 'test-password' });
   };
 
   beforeAll(async () => {
@@ -29,43 +29,43 @@ describe("/api/users tests", () => {
     await User.remove({});
   });
 
-  it("should register user", async () => {
+  it('should register user', async () => {
     const response = await registerNewUser();
     expect(response.status).toBe(200);
-    expect(_.keys(response.body)).toEqual(["token", "expiry"]);
+    expect(_.keys(response.body)).toEqual(['token', 'expiry']);
   });
 
-  it("should catch errors when registering user", async () => {
+  it('should catch errors when registering user', async () => {
     const response = await request(app)
-      .post("/api/users/register")
+      .post('/api/users/register')
       .send({});
     expect(response.status).toBe(400);
   });
 
-  it("should login user", async () => {
+  it('should login user', async () => {
     await registerNewUser();
     const response = await request(app)
-      .post("/api/users/login")
-      .send({ email: "new@user.com", password: "test-password" });
+      .post('/api/users/login')
+      .send({ email: 'new@user.com', password: 'test-password' });
     expect(response.status).toBe(200);
-    expect(_.keys(response.body)).toEqual(["token", "expiry"]);
+    expect(_.keys(response.body)).toEqual(['token', 'expiry']);
   });
 
-  it("should return invalid credentials error when login is invalid", async () => {
+  it('should return invalid credentials error when login is invalid', async () => {
     await registerNewUser();
     const response = await request(app)
-      .post("/api/users/login")
-      .send({ email: "new@user.com", password: "wrong-password" });
+      .post('/api/users/login')
+      .send({ email: 'new@user.com', password: 'wrong-password' });
     expect(response.status).toBe(400);
-    expect(response.body).toEqual({ error: "Invalid credentials" });
+    expect(response.body).toEqual({ error: 'Invalid credentials' });
   });
 
-  it("should get user profile", async () => {
+  it('should get user profile', async () => {
     const register = await registerNewUser();
     const response = await request(app)
-      .get("/api/users/profile")
-      .set("Authorization", `Bearer ${register.body.token}`);
+      .get('/api/users/profile')
+      .set('Authorization', `Bearer ${register.body.token}`);
     expect(response.status).toBe(200);
-    expect(response.body.email).toBe("new@user.com");
+    expect(response.body.email).toBe('new@user.com');
   });
 });

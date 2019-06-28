@@ -1,6 +1,6 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import AdoptionRequestCard from "./AdoptionRequestCard";
+import React from 'react';
+import AdoptionRequestCard from './AdoptionRequestCard';
 
 class AdoptionRequestPersonalCard extends AdoptionRequestCard {
   public render = () => (
@@ -13,7 +13,7 @@ class AdoptionRequestPersonalCard extends AdoptionRequestCard {
       </div>
       <p className="mb-1">{this.props.request.animal.description}</p>
     </div>
-  );
+  )
 }
 
 export default AdoptionRequestPersonalCard;

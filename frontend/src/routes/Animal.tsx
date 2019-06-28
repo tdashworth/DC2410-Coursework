@@ -1,5 +1,5 @@
 // tslint:disable-next-line: import-name
-import React from "react";
+import React from 'react';
 
 export interface AnimalState {
   error: string;
@@ -7,7 +7,7 @@ export interface AnimalState {
 
 class Animal extends React.Component<{}, AnimalState> {
   public state = {
-    error: ""
+    error: '',
   };
 
   public componentDidMount() {

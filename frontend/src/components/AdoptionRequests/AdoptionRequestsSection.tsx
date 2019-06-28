@@ -1,22 +1,22 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import AdoptionRequestCard from "./AdoptionRequestCard";
-import Emoji from "../Emoji";
+import React from 'react';
+import AdoptionRequestCard from './AdoptionRequestCard';
+import Emoji from '../Emoji';
 import {
   Gender,
   AnimalType,
   Animal,
   AdoptionRequest,
-  AdoptionRequestStatus
-} from "dc2410-coursework-common";
+  AdoptionRequestStatus,
+} from 'dc2410-coursework-common';
 
 const animal1 = {
-  name: "Holly",
-  description: "Loved black and white short haired cat.",
+  name: 'Holly',
+  description: 'Loved black and white short haired cat.',
   gender: Gender.Female,
   dob: new Date(2006, 11, 5),
   type: AnimalType.Cat,
-  picture: "http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg"
+  picture: 'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
 };
 
 interface Props {
@@ -38,7 +38,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
     allRequests: [],
     showPending: true,
     showved: false,
-    showDenied: false
+    showDenied: false,
   };
 
   public constructor(props: Props) {
@@ -49,24 +49,24 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
     const allRequests: AdoptionRequest[] = [
       {
         animal: animal1,
-        user: { username: "tom", displayName: "Tom", hash: "" },
-        status: AdoptionRequestStatus.Pending
+        user: { username: 'tom', displayName: 'Tom', hash: '' },
+        status: AdoptionRequestStatus.Pending,
       },
       {
         animal: animal1,
-        user: { username: "tom", displayName: "Tom", hash: "" },
-        status: AdoptionRequestStatus.Approved
+        user: { username: 'tom', displayName: 'Tom', hash: '' },
+        status: AdoptionRequestStatus.Approved,
       },
       {
         animal: animal1,
-        user: { username: "tom", displayName: "Tom", hash: "" },
-        status: AdoptionRequestStatus.Denied
+        user: { username: 'tom', displayName: 'Tom', hash: '' },
+        status: AdoptionRequestStatus.Denied,
       },
       {
         animal: animal1,
-        user: { username: "tom", displayName: "Tom", hash: "" },
-        status: AdoptionRequestStatus.Approved
-      }
+        user: { username: 'tom', displayName: 'Tom', hash: '' },
+        status: AdoptionRequestStatus.Approved,
+      },
     ];
 
     this.setState({ allRequests });
@@ -108,7 +108,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
               this.setState({
                 showved: true,
                 showDenied: true,
-                showPending: true
+                showPending: true,
               })
             }
           >
@@ -117,7 +117,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
         ) : null}
       </section>
     );
-  };
+  }
 
   private getFilterRequests = (): AdoptionRequest[] => {
     const showved = (request: AdoptionRequest) =>
@@ -131,10 +131,10 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
     return this.state.allRequests
       .filter(
         request =>
-          showved(request) || showDenied(request) || showPending(request)
+          showved(request) || showDenied(request) || showPending(request),
       )
       .sort((request1, request2) => request1.status! - request2.status!);
-  };
+  }
 
   // tslint:disable-next-line: variable-name
   private RequestFilters = () => (
@@ -147,7 +147,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
       <label
         htmlFor="filter-requests-pending"
         className={`form-control d-flex justify-content-around ${
-          !this.state.showPending ? "bg-secondary" : ""
+          !this.state.showPending ? 'bg-secondary' : ''
         }`}
       >
         <Emoji symbol="⏳" />
@@ -155,7 +155,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
       <label
         htmlFor="filter-requests-oved"
         className={`form-control d-flex justify-content-around ${
-          !this.state.showved ? "bg-secondary" : ""
+          !this.state.showved ? 'bg-secondary' : ''
         }`}
       >
         <Emoji symbol="✔" />
@@ -163,7 +163,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
       <label
         htmlFor="filter-requests-denied"
         className={`form-control d-flex justify-content-around ${
-          !this.state.showDenied ? "bg-secondary" : ""
+          !this.state.showDenied ? 'bg-secondary' : ''
         }`}
       >
         <Emoji symbol="❌" />
@@ -187,7 +187,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
         onChange={() => this.setState({ showDenied: !this.state.showDenied })}
       />
     </div>
-  );
+  )
 }
 
 export default AdoptionRequestsSection;

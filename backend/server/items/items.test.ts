@@ -1,28 +1,28 @@
 // tslint:disable-next-line: import-name
-import MongodbMemoryServer from "mongodb-memory-server";
-import * as mongoose from "mongoose";
-import * as request from "supertest";
-import app from "../app";
+import MongodbMemoryServer from 'mongodb-memory-server';
+import * as mongoose from 'mongoose';
+import * as request from 'supertest';
+import app from '../app';
 // tslint:disable-next-line: import-name
-import User from "../users/user.model";
+import User from '../users/user.model';
 // tslint:disable-next-line: import-name
-import Item from "./item.model";
+import Item from './item.model';
 
-describe("/api/items tests", () => {
+describe('/api/items tests', () => {
   const mongod = new MongodbMemoryServer();
-  let token: string = "";
+  let token: string = '';
 
   // Connect to mongoose mock, create a test user and get the access token
   beforeAll(async () => {
     const uri = await mongod.getConnectionString();
     await mongoose.connect(uri, { useNewUrlParser: true });
     const user = new User();
-    user.username = "test";
-    user.setPassword("test-password");
+    user.username = 'test';
+    user.setPassword('test-password');
     await user.save();
     const response = await request(app)
-      .post("/api/users/login")
-      .send({ email: "test@email.com", password: "test-password" });
+      .post('/api/users/login')
+      .send({ email: 'test@email.com', password: 'test-password' });
     token = response.body.token;
   });
 
@@ -36,7 +36,7 @@ describe("/api/items tests", () => {
   // Create a sample item
   beforeEach(async () => {
     const item = new Item();
-    item.name = "item name";
+    item.name = 'item name';
     item.value = 1000;
     await item.save();
   });
@@ -46,29 +46,29 @@ describe("/api/items tests", () => {
     await Item.remove({});
   });
 
-  it("should get items", async () => {
+  it('should get items', async () => {
     const response = await request(app)
-      .get("/api/items")
-      .set("Authorization", `Bearer ${token}`);
+      .get('/api/items')
+      .set('Authorization', `Bearer ${token}`);
     expect(response.status).toBe(200);
     expect(response.body).toEqual([
-      expect.objectContaining({ name: "item name", value: 1000 })
+      expect.objectContaining({ name: 'item name', value: 1000 }),
     ]);
   });
 
-  it("should post items", async () => {
+  it('should post items', async () => {
     const response = await request(app)
-      .post("/api/items")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ name: "new item", value: 2000 });
+      .post('/api/items')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ name: 'new item', value: 2000 });
     expect(response.status).toBe(200);
-    expect(response.body).toBe("Item saved!");
+    expect(response.body).toBe('Item saved!');
   });
 
-  it("should catch errors when posting items", async () => {
+  it('should catch errors when posting items', async () => {
     const response = await request(app)
-      .post("/api/items")
-      .set("Authorization", `Bearer ${token}`)
+      .post('/api/items')
+      .set('Authorization', `Bearer ${token}`)
       .send({});
     expect(response.status).toBe(400);
   });

@@ -1,9 +1,9 @@
 // tslint:disable-next-line: import-name
-import React from "react";
+import React from 'react';
 import {
   AdoptionRequestStatus,
-  AdoptionRequest
-} from "dc2410-coursework-common";
+  AdoptionRequest,
+} from 'dc2410-coursework-common';
 
 abstract class AdoptionRequestCard extends React.Component<{
   request: AdoptionRequest;
@@ -11,24 +11,24 @@ abstract class AdoptionRequestCard extends React.Component<{
   protected getStatusText(): string {
     switch (this.props.request.status) {
       case AdoptionRequestStatus.Approved:
-        return "Approved ✔";
+        return 'Approved ✔';
       case AdoptionRequestStatus.Denied:
-        return "Denied ❌";
+        return 'Denied ❌';
       case AdoptionRequestStatus.Pending:
-        return "Pending... ⏳";
+        return 'Pending... ⏳';
       default:
-        return "";
+        return '';
     }
   }
 
   protected getItemTheme() {
     switch (this.props.request.status) {
       case AdoptionRequestStatus.Approved:
-        return "list-group-item-success";
+        return 'list-group-item-success';
       case AdoptionRequestStatus.Denied:
-        return "list-group-item-danger";
+        return 'list-group-item-danger';
       default:
-        return "";
+        return '';
     }
   }
 }

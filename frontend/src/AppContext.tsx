@@ -1,6 +1,6 @@
 // tslint:disable-next-line: import-name
-import React from "react";
-import { User } from "dc2410-coursework-common";
+import React from 'react';
+import { User } from 'dc2410-coursework-common';
 
 export interface IAppContext {
   user?: User;
@@ -18,7 +18,7 @@ export const AppContextConsumer = AppContext.Consumer;
 
 export function withAppContext<P extends { AppContext?: IAppContext }>(
   // tslint:disable-next-line: variable-name
-  Component: React.ComponentClass<P> | React.StatelessComponent<P>
+  Component: React.ComponentClass<P> | React.StatelessComponent<P>,
 ): React.FC<P> {
   return function BoundComponent(props: P) {
     return (
