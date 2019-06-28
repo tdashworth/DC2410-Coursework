@@ -1,10 +1,9 @@
 // tslint:disable-next-line: import-name
 import React from "react";
-import axios from "axios";
 import FormInput from "./FormInput";
 import { withAppContext, IAppContext } from "../AppContext";
 import { setSession } from "../helpers/session";
-import { UserType } from "dc2410-coursework-common";
+import api from "../helpers/api";
 
 interface Props {
   className: string;
@@ -12,7 +11,7 @@ interface Props {
 }
 
 interface State {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -31,7 +30,7 @@ class LoginForm extends React.Component<Props, State> {
                 label="Username"
                 icon="🧑"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  this.setState({ email: e.target.value })
+                  this.setState({ username: e.target.value })
                 }
                 required={true}
               />
@@ -62,28 +61,16 @@ class LoginForm extends React.Component<Props, State> {
     );
 
   private handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("Handling login...");
     event.preventDefault();
 
-    const { email, password } = this.state;
+    const { username, password } = this.state;
     try {
-      const response = await axios.post<{ token: string; expiry: string }>(
-        "/api/users/login",
-        { email, password }
-      );
-      const { token, expiry } = response.data;
+      const { token, expiry } = await api.users.login(username, password);
       setSession(token, expiry);
-      this.props.AppContext!.setUser({
-        username: "tom",
-        displayName: "Tom",
-        hash: "",
-        type: UserType.Internal
-      });
+      this.props.AppContext!.setUser(await api.users.profile());
     } catch (error) {
       console.log(error);
-      // this.setState({ error: 'Something went wrong' });
-    } finally {
-      // this.setState({ isRequesting: false });
+      alert("Login failed. Please try with different username and password.");
     }
   };
 }

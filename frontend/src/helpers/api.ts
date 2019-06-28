@@ -1,16 +1,21 @@
 import axios from "axios";
 import { getAuthHeaders } from "./session";
-import { User } from "./types";
+import { UserApi, User } from "Users";
 
-export const getUserProfile = async () => {
-  try {
-    return (await axios.get<User>("/api/users/profile", {
-      headers: getAuthHeaders()
-    })).data;
-  } catch (error) {
-    console.log(error);
-    // this.setState({ error: 'Something went wrong' });
-  } finally {
-    // this.setState({ isRequesting: false });
-  }
+const users: UserApi = {
+  login: (username, password) =>
+    axios
+      .post<{ token: string; expiry: string }>("/api/users/login", {
+        username,
+        password
+      })
+      .then(response => response.data),
+  profile: () =>
+    axios
+      .get<User>("/api/users/profile", { headers: getAuthHeaders() })
+      .then(response => response.data)
+};
+
+export default {
+  users
 };
