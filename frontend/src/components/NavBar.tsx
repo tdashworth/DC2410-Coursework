@@ -1,9 +1,9 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
-import { IAppContext, withAppContext } from '../AppContext';
-import { clearSession } from '../helpers/session';
+import { AppContextInterface, withAppContext } from '../AppContext';
+import Session from '../helpers/Session';
 
-class NavBar extends React.Component<{ AppContext?: IAppContext }> {
+class NavBar extends React.Component<{ AppContext?: AppContextInterface }> {
   public render = () =>
     this.props.AppContext && (
       <header>
@@ -38,7 +38,7 @@ class NavBar extends React.Component<{ AppContext?: IAppContext }> {
 
   private logout = () => {
     this.props.AppContext!.wipeUser();
-    clearSession();
+    Session.clear();
   }
 }
 

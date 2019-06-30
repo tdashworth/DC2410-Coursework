@@ -9,6 +9,7 @@ import User from './user.model';
 passport.use(
   new Strategy({ usernameField: 'username' }, async (username, password, done) => {
     try {
+      console.log('Passport strategy.');
       // Tries to find the user matching the given username
       const user = await User.findOne({ email: username });
       // Check if the password is valid

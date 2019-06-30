@@ -16,8 +16,32 @@ const animal1 = {
   gender: Gender.Female,
   dob: new Date(2006, 11, 5),
   type: AnimalType.Cat,
-  picture: 'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
+  picture:
+    'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
 };
+
+const allRequests: AdoptionRequest[] = [
+  {
+    animal: animal1,
+    user: { username: 'tom', displayName: 'Tom', hash: '' },
+    status: AdoptionRequestStatus.Pending,
+  },
+  {
+    animal: animal1,
+    user: { username: 'tom', displayName: 'Tom', hash: '' },
+    status: AdoptionRequestStatus.Approved,
+  },
+  {
+    animal: animal1,
+    user: { username: 'tom', displayName: 'Tom', hash: '' },
+    status: AdoptionRequestStatus.Denied,
+  },
+  {
+    animal: animal1,
+    user: { username: 'tom', displayName: 'Tom', hash: '' },
+    status: AdoptionRequestStatus.Approved,
+  },
+];
 
 interface Props {
   title: string;
@@ -29,112 +53,59 @@ interface Props {
 interface State {
   allRequests: AdoptionRequest[];
   showPending: boolean;
-  showved: boolean;
+  showApproved: boolean;
   showDenied: boolean;
 }
 
-export class AdoptionRequestsSection extends React.Component<Props, State> {
+class AdoptionRequestsSection extends React.Component<Props, State> {
   public state: State = {
     allRequests: [],
     showPending: true,
-    showved: false,
+    showApproved: false,
     showDenied: false,
   };
 
-  public constructor(props: Props) {
-    super(props);
-  }
-
-  public componentDidMount() {
-    const allRequests: AdoptionRequest[] = [
-      {
-        animal: animal1,
-        user: { username: 'tom', displayName: 'Tom', hash: '' },
-        status: AdoptionRequestStatus.Pending,
-      },
-      {
-        animal: animal1,
-        user: { username: 'tom', displayName: 'Tom', hash: '' },
-        status: AdoptionRequestStatus.Approved,
-      },
-      {
-        animal: animal1,
-        user: { username: 'tom', displayName: 'Tom', hash: '' },
-        status: AdoptionRequestStatus.Denied,
-      },
-      {
-        animal: animal1,
-        user: { username: 'tom', displayName: 'Tom', hash: '' },
-        status: AdoptionRequestStatus.Approved,
-      },
-    ];
-
-    this.setState({ allRequests });
-  }
+  public componentDidMount = () => this.setState({ allRequests });
 
   public render = () => {
-    if (this.state.allRequests.length === 0) {
-      return (
-        <section className="col-md-12 col-lg-4" id="animal-requests">
-          <h4>{this.props.title}}</h4>
-          <p>{this.props.emptyMessge}</p>
-        </section>
-      );
-    }
-
-    const visibleRequests = this.getFilterRequests();
+    // Show empty message when there are not requests.
+    if (this.state.allRequests.length === 0) return <this.EmptyMessage />;
 
     return (
       <section className="col-md-12 col-lg-4" id="animal-requests">
         <h4>{this.props.title}</h4>
-
         <this.RequestFilters />
-
-        <div className="list-group mb-3">
-          {visibleRequests.map(request => (
-            <this.props.cardClass key={request.id!} request={request} />
-          ))}
-        </div>
-
-        {!(
-          this.state.showved &&
-          this.state.showDenied &&
-          this.state.showPending
-        ) ? (
-          <button
-            type="button"
-            className="btn btn-primary mb-3"
-            onClick={() =>
-              this.setState({
-                showved: true,
-                showDenied: true,
-                showPending: true,
-              })
-            }
-          >
-            View all requests
-          </button>
-        ) : null}
+        <this.RequestCards />
+        <this.ViewAllButton />
       </section>
     );
-  }
+  };
 
   private getFilterRequests = (): AdoptionRequest[] => {
-    const showved = (request: AdoptionRequest) =>
-      this.state.showved && request.status === AdoptionRequestStatus.Approved;
+    const ARS = AdoptionRequestStatus;
+
+    const showApproved = (request: AdoptionRequest) =>
+      this.state.showApproved && request.status === ARS.Approved;
     const showDenied = (request: AdoptionRequest) =>
-      this.state.showDenied && request.status === AdoptionRequestStatus.Denied;
+      this.state.showDenied && request.status === ARS.Denied;
     const showPending = (request: AdoptionRequest) =>
-      this.state.showPending &&
-      request.status === AdoptionRequestStatus.Pending;
+      this.state.showPending && request.status === ARS.Pending;
 
     return this.state.allRequests
       .filter(
-        request =>
-          showved(request) || showDenied(request) || showPending(request),
+        (request) =>
+          showApproved(request) || showDenied(request) || showPending(request),
       )
       .sort((request1, request2) => request1.status! - request2.status!);
-  }
+  };
+
+  // tslint:disable-next-line: variable-name
+  private EmptyMessage = () => (
+    <section className="col-md-12 col-lg-4" id="animal-requests">
+      <h4>{this.props.title}}</h4>
+      <p>{this.props.emptyMessge}</p>
+    </section>
+  );
 
   // tslint:disable-next-line: variable-name
   private RequestFilters = () => (
@@ -155,7 +126,7 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
       <label
         htmlFor="filter-requests-oved"
         className={`form-control d-flex justify-content-around ${
-          !this.state.showved ? 'bg-secondary' : ''
+          !this.state.showApproved ? 'bg-secondary' : ''
         }`}
       >
         <Emoji symbol="✔" />
@@ -178,7 +149,9 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
         id="filter-requests-oved"
         type="checkbox"
         className="d-none"
-        onChange={() => this.setState({ showved: !this.state.showved })}
+        onChange={() =>
+          this.setState({ showApproved: !this.state.showApproved })
+        }
       />
       <input
         id="filter-requests-denied"
@@ -187,7 +160,42 @@ export class AdoptionRequestsSection extends React.Component<Props, State> {
         onChange={() => this.setState({ showDenied: !this.state.showDenied })}
       />
     </div>
-  )
+  );
+
+  // tslint:disable-next-line: variable-name
+  private RequestCards = () => {
+    const visibleRequests = this.getFilterRequests();
+
+    return (
+      <div className="list-group mb-3">
+        {visibleRequests.map((request) => (
+          <this.props.cardClass key={request.id!} request={request} />
+        ))}
+      </div>
+    );
+  };
+
+  // tslint:disable-next-line: variable-name
+  private ViewAllButton = () =>
+    !(
+      this.state.showApproved &&
+      this.state.showDenied &&
+      this.state.showPending
+    ) ? (
+      <button
+        type="button"
+        className="btn btn-primary mb-3"
+        onClick={() =>
+          this.setState({
+            showApproved: true,
+            showDenied: true,
+            showPending: true,
+          })
+        }
+      >
+        View all requests
+      </button>
+    ) : null;
 }
 
 export default AdoptionRequestsSection;

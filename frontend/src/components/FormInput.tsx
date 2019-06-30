@@ -1,12 +1,12 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
 
-export interface Props
+interface Props
   extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  className: string;
+  className?: string;
   id: string;
   label: string;
   icon: string;
