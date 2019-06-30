@@ -1,9 +1,9 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
-import { AppContextInterface, withAppContext } from '../AppContext';
+import { IAppContextInterface, withAppContext } from '../AppContext';
 import Session from '../helpers/Session';
 
-class NavBar extends React.Component<{ AppContext?: AppContextInterface }> {
+class NavBar extends React.Component<{ AppContext?: IAppContextInterface }> {
   public render = () =>
     this.props.AppContext && (
       <header>

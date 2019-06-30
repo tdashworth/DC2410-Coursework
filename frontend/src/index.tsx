@@ -10,16 +10,16 @@ import Home from './routes/Home';
 import Session from './helpers/Session';
 import API from './helpers/API';
 
-import { User } from 'dc2410-coursework-common';
+import { IUser } from 'dc2410-coursework-common';
 
-interface State {
-  user?: User;
-  setUser: (u: User) => void;
+interface IState {
+  user?: IUser;
+  setUser: (u: IUser) => void;
   wipeUser: () => void;
 }
 
-class App extends React.Component<{}, State> {
-  public state: State = {
+class App extends React.Component<{}, IState> {
+  public state: IState = {
     setUser: (user) => this.setState({ user }),
     wipeUser: () => this.setState({ user: undefined }),
   };

@@ -1,8 +1,8 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
-import { Animal } from 'dc2410-coursework-common';
+import { IAnimal } from 'dc2410-coursework-common';
 
-class AnimalDetailsCard extends React.Component<{ animal: Animal }> {
+class AnimalDetailsCard extends React.Component<{ animal: IAnimal }> {
   public render = () => (
     <div className="card mb-3">
       <img src={this.props.animal.picture} className="card-img-top" alt="..." />

@@ -2,11 +2,11 @@
 import React from 'react';
 import {
   AdoptionRequestStatus,
-  AdoptionRequest,
+  IAdoptionRequest,
 } from 'dc2410-coursework-common';
 
 abstract class AdoptionRequestCard extends React.Component<{
-  request: AdoptionRequest;
+  request: IAdoptionRequest;
 }> {
   protected getStatusText(): string {
     switch (this.props.request.status) {

@@ -1,26 +1,30 @@
-import * as bodyParser from 'body-parser';
-import * as express from 'express';
-import { authorize } from '../config';
-// tslint:disable-next-line: import-name
-import Animal from './animal.model';
+import express from 'express';
+import bodyParser from 'body-parser';
+
+import animalsModel from './animals.model';
+import Auth from '../Auth';
 
 const router = express.Router();
 
-router.route('/').get(authorize, async (_, response) => {
-  const animals = await Animal.find();
-  return response.status(200).json(animals);
-});
+router.use(bodyParser.json());
+// router.use(expressJwt({ secret: process.env.AUTH_SHARED_SECRET! }));
 
-router
-  .route('/')
-  .post(authorize, bodyParser.json(), async (request, response) => {
-    try {
-      const animal = new Animal(request.body);
-      await animal.save();
-      return response.status(200).json('Animal saved!');
-    } catch (error) {
-      return response.status(400).send(error);
-    }
-  });
+router.get('/', async (req, res) => res.json(await animalsModel.listAll()));
+
+router.get('/available', async (req, res) =>
+  res.json(await animalsModel.listAllAvailable()),
+);
+
+router.post('/', async (req, res) =>
+  res.json(await animalsModel.create(req.body)),
+);
+
+router.get('/:id', async (req, res) =>
+  res.json(await animalsModel.get(req.params.id)),
+);
+
+router.put('/:id', async (req, res) =>
+  res.json(await animalsModel.update(req.params.id, req.body)),
+);
 
 export default router;

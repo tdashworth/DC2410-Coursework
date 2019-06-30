@@ -2,20 +2,21 @@ export declare enum UserType {
     Internal = 0,
     External = 1
 }
-export interface User {
+export interface IUser {
     id?: any;
     username: string;
-    hash: string;
+    passwordHash: string;
     salt?: string;
     displayName: string;
     type?: UserType;
 }
-export interface UserApi {
+export interface IUserApi {
     login: (username: string, password: string) => Promise<{
         token: string;
         expiry: string;
+        user: IUser;
     }>;
-    profile: () => Promise<User>;
+    profile: () => Promise<IUser>;
 }
 export declare enum AnimalType {
     Cat = 0,
@@ -27,7 +28,7 @@ export declare enum Gender {
     Male = 0,
     Female = 1
 }
-export interface Animal {
+export interface IAnimal {
     id?: any;
     name: string;
     type: AnimalType;
@@ -37,18 +38,32 @@ export interface Animal {
     picture?: string;
     adoptedBy?: string;
 }
-export interface AnimalApi {
-    create: (animal: Animal) => Animal;
-    get: (id: Animal['id']) => Animal;
+export interface IAnimalApi {
+    create: (animal: IAnimal) => IAnimal;
+    get: (id: IAnimal['id']) => IAnimal;
 }
 export declare enum AdoptionRequestStatus {
     Pending = 0,
     Approved = 1,
     Denied = 2
 }
-export interface AdoptionRequest {
-    id?: string;
-    user: User;
-    animal: Animal;
-    status?: AdoptionRequestStatus;
+export interface IAdoptionRequest {
+    id?: any;
+    user: IUser['id'];
+    animal: IAnimal['id'];
+    status: AdoptionRequestStatus;
+}
+export interface IAdoptionRequestApi {
+    create: (request: IAdoptionRequest) => Promise<IAdoptionRequest>;
+    get: (id: IAdoptionRequest['id']) => Promise<IAdoptionRequest | null>;
+    approve: (id: IAdoptionRequest['id']) => IAdoptionRequest | null;
+    deny: (id: IAdoptionRequest['id']) => IAdoptionRequest | null;
+    listAll: () => IAdoptionRequest[];
+    listAllMine: () => IAdoptionRequest[];
+    listAnimals: (id: IAnimal['id']) => IAdoptionRequest[] | [];
+}
+export interface AuthToken {
+    id: any;
+    username: string;
+    expiry: number;
 }

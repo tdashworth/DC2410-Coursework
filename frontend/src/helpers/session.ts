@@ -1,4 +1,4 @@
-export default class Session {
+class Session {
   // Set the session in the local storage
   public static set = (token: string, expiry: string): void => {
     localStorage.setItem('token', token);
@@ -25,3 +25,5 @@ export default class Session {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   });
 }
+
+export default Session;

@@ -5,12 +5,12 @@ import Emoji from '../Emoji';
 import {
   Gender,
   AnimalType,
-  Animal,
-  AdoptionRequest,
+  IAnimal,
+  IAdoptionRequest,
   AdoptionRequestStatus,
 } from 'dc2410-coursework-common';
 
-const animal1 = {
+const animal1: IAnimal = {
   name: 'Holly',
   description: 'Loved black and white short haired cat.',
   gender: Gender.Female,
@@ -20,7 +20,7 @@ const animal1 = {
     'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
 };
 
-const allRequests: AdoptionRequest[] = [
+const allRequests: IAdoptionRequest[] = [
   {
     animal: animal1,
     user: { username: 'tom', displayName: 'Tom', hash: '' },
@@ -43,22 +43,22 @@ const allRequests: AdoptionRequest[] = [
   },
 ];
 
-interface Props {
+interface IProps {
   title: string;
   emptyMessge: string;
   cardClass: typeof AdoptionRequestCard;
-  animal?: Animal;
+  animal?: IAnimal;
 }
 
-interface State {
-  allRequests: AdoptionRequest[];
+interface IState {
+  allRequests: IAdoptionRequest[];
   showPending: boolean;
   showApproved: boolean;
   showDenied: boolean;
 }
 
-class AdoptionRequestsSection extends React.Component<Props, State> {
-  public state: State = {
+class AdoptionRequestsSection extends React.Component<IProps, IState> {
+  public state: IState = {
     allRequests: [],
     showPending: true,
     showApproved: false,
@@ -81,14 +81,14 @@ class AdoptionRequestsSection extends React.Component<Props, State> {
     );
   };
 
-  private getFilterRequests = (): AdoptionRequest[] => {
+  private getFilterRequests = (): IAdoptionRequest[] => {
     const ARS = AdoptionRequestStatus;
 
-    const showApproved = (request: AdoptionRequest) =>
+    const showApproved = (request: IAdoptionRequest) =>
       this.state.showApproved && request.status === ARS.Approved;
-    const showDenied = (request: AdoptionRequest) =>
+    const showDenied = (request: IAdoptionRequest) =>
       this.state.showDenied && request.status === ARS.Denied;
-    const showPending = (request: AdoptionRequest) =>
+    const showPending = (request: IAdoptionRequest) =>
       this.state.showPending && request.status === ARS.Pending;
 
     return this.state.allRequests

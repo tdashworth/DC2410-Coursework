@@ -1,73 +1,185 @@
-// tslint:disable-next-line: import-name
-import MongodbMemoryServer from 'mongodb-memory-server';
-import * as mongoose from 'mongoose';
-import * as request from 'supertest';
-import app from '../app';
-// tslint:disable-next-line: import-name
-import User from '../users/user.model';
-// tslint:disable-next-line: import-name
-import Item from './animal.model';
+import chai from 'chai';
+import mongoose from 'mongoose';
+import AnimalsModel, { Gender, AnimalType } from './animals.model';
+const expect = chai.expect;
 
-describe('/api/items tests', () => {
-  const mongod = new MongodbMemoryServer();
-  let token: string = '';
+describe('Animals library', function () {
+  this.timeout(3000);
 
-  // Connect to mongoose mock, create a test user and get the access token
-  beforeAll(async () => {
-    const uri = await mongod.getConnectionString();
-    await mongoose.connect(uri, { useNewUrlParser: true });
-    const user = new User();
-    user.username = 'test';
-    user.setPassword('test-password');
-    await user.save();
-    const response = await request(app)
-      .post('/api/users/login')
-      .send({ email: 'test@email.com', password: 'test-password' });
-    token = response.body.token;
+  before(async () => {
+    await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
+      useNewUrlParser: true,
+      useFindAndModify: false,
+    });
   });
 
-  // Remove test user, disconnect and stop database
-  afterAll(async () => {
-    await User.remove({});
-    await mongoose.disconnect();
-    await mongod.stop();
-  });
-
-  // Create a sample item
   beforeEach(async () => {
-    // const item = new Item();
-    // item.name = 'item name';
-    // item.value = 1000;
-    // await item.save();
+    return AnimalsModel.deleteAll();
   });
 
-  // Remove sample items
-  afterEach(async () => {
-    // await Item.remove({});
+  after(async () => {
+    return AnimalsModel.disconnect();
   });
 
-  it('should get items', async () => {
-    // const response = await request(app)
-    //   .get('/api/items')
-    //   .set('Authorization', `Bearer ${token}`);
-    // expect(response.status).toBe(200);
-    // expect(response.body).toEqual([expect.objectContaining({ name: 'item name', value: 1000 })]);
-  });
+  it(
+    'animals.create() can create a animal given data with name, description, dob, and ' +
+    'gender properties. It returns a copy of the message with matching name, ' +
+    'description, dob, and gender properties and an id property.',
+    async () => {
+      const animal = {
+        name: 'Holly',
+        type: AnimalType.Cat,
+        description: 'Short haired domestic cat.',
+        dob: new Date(2003, 11, 5),
+        gender: Gender.Female,
+      };
 
-  it('should post items', async () => {
-    // const response = await request(app)
-    //   .post('/api/items')
-    //   .set('Authorization', `Bearer ${token}`)
-    //   .send({ name: 'new item', value: 2000 });
-    // expect(response.status).toBe(200);
-    // expect(response.body).toBe('Item saved!');
-  });
+      const result = await AnimalsModel.create(animal);
 
-  it('should catch errors when posting items', async () => {
-    // const response = await request(app)
-    //   .post('/api/items')
-    //   .set('Authorization', `Bearer ${token}`)
-    //   .send({});
-    // expect(response.status).toBe(400);
-  });
+      expect(result).to.be.an('object');
+      if (result == null) throw new Error('Result return null');
+      expect(result).to.have.property('name');
+      expect(result.name).to.equal(animal.name);
+      expect(result).to.have.property('description');
+      expect(result.description).to.equal(animal.description);
+      expect(result).to.have.property('dob');
+      expect(result.dob).to.equal(animal.dob);
+      expect(result).to.have.property('gender');
+      expect(result.gender).to.equal(animal.gender);
+      expect(result).to.have.property('id');
+    },
+  );
+
+  it(
+    'animals.get() reads a single animal created by animals.create() ' +
+    'using the id property returned by the latter.',
+    async () => {
+      const animal = {
+        name: 'Holly',
+        type: AnimalType.Cat,
+        description: 'Short haired domestic cat.',
+        dob: new Date(2003, 11, 5),
+        gender: Gender.Female,
+      };
+      const createResult = await AnimalsModel.create(animal);
+
+      const readResult = await AnimalsModel.get(createResult.id);
+
+      if (readResult == null) throw new Error('Result return null');
+      expect(readResult).to.have.property('name');
+      expect(readResult.name).to.equal(animal.name);
+      expect(readResult).to.have.property('description');
+      expect(readResult.description).to.equal(animal.description);
+      expect(readResult).to.have.property('dob');
+      expect(readResult.dob).to.deep.equal(animal.dob);
+      expect(readResult).to.have.property('gender');
+      expect(readResult.gender).to.equal(animal.gender);
+    },
+  );
+
+  it(
+    'animals.update() updates a single animal created by animal.create()' +
+    ' using the id property returned by the latter.',
+    async () => {
+      const animal1 = {
+        name: 'Holly',
+        type: AnimalType.Cat,
+        description: 'Short haired domestic cat.',
+        dob: new Date(2003, 11, 5),
+        gender: Gender.Female,
+      };
+      const animal2 = {
+        description : 'Loved black and white cat.',
+        dob : new Date(2006, 6, 28),
+      };
+      const createResult = await AnimalsModel.create(animal1);
+
+      const updateResult = await AnimalsModel.update(createResult.id, animal2);
+      expect(updateResult).to.be.an('object');
+      if (updateResult == null) throw new Error('Result return null');
+      expect(updateResult).to.have.property('id');
+
+      const readResult = await AnimalsModel.get(updateResult.id);
+      if (readResult == null) throw new Error('Result return null');
+      expect(readResult.description).to.equal(animal2.description);
+      expect(readResult.dob).to.deep.equal(animal2.dob);
+    },
+  );
+
+  it(
+    'animals.listAll() reads all anaimals created by animals.create()',
+    async () => {
+      const animal1 = {
+        name: 'Holly',
+        type: AnimalType.Cat,
+        description: 'Short haired domestic cat.',
+        dob: new Date(2003, 11, 5),
+        gender: Gender.Female,
+      };
+      const animal2 = {
+        name: 'Mya',
+        type: AnimalType.Dog,
+        description : 'Black dog raised by Welsh family.',
+        dob : new Date(2006, 6, 28),
+        gender : Gender.Female,
+      };
+      await AnimalsModel.create(animal1);
+      await AnimalsModel.create(animal2);
+
+      const result = await AnimalsModel.listAll();
+
+      expect(result.length).to.equal(2);
+      expect(result[0]).to.have.property('name');
+      expect(result[0].name).to.equal(animal1.name);
+      expect(result[0]).to.have.property('description');
+      expect(result[0].description).to.equal(animal1.description);
+      expect(result[0]).to.have.property('dob');
+      expect(result[0].dob).to.deep.equal(animal1.dob);
+      expect(result[0]).to.have.property('gender');
+      expect(result[0].gender).to.equal(animal1.gender);
+      expect(result[1]).to.have.property('name');
+      expect(result[1].name).to.equal(animal2.name);
+      expect(result[1]).to.have.property('description');
+      expect(result[1].description).to.equal(animal2.description);
+      expect(result[1]).to.have.property('dob');
+      expect(result[1].dob).to.deep.equal(animal2.dob);
+      expect(result[1]).to.have.property('gender');
+      expect(result[1].gender).to.equal(animal2.gender);
+    },
+  );
+
+  it(
+    'animals.listAllAvailable() reads all anaimals created by animals.create()',
+    async () => {
+      const animal1 = {
+        name: 'Holly',
+        type: AnimalType.Cat,
+        description: 'Short haired domestic cat.',
+        dob: new Date(2003, 11, 5),
+        gender: Gender.Female,
+      };
+      const animal2 = {
+        name: 'Mya',
+        type: AnimalType.Dog,
+        description : 'Black dog raised by Welsh family.',
+        dob : new Date(2006, 6, 28),
+        gender : Gender.Female,
+        adoptedBy: 'fakeUserId',
+      };
+      await AnimalsModel.create(animal1);
+      await AnimalsModel.create(animal2);
+
+      const result = await AnimalsModel.listAllAvailable();
+
+      expect(result.length).to.equal(1);
+      expect(result[0]).to.have.property('name');
+      expect(result[0].name).to.equal(animal1.name);
+      expect(result[0]).to.have.property('description');
+      expect(result[0].description).to.equal(animal1.description);
+      expect(result[0]).to.have.property('dob');
+      expect(result[0].dob).to.deep.equal(animal1.dob);
+      expect(result[0]).to.have.property('gender');
+      expect(result[0].gender).to.equal(animal1.gender);
+    },
+  );
 });

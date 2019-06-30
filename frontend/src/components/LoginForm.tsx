@@ -1,21 +1,21 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
 import FormInput from './FormInput';
-import { withAppContext, AppContextInterface } from '../AppContext';
+import { withAppContext, IAppContextInterface } from '../AppContext';
 import Session from '../helpers/Session';
 import API from '../helpers/API';
 
-interface Props {
+interface IProps {
   className: string;
-  AppContext?: AppContextInterface;
+  AppContext?: IAppContextInterface;
 }
 
-interface State {
+interface IState {
   username: string;
   password: string;
 }
 
-class LoginForm extends React.Component<Props, State> {
+class LoginForm extends React.Component<IProps, IState> {
   public render = () =>
     this.props.AppContext && (
       <div className={this.props.className}>
@@ -65,9 +65,9 @@ class LoginForm extends React.Component<Props, State> {
 
     const { username, password } = this.state;
     try {
-      const { token, expiry } = await API.users.login(username, password);
+      const { token, expiry, user } = await API.users.login(username, password);
       Session.set(token, expiry);
-      this.props.AppContext!.setUser(await API.users.profile());
+      this.props.AppContext!.setUser(user);
     } catch (error) {
       console.log(error);
       alert('Login failed. Please try with different username and password.');

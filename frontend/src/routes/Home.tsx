@@ -2,7 +2,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { withAppContext, AppContextInterface } from '../AppContext';
+import { withAppContext, IAppContextInterface } from '../AppContext';
 import { UserType } from 'dc2410-coursework-common';
 import Unauthorised from '../routes/Unauthorised';
 import AdoptionRequestsSection from '../components/AdoptionRequests/AdoptionRequestsSection';
@@ -11,7 +11,7 @@ import AdoptionRequestPersonalCard from '../components/AdoptionRequests/Adoption
 import AnimalSummarySection from '../components/Animal/AnimalSummarySection';
 import AnimalDetailsSection from '../components/Animal/AnimalDetailsSection';
 
-class Home extends React.Component<{ AppContext?: AppContextInterface }> {
+class Home extends React.Component<{ AppContext?: IAppContextInterface }> {
   public render() {
     if (this.props.AppContext && !this.props.AppContext.user) {
       return <Unauthorised />;

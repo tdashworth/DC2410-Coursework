@@ -1,9 +1,9 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
 import AnimalSummaryCard from './AnimalSummaryCard';
-import { Animal, Gender, AnimalType } from 'dc2410-coursework-common';
+import { IAnimal, Gender, AnimalType } from 'dc2410-coursework-common';
 
-const animals: Animal[] = [
+const animals: IAnimal[] = [
   {
     name: 'Holly',
     description: 'Loved black and white short haired cat.',
@@ -25,12 +25,12 @@ const animals: Animal[] = [
   },
 ];
 
-interface State {
-  animals: Animal[];
+interface IState {
+  animals: IAnimal[];
 }
 
-class AnimalSummarySection extends React.Component<{}, State> {
-  public state: State = {
+class AnimalSummarySection extends React.Component<{}, IState> {
+  public state: IState = {
     animals: [],
   };
 
