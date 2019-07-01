@@ -9,7 +9,7 @@ class NavBar extends React.Component<{ AppContext?: IAppContextInterface }> {
       <header>
         <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
           <div className="container">
-            <span className="navbar-brand mb-0 h1">Aston Animal Sanctuary</span>
+            <a className="navbar-brand mb-0 h1" href="/" style={{ textDecorationLine: 'none' }}>Aston Animal Sanctuary</a>
             🐶 🐱 🐦 🐷
             <div id="nav-right">
               {this.props.AppContext.user ? (
@@ -26,10 +26,10 @@ class NavBar extends React.Component<{ AppContext?: IAppContextInterface }> {
                   </button>
                 </form>
               ) : (
-                <span className="navbar-text text-light">
-                  Please log in below.
+                  <span className="navbar-text text-light">
+                    Please log in below.
                 </span>
-              )}
+                )}
             </div>
           </div>
         </nav>

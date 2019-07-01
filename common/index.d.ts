@@ -52,12 +52,10 @@ export interface IAdoptionRequest {
 }
 export interface IAdoptionRequestApi {
     create: (request: IAdoptionRequest) => Promise<IAdoptionRequest>;
-    get: (id: IAdoptionRequest['id']) => Promise<IAdoptionRequest | null>;
-    approve: (id: IAdoptionRequest['id']) => IAdoptionRequest | null;
-    deny: (id: IAdoptionRequest['id']) => IAdoptionRequest | null;
-    listAll: () => IAdoptionRequest[];
-    listAllMine: () => IAdoptionRequest[];
-    listAnimals: (id: IAnimal['id']) => IAdoptionRequest[] | [];
+    approve: (id: IAdoptionRequest['id']) => Promise<IAdoptionRequest | null>;
+    deny: (id: IAdoptionRequest['id']) => Promise<IAdoptionRequest | null>;
+    listAll: () => Promise<IAdoptionRequest[]>;
+    forAnimal: (id: IAnimal['id']) => Promise<IAdoptionRequest[]>;
 }
 export interface IAuthToken {
     id: any;

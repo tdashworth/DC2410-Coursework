@@ -12,7 +12,7 @@ export const UserSchema = new mongoose.Schema(
     passwordHash: { type: String, required: true },
     salt: { type: String, required: true },
     displayName: { type: String, required: true },
-    type: { type: String, required: true },
+    type: { type: UserType, required: true },
   },
   { strict: 'throw' },
 );

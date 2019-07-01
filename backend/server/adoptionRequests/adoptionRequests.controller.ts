@@ -1,30 +1,44 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-// import * as expressJwt from 'express-jwt';
-
-import adoptionRequestsModel from './adoptionRequests.model';
+// tslint:disable-next-line: import-name
+import AdoptionRequests from './adoptionRequests.model';
+import { UserType } from 'dc2410-coursework-common';
+import Auth from '../Auth';
 
 const router = express.Router();
+router.use(bodyParser.json());
 
-// router.use(bodyParser.json());
-// router.use(expressJwt({ secret: process.env.AUTH_SHARED_SECRET! }));
+router.get('/', Auth.verifyToken(), async (req, res) => {
+  switch (req.params.user.type) {
+    case UserType.External:
+      return res.json(await AdoptionRequests.listAllMine(req.params.user.id));
+    case UserType.Internal:
+      return res.json(await AdoptionRequests.listAll());
+  }
+});
 
-// router.get('/', async (req, res) => res.json(await animalsModel.listAll()));
-
-// router.get('/available', async (req, res) =>
-//   res.json(await animalsModel.listAllAvailable()),
-// );
-
-router.post('/', bodyParser.json(), async (req, res) =>
-  res.json(await adoptionRequestsModel.create(req.body)),
+router.get(
+  '/animal/:id',
+  Auth.verifyToken(),
+  async (req, res) => res.json(await AdoptionRequests.listAllForAnimal(req.params.id)),
 );
 
-// router.get('/:id', async (req, res) =>
-//   res.json(await animalsModel.get(req.params.id)),
-// );
+router.post(
+  '/',
+  Auth.verifyToken(),
+  async (req, res) => res.json(await AdoptionRequests.create(req.body)),
+);
 
-// router.put('/:id', async (req, res) =>
-//   res.json(await animalsModel.update(req.params.id, req.body)),
-// );
+router.post(
+  '/:id/approve',
+  Auth.verifyToken(UserType.Internal),
+  async (req, res) => res.json(await AdoptionRequests.approve(req.params.id)),
+);
+
+router.post(
+  '/:id/deny',
+  Auth.verifyToken(UserType.Internal),
+  async (req, res) => res.json(await AdoptionRequests.deny(req.params.id)),
+);
 
 export default router;

@@ -20,7 +20,7 @@ interface IState {
 
 class App extends React.Component<{}, IState> {
   public state: IState = {
-    setUser: (user) => this.setState({ user }),
+    setUser: user => this.setState({ user }),
     wipeUser: () => this.setState({ user: undefined }),
   };
 

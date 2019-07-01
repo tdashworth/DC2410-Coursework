@@ -1,4 +1,4 @@
-import { IUserApi, IUser, IAuthResponse } from 'dc2410-coursework-common';
+import { IUserApi, IUser, IAdoptionRequestApi, IAdoptionRequest, IAnimal } from 'dc2410-coursework-common';
 import Session from './Session';
 
 const jsonHeaders = {
@@ -36,16 +36,40 @@ export default class API {
     login: (username, password) => postJSON(
       '/api/users/login',
       { username, password },
-    ) as Promise<IAuthResponse>,
+    ),
 
     profile: () => getJSON(
       '/api/users/profile',
       Session.getAuthHeaders(),
-    ) as Promise<IUser>,
+    ),
 
     register: (user: IUser) => postJSON(
       '/api/users/register',
       user,
-    ) as Promise<IUser>,
+    ),
+  };
+
+  public static requests: IAdoptionRequestApi = {
+    create: (request: IAdoptionRequest) => postJSON(
+      '/api/requests/',
+      request,
+      Session.getAuthHeaders(),
+    ),
+    listAll: () => getJSON(
+      '/api/requests/',
+      Session.getAuthHeaders(),
+    ),
+    forAnimal: (id: IAnimal['id']) => getJSON(
+      `/api/requests/animal/${id}`,
+      Session.getAuthHeaders(),
+    ),
+    approve: (id: IAdoptionRequest['id']) => getJSON(
+      `/api/requests/${id}/approve`,
+      Session.getAuthHeaders(),
+    ),
+    deny: (id: IAdoptionRequest['id']) => getJSON(
+      `/api/requests/${id}/deny`,
+      Session.getAuthHeaders(),
+    ),
   };
 }

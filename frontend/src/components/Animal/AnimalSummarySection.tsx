@@ -45,7 +45,7 @@ class AnimalSummarySection extends React.Component<{}, IState> {
 
       <this.FilterAndSort />
 
-      {this.state.animals.map((animal) => (
+      {this.state.animals.map(animal => (
         <AnimalSummaryCard key={animal.id!} animal={animal} />
       ))}
     </section>

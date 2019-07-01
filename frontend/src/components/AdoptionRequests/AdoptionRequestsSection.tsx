@@ -3,50 +3,19 @@ import React from 'react';
 import AdoptionRequestCard from './AdoptionRequestCard';
 import Emoji from '../Emoji';
 import {
-  Gender,
-  AnimalType,
   IAnimal,
   IAdoptionRequest,
   AdoptionRequestStatus,
+  UserType,
 } from 'dc2410-coursework-common';
-
-const animal1: IAnimal = {
-  name: 'Holly',
-  description: 'Loved black and white short haired cat.',
-  gender: Gender.Female,
-  dob: new Date(2006, 11, 5),
-  type: AnimalType.Cat,
-  picture:
-    'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
-};
-
-const allRequests: IAdoptionRequest[] = [
-  {
-    animal: animal1,
-    user: { username: 'tom', displayName: 'Tom', hash: '' },
-    status: AdoptionRequestStatus.Pending,
-  },
-  {
-    animal: animal1,
-    user: { username: 'tom', displayName: 'Tom', hash: '' },
-    status: AdoptionRequestStatus.Approved,
-  },
-  {
-    animal: animal1,
-    user: { username: 'tom', displayName: 'Tom', hash: '' },
-    status: AdoptionRequestStatus.Denied,
-  },
-  {
-    animal: animal1,
-    user: { username: 'tom', displayName: 'Tom', hash: '' },
-    status: AdoptionRequestStatus.Approved,
-  },
-];
+import { IAppContextInterface, withAppContext } from '../../AppContext';
+import API from '../../helpers/API';
+import AdoptionRequestInternalCard from './AdoptionRequestInternalCard';
+import AdoptionRequestPersonalCard from './AdoptionRequestPersonalCard';
+import AdoptionRequestMakeCard from './AdoptionRequestMakeCard';
 
 interface IProps {
-  title: string;
-  emptyMessge: string;
-  cardClass: typeof AdoptionRequestCard;
+  AppContext?: IAppContextInterface;
   animal?: IAnimal;
 }
 
@@ -55,31 +24,69 @@ interface IState {
   showPending: boolean;
   showApproved: boolean;
   showDenied: boolean;
+  config: {
+    title: string;
+    emptyMessage: string;
+    cardClass: typeof AdoptionRequestCard;
+  };
 }
 
 class AdoptionRequestsSection extends React.Component<IProps, IState> {
-  public state: IState = {
-    allRequests: [],
-    showPending: true,
-    showApproved: false,
-    showDenied: false,
-  };
+  public constructor(props: IProps) {
+    super(props);
 
-  public componentDidMount = () => this.setState({ allRequests });
+    const internalUserConfig = {
+      title: 'Adoption Requests',
+      emptyMessage: 'No adoption requests have been made.',
+      cardClass: AdoptionRequestInternalCard,
+    };
+
+    const externalUserConfig = {
+      title: 'Your Adoption Requests',
+      emptyMessage: "You've made no adoption requests.",
+      cardClass: AdoptionRequestPersonalCard,
+    };
+
+    this.state = {
+      allRequests: [],
+      showPending: true,
+      showApproved: false,
+      showDenied: false,
+      config: props.AppContext!.user!.type === UserType.Internal ? internalUserConfig : externalUserConfig,
+    };
+  }
+
+  public async componentDidMount() {
+    this.setState({ allRequests: await (this.props.animal ? API.requests.forAnimal(this.props.animal.id) : API.requests.listAll()) });
+  }
 
   public render = () => {
-    // Show empty message when there are not requests.
-    if (this.state.allRequests.length === 0) return <this.EmptyMessage />;
+    if (this.state.allRequests.length === 0) return (<this.Template><p>{this.state.config.emptyMessage}</p></ this.Template>);
 
     return (
-      <section className="col-md-12 col-lg-4" id="animal-requests">
-        <h4>{this.props.title}</h4>
+      <this.Template>
         <this.RequestFilters />
         <this.RequestCards />
         <this.ViewAllButton />
-      </section>
+      </ this.Template>
     );
   }
+
+  // tslint:disable-next-line: variable-name
+  private Template = (props: { children?: React.ReactNode }) => (
+    <section className="col-md-12 col-lg-4" id="animal-requests">
+      <h4>{this.state.config.title}</h4>
+
+      {(
+        this.props.animal &&
+        this.props.AppContext!.user!.type === UserType.External
+      ) ? (
+          <AdoptionRequestMakeCard animal={this.props.animal} />
+        ) : null}
+
+      {props.children}
+    </section>
+  )
 
   private getFilterRequests = (): IAdoptionRequest[] => {
     const ARS = AdoptionRequestStatus;
@@ -97,14 +104,6 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       )
       .sort((request1, request2) => request1.status! - request2.status!);
   }
-
-  // tslint:disable-next-line: variable-name
-  private EmptyMessage = () => (
-    <section className="col-md-12 col-lg-4" id="animal-requests">
-      <h4>{this.props.title}}</h4>
-      <p>{this.props.emptyMessge}</p>
-    </section>
-  )
 
   // tslint:disable-next-line: variable-name
   private RequestFilters = () => (
@@ -167,8 +166,8 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
 
     return (
       <div className="list-group mb-3">
-        {visibleRequests.map((request) => (
-          <this.props.cardClass key={request.id!} request={request} />
+        {visibleRequests.map(request => (
+          <this.state.config.cardClass key={request.id!} request={request} />
         ))}
       </div>
     );
@@ -197,4 +196,4 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       ) : null
 }
 
-export default AdoptionRequestsSection;
+export default withAppContext(AdoptionRequestsSection);
