@@ -1,7 +1,7 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
 
-interface Props
+interface IProps
   extends React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -13,7 +13,7 @@ interface Props
   type: string;
 }
 
-class FormInput extends React.Component<Props> {
+class FormInput extends React.Component<IProps> {
   public render = () => (
     <div className={this.props.className}>
       <label className="sr-only" htmlFor={this.props.id}>

@@ -49,24 +49,24 @@ const Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
 
 export default class Animals {
 
-  static create(newAnimal: IAnimal): Promise<IAnimalModel> {
+  public static create(newAnimal: IAnimal): Promise<IAnimalModel> {
     return new Animal(newAnimal).save();
   }
 
-  static get(id: any): Promise<IAnimalModel | null> {
+  public static get(id: any): Promise<IAnimalModel | null> {
     if (!(typeof(id) === 'string')) return Promise.resolve(null);
     return Animal.findById(id).exec();
   }
 
-  static listAll(): Promise<IAnimalModel[]> {
+  public static listAll(): Promise<IAnimalModel[]> {
     return Animal.find({}).exec();
   }
 
-  static listAllAvailable(): Promise<IAnimalModel[]> {
+  public static listAllAvailable(): Promise<IAnimalModel[]> {
     return Animal.find({ adoptedBy: null }).exec();
   }
 
-  static async update(id: any, updatedAnimal: any) {
+  public static async update(id: any, updatedAnimal: any) {
     if (!(typeof(id) === 'string')) return Promise.resolve(null);
     const orginal = await this.get(id);
     if (orginal !== null && orginal.adoptedBy === null) {
@@ -76,15 +76,15 @@ export default class Animals {
     return Animal.findOneAndUpdate(id, updatedAnimal).exec();
   }
 
-  static delete(id: any) {
+  public static delete(id: any) {
     return Animal.findByIdAndDelete(id).exec();
   }
 
-  static deleteAll() {
+  public static deleteAll() {
     return Animal.deleteMany({}).exec();
   }
 
-  static disconnect() {
+  public static disconnect() {
     return mongoose.disconnect();
   }
 }

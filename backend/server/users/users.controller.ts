@@ -18,7 +18,7 @@ router.post('/login', bodyParser.json(), async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/register', bodyParser.json(), async (req, res) => {
   res.json(await Users.create(req.body));
 });
 

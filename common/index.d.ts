@@ -11,12 +11,9 @@ export interface IUser {
     type?: UserType;
 }
 export interface IUserApi {
-    login: (username: string, password: string) => Promise<{
-        token: string;
-        expiry: string;
-        user: IUser;
-    }>;
+    login: (username: string, password: string) => Promise<IAuthResponse>;
     profile: () => Promise<IUser>;
+    register: (user: IUser) => Promise<IUser>;
 }
 export declare enum AnimalType {
     Cat = 0,
@@ -62,8 +59,13 @@ export interface IAdoptionRequestApi {
     listAllMine: () => IAdoptionRequest[];
     listAnimals: (id: IAnimal['id']) => IAdoptionRequest[] | [];
 }
-export interface AuthToken {
+export interface IAuthToken {
     id: any;
     username: string;
-    expiry: number;
+    exp: number;
+}
+export interface IAuthResponse {
+    token: string;
+    expiry: Date;
+    user: IUser;
 }

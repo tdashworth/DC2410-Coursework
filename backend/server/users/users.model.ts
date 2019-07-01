@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import Auth from '../Auth';
-import { IUser, UserType } from 'dc2410-coursework-common';
+import { IUser, UserType, IAuthResponse } from 'dc2410-coursework-common';
 
 // tslint:disable-next-line:variable-name
 export const UserSchema = new mongoose.Schema(
@@ -16,9 +16,9 @@ export const UserSchema = new mongoose.Schema(
   { strict: 'throw' },
 );
 
-export interface IUserModel extends IUser, mongoose.Document {}
+export interface IUserModel extends IUser, mongoose.Document { }
 
-UserSchema.pre('save', async function(this: IUserModel) {
+UserSchema.pre('save', async function (this: IUserModel) {
   this.username = sanitizeHtml(this.username);
   this.displayName = sanitizeHtml(this.displayName);
   this.type = this.type || UserType.External;
@@ -56,15 +56,15 @@ export default class Users {
     let passwordSet = {};
     if (updatedUser.passwordHash) {
       const salt = Users.generateSalt();
-      const password = updatedUser.passwordHash
+      const passwordHash = updatedUser.passwordHash
         ? Users.hashPassword(updatedUser.passwordHash, salt)
         : {};
-      passwordSet = { password, salt };
+      passwordSet = { passwordHash, salt };
     }
-    return User.findOneAndUpdate(id, { ...updatedUser, ...passwordSet }).exec();
+    return User.updateOne({ id }, { ...updatedUser, ...passwordSet }).exec();
   }
 
-  public static async login(username: string, password: string) {
+  public static async login(username: string, password: string): Promise<IAuthResponse> {
     const user = await Users.getByUsername(username);
 
     if (user === null) throw new Error(`User '${username}' does not exist.`);
@@ -73,7 +73,12 @@ export default class Users {
       throw new Error('Password is incorrect.');
     }
 
-    return { ...Auth.generateToken(user as IUser), user };
+    const { token, expiry } = Auth.generateToken(user as IUser);
+    return {
+      token,
+      user,
+      expiry,
+    };
   }
 
   public static hashPassword(password: string, salt: string) {

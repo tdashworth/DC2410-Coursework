@@ -1,8 +1,8 @@
 class Session {
   // Set the session in the local storage
-  public static set = (token: string, expiry: string): void => {
+  public static set = (token: string, expiry: Date): void => {
     localStorage.setItem('token', token);
-    localStorage.setItem('expiry', expiry);
+    localStorage.setItem('expiry', expiry.toString());
   };
 
   // Clear the session from the local storage

@@ -122,7 +122,7 @@ describe('Users library', function () {
 
       const result = await Users.listAll();
       expect(result).to.be.an('array');
-      expect(result).to.be.empty;
+      expect(result.length).to.equal(0);
     },
   );
 
@@ -159,7 +159,7 @@ describe('Users library', function () {
 
       const readResult = await Users.get(fakeId);
 
-      expect(readResult).to.be.null;
+      expect(readResult).to.equal(null);
     },
   );
 

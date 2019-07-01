@@ -1,12 +1,12 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
 
-interface Props {
+interface IProps {
   symbol: string;
   label?: string;
 }
 
-class Emoji extends React.Component<Props> {
+class Emoji extends React.Component<IProps> {
   public render = () => (
     <span
       className="emoji"

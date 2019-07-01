@@ -1,4 +1,4 @@
-import { IUserApi, IUser } from 'dc2410-coursework-common';
+import { IUserApi, IUser, IAuthResponse } from 'dc2410-coursework-common';
 import Session from './Session';
 
 const jsonHeaders = {
@@ -22,15 +22,16 @@ export default class API {
     login: (username, password) => postJSON(
       '/api/users/login', 
       { username, password }
-    ) as Promise<{
-        token: string;
-        expiry: string;
-        user: IUser;
-      }>,
+    ) as Promise<IAuthResponse>,
 
     profile: () => getJSON(
       '/api/users/profile',
       Session.getAuthHeaders()
-    ) as Promise<IUser>
+    ) as Promise<IUser>,
+
+    register: (user: IUser) => postJSON(
+      '/api/users/register',
+      user
+    ) as Promise<IUser>,
   };
 }
