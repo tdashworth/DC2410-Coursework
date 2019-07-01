@@ -35,7 +35,7 @@ class Home extends React.Component<{ AppContext?: IAppContextInterface }> {
         {/* TODO: 404 Page not found? */}
       </Switch>
     </Router>
-  );
+  )
 
   private side = () =>
     this.props.AppContext!.user!.type === UserType.Internal ? (
@@ -52,7 +52,7 @@ class Home extends React.Component<{ AppContext?: IAppContextInterface }> {
         emptyMessge="You haven't made any adoption requests yet."
         cardClass={AdoptionRequestPersonalCard}
       />
-    );
+    )
 }
 
 export default withAppContext(Home);

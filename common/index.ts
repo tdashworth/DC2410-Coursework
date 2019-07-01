@@ -73,7 +73,7 @@ export interface IAuthToken {
 }
 
 export interface IAuthResponse {
-  token: string,
-  expiry: Date,
-  user: IUser,
+  token: string;
+  expiry: Date;
+  user: IUser;
 }

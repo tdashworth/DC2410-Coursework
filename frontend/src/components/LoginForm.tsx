@@ -21,7 +21,7 @@ class LoginForm extends React.Component<IProps, IState> {
     username: '',
     password: '',
     isRequesting: false,
-  }
+  };
 
   public render = () =>
     this.props.AppContext && (
@@ -59,7 +59,7 @@ class LoginForm extends React.Component<IProps, IState> {
               <div className="col-12">
                 <button
                   type="submit"
-                  className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? "progress-bar-striped progress-bar-animated" : ""}`} >
+                  className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? 'progress-bar-striped progress-bar-animated' : ''}`} >
                     Log in
                 </button>
               </div>

@@ -26,7 +26,7 @@ class RegisterForm extends React.Component<IProps, IState> {
     password: '',
     passwordConfirmation: '',
     isRequesting: false,
-  }
+  };
 
   public render = () => (
     <div className={this.props.className}>
@@ -83,9 +83,9 @@ class RegisterForm extends React.Component<IProps, IState> {
           </div>
           <div className="row">
             <div className="col-12">
-              <button 
+              <button
               type="submit"
-              className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? "progress-bar-striped progress-bar-animated" : ""}`} >
+              className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? 'progress-bar-striped progress-bar-animated' : ''}`} >
                 Create & log in
               </button>
             </div>
@@ -101,8 +101,8 @@ class RegisterForm extends React.Component<IProps, IState> {
     try {
       this.setState({ isRequesting: true });
       if (this.state.password !== this.state.passwordConfirmation) throw new Error('Passwords are not the same.');
-      
-      await API.users.register({ 
+
+      await API.users.register({
         username: this.state.username,
         displayName: this.state.displayName,
         passwordHash: this.state.password,

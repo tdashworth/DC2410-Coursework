@@ -49,7 +49,7 @@ class AnimalSummarySection extends React.Component<{}, IState> {
         <AnimalSummaryCard key={animal.id!} animal={animal} />
       ))}
     </section>
-  );
+  )
 
   // tslint:disable-next-line: variable-name
   private FilterAndSort = () => (
@@ -91,7 +91,7 @@ class AnimalSummarySection extends React.Component<{}, IState> {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
 export default AnimalSummarySection;

@@ -34,9 +34,9 @@ class Auth {
         }
 
         if (!verify(authorization.substring(7), process.env.AUTH_SHARED_SECRET!)) {
-          throw new Error('Token not signed by this server.')
+          throw new Error('Token not signed by this server.');
         }
-        
+
         const token = Auth.decodeToken(authorization.substring(7));
         if (!token) throw new Error('Token not parsable.');
         if (new Date(token.exp) > new Date()) {
@@ -52,7 +52,7 @@ class Auth {
         });
 
       } catch (e) {
-        console.log(e)
+        console.log(e);
         return response.sendStatus(403);
       }
     };

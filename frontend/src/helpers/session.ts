@@ -3,13 +3,13 @@ class Session {
   public static set = (token: string, expiry: Date): void => {
     localStorage.setItem('token', token);
     localStorage.setItem('expiry', expiry.toString());
-  };
+  }
 
   // Clear the session from the local storage
   public static clear = (): void => {
     localStorage.removeItem('token');
     localStorage.removeItem('expiry');
-  };
+  }
 
   // Checks if the session is valid (locally) according to the expiration time
   public static isValid = (): boolean => {
@@ -18,12 +18,12 @@ class Session {
       return +new Date(expiry) > +new Date();
     }
     return false;
-  };
+  }
 
   // Creates the authorization header using the bearer token
   public static getAuthHeaders = () => ({
     Authorization: `Bearer ${localStorage.getItem('token')}`,
-  });
+  })
 }
 
 export default Session;

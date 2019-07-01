@@ -28,7 +28,7 @@ class App extends React.Component<{}, IState> {
     if (Session.isValid() && !this.state.user) {
       this.setState({ user: await API.users.profile() });
     }
-  };
+  }
 
   public render = () => {
     const context = {
@@ -43,7 +43,7 @@ class App extends React.Component<{}, IState> {
         <Home />
       </AppContextProvider>
     );
-  };
+  }
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

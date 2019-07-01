@@ -79,7 +79,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         <this.ViewAllButton />
       </section>
     );
-  };
+  }
 
   private getFilterRequests = (): IAdoptionRequest[] => {
     const ARS = AdoptionRequestStatus;
@@ -93,11 +93,10 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
 
     return this.state.allRequests
       .filter(
-        (request) =>
-          showApproved(request) || showDenied(request) || showPending(request),
+        req => showApproved(req) || showDenied(req) || showPending(req),
       )
       .sort((request1, request2) => request1.status! - request2.status!);
-  };
+  }
 
   // tslint:disable-next-line: variable-name
   private EmptyMessage = () => (
@@ -105,7 +104,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       <h4>{this.props.title}}</h4>
       <p>{this.props.emptyMessge}</p>
     </section>
-  );
+  )
 
   // tslint:disable-next-line: variable-name
   private RequestFilters = () => (
@@ -119,15 +118,15 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         htmlFor="filter-requests-pending"
         className={`form-control d-flex justify-content-around ${
           !this.state.showPending ? 'bg-secondary' : ''
-        }`}
+          }`}
       >
         <Emoji symbol="⏳" />
       </label>
       <label
-        htmlFor="filter-requests-oved"
+        htmlFor="filter-requests-approved"
         className={`form-control d-flex justify-content-around ${
           !this.state.showApproved ? 'bg-secondary' : ''
-        }`}
+          }`}
       >
         <Emoji symbol="✔" />
       </label>
@@ -135,7 +134,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         htmlFor="filter-requests-denied"
         className={`form-control d-flex justify-content-around ${
           !this.state.showDenied ? 'bg-secondary' : ''
-        }`}
+          }`}
       >
         <Emoji symbol="❌" />
       </label>
@@ -146,7 +145,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         onChange={() => this.setState({ showPending: !this.state.showPending })}
       />
       <input
-        id="filter-requests-oved"
+        id="filter-requests-approved"
         type="checkbox"
         className="d-none"
         onChange={() =>
@@ -160,7 +159,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         onChange={() => this.setState({ showDenied: !this.state.showDenied })}
       />
     </div>
-  );
+  )
 
   // tslint:disable-next-line: variable-name
   private RequestCards = () => {
@@ -173,7 +172,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         ))}
       </div>
     );
-  };
+  }
 
   // tslint:disable-next-line: variable-name
   private ViewAllButton = () =>
@@ -182,20 +181,20 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       this.state.showDenied &&
       this.state.showPending
     ) ? (
-      <button
-        type="button"
-        className="btn btn-primary mb-3"
-        onClick={() =>
-          this.setState({
-            showApproved: true,
-            showDenied: true,
-            showPending: true,
-          })
-        }
-      >
-        View all requests
+        <button
+          type="button"
+          className="btn btn-primary mb-3"
+          onClick={() =>
+            this.setState({
+              showApproved: true,
+              showDenied: true,
+              showPending: true,
+            })
+          }
+        >
+          View all requests
       </button>
-    ) : null;
+      ) : null
 }
 
 export default AdoptionRequestsSection;

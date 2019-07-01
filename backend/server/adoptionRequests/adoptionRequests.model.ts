@@ -25,7 +25,7 @@ const AdoptionRequestModel = model<IAdoptionRequestModel>(
 
 class AdoptionRequests {
   public static create = (request: IAdoptionRequest) =>
-    new AdoptionRequestModel(request).save();
+    new AdoptionRequestModel(request).save()
 
   public static get(id: any): Promise<IAdoptionRequestModel | null> {
     if (typeof id !== 'string') return Promise.resolve(null);
