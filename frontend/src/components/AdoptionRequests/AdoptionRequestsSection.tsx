@@ -113,52 +113,49 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
           Filter By
         </span>
       </div>
-      <label
-        htmlFor="filter-requests-pending"
-        className={`form-control d-flex justify-content-around ${
-          !this.state.showPending ? 'bg-secondary' : ''
-          }`}
-      >
-        <Emoji symbol="⏳" />
-      </label>
-      <label
-        htmlFor="filter-requests-approved"
-        className={`form-control d-flex justify-content-around ${
-          !this.state.showApproved ? 'bg-secondary' : ''
-          }`}
-      >
-        <Emoji symbol="✔" />
-      </label>
-      <label
-        htmlFor="filter-requests-denied"
-        className={`form-control d-flex justify-content-around ${
-          !this.state.showDenied ? 'bg-secondary' : ''
-          }`}
-      >
-        <Emoji symbol="❌" />
-      </label>
-      <input
+      <this.FilterButton
         id="filter-requests-pending"
-        type="checkbox"
-        className="d-none"
+        emoji="⏳"
+        isActive={this.state.showPending}
         onChange={() => this.setState({ showPending: !this.state.showPending })}
       />
-      <input
+      <this.FilterButton
         id="filter-requests-approved"
-        type="checkbox"
-        className="d-none"
-        onChange={() =>
-          this.setState({ showApproved: !this.state.showApproved })
-        }
+        emoji="✔"
+        isActive={this.state.showApproved}
+        onChange={() => this.setState({ showApproved: !this.state.showApproved })}
       />
-      <input
+      <this.FilterButton
         id="filter-requests-denied"
-        type="checkbox"
-        className="d-none"
+        emoji="❌"
+        isActive={this.state.showDenied}
         onChange={() => this.setState({ showDenied: !this.state.showDenied })}
       />
     </div>
   )
+
+  // tslint:disable-next-line: variable-name
+  private FilterButton = (props: {
+    id: string;
+    emoji: string;
+    isActive: boolean;
+    onChange: () => void;
+  }) => (
+      <div>
+        <label
+          htmlFor={props.id}
+          className={`form-control d-flex justify-content-around ${!props.isActive ? 'bg-secondary' : ''}`}
+        >
+          <Emoji symbol={props.emoji} />
+        </label>
+        <input
+          id={props.id}
+          type="checkbox"
+          className="d-none"
+          onChange={props.onChange}
+        />
+      </div>
+    )
 
   // tslint:disable-next-line: variable-name
   private RequestCards = () => {
