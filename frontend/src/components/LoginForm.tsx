@@ -13,9 +13,16 @@ interface IProps {
 interface IState {
   username: string;
   password: string;
+  isRequesting: boolean;
 }
 
 class LoginForm extends React.Component<IProps, IState> {
+  public state: IState = {
+    username: '',
+    password: '',
+    isRequesting: false,
+  }
+
   public render = () =>
     this.props.AppContext && (
       <div className={this.props.className}>
@@ -50,8 +57,10 @@ class LoginForm extends React.Component<IProps, IState> {
             </div>
             <div className="row">
               <div className="col-12">
-                <button type="submit" className="btn btn-primary w-100 mb-2">
-                  Log in
+                <button
+                  type="submit"
+                  className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? "progress-bar-striped progress-bar-animated" : ""}`} >
+                    Log in
                 </button>
               </div>
             </div>
@@ -65,12 +74,14 @@ class LoginForm extends React.Component<IProps, IState> {
 
     const { username, password } = this.state;
     try {
+      this.setState({ isRequesting: true });
       const { token, expiry, user } = await API.users.login(username, password);
       Session.set(token, expiry);
       this.props.AppContext!.setUser(user);
     } catch (error) {
-      console.log(error);
       alert('Login failed. Please try with different username and password.');
+    } finally {
+      this.setState({ isRequesting: false });
     }
   }
 }

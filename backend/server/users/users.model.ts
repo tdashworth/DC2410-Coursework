@@ -3,6 +3,7 @@ import sanitizeHtml from 'sanitize-html';
 import { pbkdf2Sync, randomBytes } from 'crypto';
 import Auth from '../Auth';
 import { IUser, UserType, IAuthResponse } from 'dc2410-coursework-common';
+import { MongoError } from 'mongodb';
 
 // tslint:disable-next-line:variable-name
 export const UserSchema = new mongoose.Schema(
@@ -28,10 +29,18 @@ UserSchema.pre('save', async function (this: IUserModel) {
 const User = mongoose.model<IUserModel>('Users', UserSchema);
 
 export default class Users {
-  public static async create(newUser: IUser): Promise<IUserModel> {
-    const salt = Users.generateSalt();
-    const passwordHash = Users.hashPassword(newUser.passwordHash, salt);
-    return new User({ ...newUser, passwordHash, salt }).save();
+  public static async create(newUser: IUser): Promise<IUserModel | undefined> {
+    try {
+      const salt = Users.generateSalt();
+      const passwordHash = Users.hashPassword(newUser.passwordHash, salt);
+      const user = await new User({ ...newUser, passwordHash, salt }).save();
+      return user;
+    } catch (e) {
+      switch ((e as MongoError).code) {
+        case 11000:
+          throw new Error('Username already exists.');
+      }
+    }
   }
 
   public static get(id: string): Promise<IUserModel | null> {

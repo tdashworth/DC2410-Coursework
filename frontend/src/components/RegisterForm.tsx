@@ -16,9 +16,18 @@ interface IState {
   displayName: string;
   password: string;
   passwordConfirmation: string;
+  isRequesting: boolean;
 }
 
 class RegisterForm extends React.Component<IProps, IState> {
+  public state: IState = {
+    username: '',
+    displayName: '',
+    password: '',
+    passwordConfirmation: '',
+    isRequesting: false,
+  }
+
   public render = () => (
     <div className={this.props.className}>
       <div className="card" id="register-form">
@@ -74,7 +83,9 @@ class RegisterForm extends React.Component<IProps, IState> {
           </div>
           <div className="row">
             <div className="col-12">
-              <button type="submit" className="btn btn-primary w-100 mb-2">
+              <button 
+              type="submit"
+              className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? "progress-bar-striped progress-bar-animated" : ""}`} >
                 Create & log in
               </button>
             </div>
@@ -88,8 +99,9 @@ class RegisterForm extends React.Component<IProps, IState> {
     event.preventDefault();
 
     try {
+      this.setState({ isRequesting: true });
       if (this.state.password !== this.state.passwordConfirmation) throw new Error('Passwords are not the same.');
-
+      
       await API.users.register({ 
         username: this.state.username,
         displayName: this.state.displayName,
@@ -102,6 +114,8 @@ class RegisterForm extends React.Component<IProps, IState> {
       this.props.AppContext!.setUser(user);
     } catch (e) {
       alert(e.message);
+    } finally {
+      this.setState({ isRequesting: false });
     }
   }
 }

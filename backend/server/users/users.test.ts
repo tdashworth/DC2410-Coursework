@@ -60,6 +60,7 @@ describe('Users library', function () {
         displayName: 'Alice',
       };
       const createResult = await Users.create(user);
+      if (createResult == null) throw new Error('Result return null');
 
       const readResult = await Users.get(createResult._id);
 
