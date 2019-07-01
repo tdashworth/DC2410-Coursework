@@ -76,7 +76,7 @@ class LoginForm extends React.Component<IProps, IState> {
     try {
       this.setState({ isRequesting: true });
       const { token, expiry, user } = await API.users.login(username, password);
-      Session.set(token, expiry);
+      Session.set(token, expiry, user);
       this.props.AppContext!.setUser(user);
     } catch (error) {
       alert('Login failed. Please try with different username and password.');

@@ -8,7 +8,6 @@ import { AppContextProvider } from './AppContext';
 import NavBar from './components/NavBar';
 import Home from './routes/Home';
 import Session from './helpers/Session';
-import API from './helpers/API';
 
 import { IUser } from 'dc2410-coursework-common';
 
@@ -26,7 +25,7 @@ class App extends React.Component<{}, IState> {
 
   public componentDidMount = async () => {
     if (Session.isValid() && !this.state.user) {
-      this.setState({ user: await API.users.profile() });
+      this.setState({ user: Session.getUser() });
     }
   }
 

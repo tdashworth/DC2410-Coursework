@@ -110,7 +110,7 @@ class RegisterForm extends React.Component<IProps, IState> {
       });
 
       const { token, expiry, user } = await API.users.login(this.state.username, this.state.password);
-      Session.set(token, expiry);
+      Session.set(token, expiry, user);
       this.props.AppContext!.setUser(user);
     } catch (e) {
       alert(e.message);
