@@ -1,9 +1,10 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
-import { IAnimal, Gender, AnimalType } from 'dc2410-coursework-common';
+import { IAnimal } from 'dc2410-coursework-common';
 import { IAppContextInterface, withAppContext } from '../AppContext';
 import AnimalDetailsSection from '../components/Animal/AnimalDetailsSection';
 import AdoptionRequestsSection from '../components/AdoptionRequests/AdoptionRequestsSection';
+import API from '../helpers/API';
 
 interface IProps {
   match: { params: { id: string; }; };
@@ -11,36 +12,31 @@ interface IProps {
 }
 
 interface IState {
-  animal: IAnimal;
+  animal?: IAnimal;
 }
 
 class Animal extends React.Component<IProps, IState> {
-  public constructor(props: IProps) {
-    super(props);
+  public state: IState = {};
 
-    this.state = {
-      animal: {
-        name: 'Holly',
-        description: 'Loved black and white short haired cat.',
-        gender: Gender.Female,
-        dob: new Date(2006, 11, 5),
-        type: AnimalType.Cat,
-        picture:
-          'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
-      },
-    };
+  public async componentDidMount() {
+    try {
+      const animal = await API.animals.get(this.props.match.params.id);
+      this.setState({ animal });
+    } catch (e) {
+      console.log(e);
+      alert(e.message);
+    }
   }
 
-  public render() {
-    return (
+  public render = () => (
+    this.state.animal) ? (
       <main className="container mt-3">
         <div className="row">
           <AnimalDetailsSection animal={this.state.animal} />
           <AdoptionRequestsSection animal={this.state.animal} />
         </div>
       </main>
-    );
-  }
+    ) : null
 }
 
 export default withAppContext(Animal);

@@ -1,55 +1,44 @@
 // tslint:disable-next-line: import-name
 import React from 'react';
 import AnimalSummaryCard from './AnimalSummaryCard';
-import { IAnimal, Gender, AnimalType } from 'dc2410-coursework-common';
-
-const animals: IAnimal[] = [
-  {
-    name: 'Holly',
-    description: 'Loved black and white short haired cat.',
-    gender: Gender.Female,
-    dob: new Date(2006, 11, 5),
-    type: AnimalType.Cat,
-    picture:
-      'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
-  },
-  {
-    name: 'Example Animal',
-    description:
-      "Animal Description: Some quick example text to build on the card title and make up the bulk of the card's content.",
-    gender: Gender.Male,
-    dob: new Date(2017, 5, 17),
-    type: AnimalType.Dog,
-    picture:
-      'https://www.greenepet.org/wp-content/uploads/2012/12/dog-adopt-1024x680.jpg',
-  },
-];
+import { IAnimal, AnimalType } from 'dc2410-coursework-common';
+import API from '../../helpers/API';
 
 interface IState {
-  animals: IAnimal[];
+  allAnimals: IAnimal[];
+  filterBy?: AnimalType;
+  sortBy?: 'y2o'|'o2y'|'t'|'g';
 }
 
 class AnimalSummarySection extends React.Component<{}, IState> {
   public state: IState = {
-    animals: [],
+    allAnimals: [],
   };
 
-  public componentDidMount() {
+  public async componentDidMount() {
     console.log('Animal Summary Section mounted.');
-    this.setState({ animals });
+    this.setState({ allAnimals: await API.animals.listAll() });
   }
 
-  public render = () => (
-    <section className="col-md-12 col-lg-8" id="animal-details">
-      <h3 className="">Available Animals</h3>
+  public render = () => {
+    const filteredAnimals = this.getFilteredAndSortedAnimals();
 
-      <this.FilterAndSort />
+    return (
+      <section className="col-md-12 col-lg-8" id="animal-details">
+        <h3 className="">Available Animals</h3>
 
-      {this.state.animals.map(animal => (
-        <AnimalSummaryCard key={animal.id!} animal={animal} />
-      ))}
-    </section>
-  )
+        <this.FilterAndSort />
+
+        {filteredAnimals.map(animal => (
+          <AnimalSummaryCard key={animal.id!} animal={animal} />
+        ))}
+      </section>
+    );
+  }
+
+  private getFilteredAndSortedAnimals = (): IAnimal[] => {
+    return this.state.allAnimals;
+  }
 
   // tslint:disable-next-line: variable-name
   private FilterAndSort = () => (

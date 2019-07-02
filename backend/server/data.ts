@@ -4,9 +4,9 @@ import {
   Gender,
   AnimalType,
   AdoptionRequestStatus,
-} from './index';
+} from 'dc2410-coursework-common';
 
-const animals: IAnimal[] = [
+export const animals: IAnimal[] = [
   {
     name: 'Holly',
     description: 'Loved black and white short haired cat.',
@@ -116,7 +116,7 @@ const animals: IAnimal[] = [
   },
 ];
 
-const allRequests: IAdoptionRequest[] = [
+export const adoptionRequest: IAdoptionRequest[] = [
   {
     animal: animals[0],
     user: { username: 'tom', displayName: 'Tom', hash: '' },

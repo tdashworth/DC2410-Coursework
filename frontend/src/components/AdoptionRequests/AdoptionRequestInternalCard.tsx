@@ -9,7 +9,7 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
     <div className={`list-group-item text-dark ${this.getItemTheme()}`}>
       <div className="d-flex w-100 justify-content-between">
         <h5 className="mb-1">
-          <a href="/animal/">{this.props.request.animal.name}</a>
+          <a href={`/animal/${this.props.request.animal.id}`}>{this.props.request.animal.name}</a>
         </h5>
         <small>{this.getStatusText()}</small>
       </div>

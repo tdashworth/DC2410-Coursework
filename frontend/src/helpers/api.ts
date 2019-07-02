@@ -1,4 +1,4 @@
-import { IUserApi, IUser, IAdoptionRequestApi, IAdoptionRequest, IAnimal } from 'dc2410-coursework-common';
+import { IUserApi, IAdoptionRequestApi, IAnimalApi } from 'dc2410-coursework-common';
 import Session from './Session';
 
 const jsonHeaders = {
@@ -43,14 +43,14 @@ export default class API {
       Session.getAuthHeaders(),
     ),
 
-    register: (user: IUser) => postJSON(
+    register: user => postJSON(
       '/api/users/register',
       user,
     ),
   };
 
   public static requests: IAdoptionRequestApi = {
-    create: (request: IAdoptionRequest) => postJSON(
+    create: request => postJSON(
       '/api/requests/',
       request,
       Session.getAuthHeaders(),
@@ -59,16 +59,37 @@ export default class API {
       '/api/requests/',
       Session.getAuthHeaders(),
     ),
-    forAnimal: (id: IAnimal['id']) => getJSON(
+    forAnimal: id => getJSON(
       `/api/requests/animal/${id}`,
       Session.getAuthHeaders(),
     ),
-    approve: (id: IAdoptionRequest['id']) => getJSON(
+    approve: id => getJSON(
       `/api/requests/${id}/approve`,
       Session.getAuthHeaders(),
     ),
-    deny: (id: IAdoptionRequest['id']) => getJSON(
+    deny: id => getJSON(
       `/api/requests/${id}/deny`,
+      Session.getAuthHeaders(),
+    ),
+  };
+
+  public static animals: IAnimalApi = {
+    create: animal => postJSON(
+      '/api/animals/',
+      animal,
+      Session.getAuthHeaders(),
+    ),
+    listAll: () => getJSON(
+      '/api/animals/',
+      Session.getAuthHeaders(),
+    ),
+    get: id => getJSON(
+      `/api/animals/${id}`,
+      Session.getAuthHeaders(),
+    ),
+    update: (id, animal) => postJSON(
+      `/api/animals/${id}`,
+      animal,
       Session.getAuthHeaders(),
     ),
   };

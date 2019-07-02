@@ -7,6 +7,7 @@ dotenv.config();
 
 // Import controllers
 import usersController from './users/users.controller';
+import animalsController from './animals/animals.controller';
 import adoptionRequestsController from './adoptionRequests/adoptionRequests.controller';
 
 // Create the express application
@@ -14,6 +15,7 @@ const app = express();
 
 // Assign controllers to routes
 app.use('/api/users', usersController);
+app.use('/api/animals', animalsController);
 app.use('/api/requests', adoptionRequestsController);
 
 // Declare the path to frontend's static assets

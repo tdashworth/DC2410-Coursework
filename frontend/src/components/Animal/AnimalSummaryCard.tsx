@@ -9,7 +9,7 @@ class AnimalSummaryCard extends React.Component<{ animal: IAnimal }> {
       <img src={this.props.animal.picture} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-title">
-          <a href="/animal/">{this.props.animal.name}</a>
+          <a href={`/animal/${this.props.animal.id}`}>{this.props.animal.name}</a>
         </h5>
         <p className="card-text">{this.props.animal.description}</p>
         <p className="card-text">

@@ -1,6 +1,7 @@
 import chai from 'chai';
 import mongoose from 'mongoose';
-import AnimalsModel, { Gender, AnimalType } from './animals.model';
+import Animals from './animals.model';
+import { AnimalType, Gender } from 'dc2410-coursework-common';
 const expect = chai.expect;
 
 describe('Animals library', function () {
@@ -14,11 +15,11 @@ describe('Animals library', function () {
   });
 
   beforeEach(async () => {
-    return AnimalsModel.deleteAll();
+    return Animals.deleteAll();
   });
 
   after(async () => {
-    return AnimalsModel.disconnect();
+    return Animals.disconnect();
   });
 
   it(
@@ -34,7 +35,7 @@ describe('Animals library', function () {
         gender: Gender.Female,
       };
 
-      const result = await AnimalsModel.create(animal);
+      const result = await Animals.create(animal);
 
       expect(result).to.be.an('object');
       if (result == null) throw new Error('Result return null');
@@ -61,9 +62,9 @@ describe('Animals library', function () {
         dob: new Date(2003, 11, 5),
         gender: Gender.Female,
       };
-      const createResult = await AnimalsModel.create(animal);
+      const createResult = await Animals.create(animal);
 
-      const readResult = await AnimalsModel.get(createResult.id);
+      const readResult = await Animals.get(createResult.id);
 
       if (readResult == null) throw new Error('Result return null');
       expect(readResult).to.have.property('name');
@@ -92,14 +93,14 @@ describe('Animals library', function () {
         description : 'Loved black and white cat.',
         dob : new Date(2006, 6, 28),
       };
-      const createResult = await AnimalsModel.create(animal1);
+      const createResult = await Animals.create(animal1);
 
-      const updateResult = await AnimalsModel.update(createResult.id, animal2);
+      const updateResult = await Animals.update(createResult.id, animal2);
       expect(updateResult).to.be.an('object');
       if (updateResult == null) throw new Error('Result return null');
       expect(updateResult).to.have.property('id');
 
-      const readResult = await AnimalsModel.get(updateResult.id);
+      const readResult = await Animals.get(updateResult.id);
       if (readResult == null) throw new Error('Result return null');
       expect(readResult.description).to.equal(animal2.description);
       expect(readResult.dob).to.deep.equal(animal2.dob);
@@ -123,10 +124,10 @@ describe('Animals library', function () {
         dob : new Date(2006, 6, 28),
         gender : Gender.Female,
       };
-      await AnimalsModel.create(animal1);
-      await AnimalsModel.create(animal2);
+      await Animals.create(animal1);
+      await Animals.create(animal2);
 
-      const result = await AnimalsModel.listAll();
+      const result = await Animals.listAll();
 
       expect(result.length).to.equal(2);
       expect(result[0]).to.have.property('name');
@@ -166,10 +167,10 @@ describe('Animals library', function () {
         gender : Gender.Female,
         adoptedBy: 'fakeUserId',
       };
-      await AnimalsModel.create(animal1);
-      await AnimalsModel.create(animal2);
+      await Animals.create(animal1);
+      await Animals.create(animal2);
 
-      const result = await AnimalsModel.listAllAvailable();
+      const result = await Animals.listAllAvailable();
 
       expect(result.length).to.equal(1);
       expect(result[0]).to.have.property('name');

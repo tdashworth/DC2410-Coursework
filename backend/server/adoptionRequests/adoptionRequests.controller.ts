@@ -8,14 +8,17 @@ import Auth from '../Auth';
 const router = express.Router();
 router.use(bodyParser.json());
 
-router.get('/', Auth.verifyToken(), async (req, res) => {
-  switch (req.params.user.type) {
-    case UserType.External:
-      return res.json(await AdoptionRequests.listAllMine(req.params.user.id));
-    case UserType.Internal:
-      return res.json(await AdoptionRequests.listAll());
-  }
-});
+router.get(
+  '/',
+  Auth.verifyToken(),
+  async (req, res) => {
+    switch (req.params.user.type) {
+      case UserType.External:
+        return res.json(await AdoptionRequests.listAllMine(req.params.user.id));
+      case UserType.Internal:
+        return res.json(await AdoptionRequests.listAll());
+    }
+  });
 
 router.get(
   '/animal/:id',

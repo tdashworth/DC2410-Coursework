@@ -36,8 +36,10 @@ export interface IAnimal {
     adoptedBy?: string;
 }
 export interface IAnimalApi {
-    create: (animal: IAnimal) => IAnimal;
-    get: (id: IAnimal['id']) => IAnimal;
+    create: (animal: IAnimal) => Promise<IAnimal>;
+    get: (id: IAnimal['id']) => Promise<IAnimal>;
+    update: (id: IAnimal['id'], animal: {}) => Promise<IAnimal>;
+    listAll: () => Promise<IAnimal[]>;
 }
 export declare enum AdoptionRequestStatus {
     Pending = 0,

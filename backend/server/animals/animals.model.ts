@@ -1,27 +1,6 @@
 import mongoose from 'mongoose';
 import sanitizeHtml from 'sanitize-html';
-
-export enum AnimalType {
-  Cat,
-  Dog,
-  Bird,
-  Pig,
-}
-
-export enum Gender {
-  Male,
-  Female,
-}
-
-export interface IAnimal {
-  name: string;
-  type: AnimalType;
-  dob: Date;
-  description: string;
-  gender: Gender;
-  picture?: string;
-  adoptedBy?: string;
-}
+import { IAnimal, AnimalType, Gender } from 'dc2410-coursework-common';
 
 export interface IAnimalModel extends IAnimal, mongoose.Document { }
 
@@ -35,17 +14,20 @@ export const AnimalSchema = new mongoose.Schema(
     gender: { type: Gender, required: true },
     picture: { type: String, required: false },
     adoptedBy: { type: String, required: false },
+    id: { type: String, required: false },
   },
   { strict: 'throw' },
 );
 
 AnimalSchema.pre('save', async function (this: IAnimalModel) {
+  console.log(this._id);
   this.name = sanitizeHtml(this.name);
   this.description = sanitizeHtml(this.description);
+  this.id = this._id;
 });
 
 // tslint:disable-next-line:variable-name
-const Animal = mongoose.model<IAnimalModel>('Animal', AnimalSchema);
+const Animal = mongoose.model<IAnimalModel>('animals', AnimalSchema);
 
 export default class Animals {
 
@@ -54,7 +36,7 @@ export default class Animals {
   }
 
   public static get(id: any): Promise<IAnimalModel | null> {
-    if (!(typeof(id) === 'string')) return Promise.resolve(null);
+    if (!(typeof (id) === 'string')) return Promise.resolve(null);
     return Animal.findById(id).exec();
   }
 
@@ -67,7 +49,7 @@ export default class Animals {
   }
 
   public static async update(id: any, updatedAnimal: any) {
-    if (!(typeof(id) === 'string')) return Promise.resolve(null);
+    if (!(typeof (id) === 'string')) return Promise.resolve(null);
     const orginal = await this.get(id);
     if (orginal !== null && orginal.adoptedBy === null) {
       throw new Error('Animal is locked because it has already been adopted.');

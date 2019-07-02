@@ -8,7 +8,9 @@ class AdoptionRequestMakeCard extends React.Component<{ animal: IAnimal }> {
     <div className="list-group mb-3">
       <div className="list-group-item text-dark">
         <div className="d-flex w-100 justify-content-between">
-          <h5 className="mb-1"><a href={`/animals/${this.props.animal.id}`}>{this.props.animal.name}</a></h5>
+          <h5 className="mb-1">
+            <a href={`/animals/${this.props.animal.id}`}>{this.props.animal.name}</a>
+          </h5>
         </div>
         <p className="mb-1">
           Interested? Make a request for adoption now.

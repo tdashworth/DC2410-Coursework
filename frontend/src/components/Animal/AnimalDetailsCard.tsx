@@ -23,7 +23,7 @@ class AnimalDetailsCard extends React.Component<{ animal: IAnimal }> {
         </h2>
         <h2>
           <span className="badge badge-secondary w-100">
-            {this.props.animal.dob.toDateString()}
+            {this.props.animal.dob}
           </span>
         </h2>
       </div>
