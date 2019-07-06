@@ -1,4 +1,3 @@
-// tslint:disable-next-line: import-name
 import React from 'react';
 import FormInput from './FormInput';
 import API from '../helpers/API';

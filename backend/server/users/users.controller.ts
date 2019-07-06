@@ -1,5 +1,4 @@
 import * as express from 'express';
-// tslint:disable-next-line: import-name
 import Users from './users.model';
 import bodyParser from 'body-parser';
 import Auth from '../Auth';

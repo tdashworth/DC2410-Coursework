@@ -1,6 +1,5 @@
 import * as bodyParser from 'body-parser';
 import * as express from 'express';
-// tslint:disable-next-line: import-name
 import AdoptionRequests from './adoptionRequests.model';
 import { UserType } from 'dc2410-coursework-common';
 import Auth from '../Auth';

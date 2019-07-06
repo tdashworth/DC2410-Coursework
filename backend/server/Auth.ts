@@ -6,7 +6,6 @@ import {
   UserType,
 } from 'dc2410-coursework-common';
 import { sign, decode, verify } from 'jsonwebtoken';
-// tslint:disable-next-line: import-name
 import Users from './users/users.model';
 
 class Auth {

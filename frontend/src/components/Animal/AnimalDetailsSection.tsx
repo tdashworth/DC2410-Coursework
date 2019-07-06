@@ -1,4 +1,3 @@
-// tslint:disable-next-line: import-name
 import React from 'react';
 import AnimalDetailsCard from './AnimalDetailsCard';
 import { IAnimal } from 'dc2410-coursework-common';

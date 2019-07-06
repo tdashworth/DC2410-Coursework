@@ -1,4 +1,3 @@
-// tslint:disable-next-line: import-name
 import React from 'react';
 import { IAnimal } from 'dc2410-coursework-common';
 import { IAppContextInterface, withAppContext } from '../AppContext';

@@ -1,4 +1,3 @@
-// tslint:disable-next-line: import-name
 import React from 'react';
 import { IUser } from 'dc2410-coursework-common';
 

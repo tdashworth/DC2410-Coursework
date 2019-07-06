@@ -1,4 +1,3 @@
-// tslint:disable-next-line: import-name
 import React from 'react';
 
 class WelcomeJumbotron extends React.Component {

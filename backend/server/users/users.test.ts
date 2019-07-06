@@ -1,6 +1,5 @@
 import chai from 'chai';
 import * as mongoose from 'mongoose';
-// tslint:disable-next-line: import-name
 import Users from './users.model';
 import { UserType, IUser } from 'dc2410-coursework-common';
 const expect = chai.expect;

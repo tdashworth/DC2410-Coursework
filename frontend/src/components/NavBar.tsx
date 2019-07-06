@@ -1,4 +1,3 @@
-// tslint:disable-next-line: import-name
 import React from 'react';
 import { IAppContextInterface, withAppContext } from '../AppContext';
 import Session from '../helpers/Session';

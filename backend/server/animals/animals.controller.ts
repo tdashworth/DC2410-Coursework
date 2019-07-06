@@ -1,7 +1,6 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 
-// tslint:disable-next-line: import-name
 import Animals from './animals.model';
 import Auth from '../Auth';
 import { UserType } from 'dc2410-coursework-common';
