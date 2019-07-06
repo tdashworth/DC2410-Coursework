@@ -5,6 +5,9 @@ export interface IAppContextInterface {
   user?: IUser;
   setUser: (u: IUser) => void;
   wipeUser: () => void;
+  error?: Error;
+  setError: (e: Error) => void;
+  wipeError: () => void;
 }
 
 // tslint:disable-next-line: variable-name

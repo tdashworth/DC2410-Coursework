@@ -112,7 +112,8 @@ class RegisterForm extends React.Component<IProps, IState> {
       Session.set(token, expiry, user);
       this.props.AppContext!.setUser(user);
     } catch (e) {
-      alert(e.message);
+      console.log(e);
+      this.props.AppContext!.setError(e);
     } finally {
       this.setState({ isRequesting: false });
     }

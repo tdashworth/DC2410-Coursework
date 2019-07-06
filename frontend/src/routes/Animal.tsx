@@ -23,7 +23,7 @@ class Animal extends React.Component<IProps, IState> {
       this.setState({ animal });
     } catch (e) {
       console.log(e);
-      alert(e.message);
+      this.props.AppContext!.setError(e);
     }
   }
 
