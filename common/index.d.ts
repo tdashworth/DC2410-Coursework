@@ -32,7 +32,7 @@ export interface IAnimal {
     dob: Date;
     description: string;
     gender: Gender;
-    picture?: string;
+    pictures?: string[];
     adoptedBy?: string;
 }
 export interface IAnimalApi {

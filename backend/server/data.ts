@@ -15,7 +15,7 @@ let users: IUser[];
 let animals: IAnimal[];
 let adoptionRequests: IAdoptionRequestDB[];
 
-const deleteAll = false;
+const deleteAll = true;
 
 export const populateUsers = async () => {
   if (deleteAll) await Users.deleteAll();
@@ -53,7 +53,7 @@ export const populateUsers = async () => {
   ];
 
   console.log('Users population: loading data...');
-  await Promise.all(users.map(item => Users.create(item)));
+  await Promise.all(users.map((item) => Users.create(item)));
   users = await Users.listAll();
   console.log('Users population: loaded data.');
 };
@@ -73,8 +73,10 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2006, 11, 5),
       type: AnimalType.Cat,
-      picture:
-        'http://localtvkfor.files.wordpress.com/2012/08/dog-pet-adoption.jpg',
+      pictures: [
+        '/uploads/14590997_632538036920287_8526888530838814720_n.jpg',
+        '/uploads/15876421_1832360853685427_4689974115363192832_n.jpg',
+      ],
     },
     {
       name: 'Example Animal',
@@ -83,8 +85,7 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2017, 5, 17),
       type: AnimalType.Dog,
-      picture:
-        'https://www.greenepet.org/wp-content/uploads/2012/12/dog-adopt-1024x680.jpg',
+      pictures: ['/uploads/18879665_797479403761196_7020233313574977536_n.jpg'],
     },
     {
       name: 'Beau',
@@ -92,7 +93,6 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2007, 6, 20),
       type: AnimalType.Dog,
-      picture: '...',
     },
     {
       name: 'Elvis',
@@ -100,7 +100,6 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2011, 4, 19),
       type: AnimalType.Bird,
-      picture: '...',
     },
     {
       name: 'Ralphie',
@@ -108,7 +107,6 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2010, 4, 11),
       type: AnimalType.Pig,
-      picture: '...',
     },
     {
       name: 'Pepper',
@@ -116,7 +114,6 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2004, 3, 31),
       type: AnimalType.Pig,
-      picture: '...',
     },
     {
       name: 'Falcon',
@@ -125,7 +122,6 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2019, 4, 25),
       type: AnimalType.Bird,
-      picture: '...',
     },
     {
       name: 'Zero',
@@ -133,7 +129,7 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(1994, 11, 25),
       type: AnimalType.Dog,
-      picture: '...',
+      pictures: ['/uploads/10354565_646075105472325_233361634_n.jpg'],
     },
     {
       name: "Thomas O'Malley",
@@ -141,7 +137,6 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2008, 1, 7),
       type: AnimalType.Cat,
-      picture: '...',
     },
     {
       name: 'Grumpy Cat',
@@ -149,7 +144,6 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2012, 4, 4),
       type: AnimalType.Cat,
-      picture: '...',
     },
     {
       name: 'Lassie',
@@ -157,7 +151,9 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2018, 6, 30),
       type: AnimalType.Dog,
-      picture: '...',
+      pictures: [
+        '/uploads/15258572_1191283014270712_6819793761170620416_n.jpg',
+      ],
     },
     {
       name: 'Tweetie Pie',
@@ -165,7 +161,6 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2003, 5, 3),
       type: AnimalType.Bird,
-      picture: '...',
     },
     {
       name: 'Piglet',
@@ -174,12 +169,11 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2018, 8, 17),
       type: AnimalType.Pig,
-      picture: '...',
     },
   ];
 
   console.log('Animals population: loading data...');
-  await Promise.all(animals.map(item => Animals.create(item)));
+  await Promise.all(animals.map((item) => Animals.create(item)));
   animals = await Animals.listAll();
   console.log('Animals population: loaded data.');
 };

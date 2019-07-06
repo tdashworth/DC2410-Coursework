@@ -1,10 +1,11 @@
 import React from 'react';
 import { IAnimal } from 'dc2410-coursework-common';
+import Carousel from '../Carosel';
 
 class AnimalDetailsCard extends React.Component<{ animal: IAnimal }> {
   public render = () => (
     <div className="card mb-3">
-      <img src={this.props.animal.picture} className="card-img-top" alt="..." />
+      <Carousel images={this.props.animal.pictures!} />
       <div className="card-body">
         <h5 className="card-title">{this.props.animal.name}</h5>
         <p className="card-text">{this.props.animal.description}</p>

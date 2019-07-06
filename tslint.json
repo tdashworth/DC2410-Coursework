@@ -2,8 +2,8 @@
   "extends": [
     "tslint:recommended",
     "tslint-react",
-    "tslint-config-prettier",
-    "tslint-config-airbnb"
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
   ],
   "rules": {
     "ordered-imports": false,
