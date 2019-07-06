@@ -220,7 +220,19 @@ export const populateRequests = async () => {
 
   console.log('Adoption Requests population: loading data...');
   await Promise.all(
-    adoptionRequests.map(item => AdoptionRequests.create(item)),
+    adoptionRequests.map(async (item) => {
+      const result = await AdoptionRequests.create(item);
+
+      switch (item.status) {
+        case AdoptionRequestStatus.Approved:
+          AdoptionRequests.approve(result);
+          break;
+        case AdoptionRequestStatus.Denied:
+          AdoptionRequests.deny(result);
+          break;
+      }
+      AdoptionRequests.create(item);
+    }),
   );
   adoptionRequests = await AdoptionRequests.listAll();
   console.log('Adoption Requests population: loaded data.');
