@@ -15,8 +15,10 @@ let users: IUser[];
 let animals: IAnimal[];
 let adoptionRequests: IAdoptionRequestDB[];
 
+const deleteAll = false;
+
 export const populateUsers = async () => {
-  // await Users.deleteAll();
+  if (deleteAll) await Users.deleteAll();
   const retrievedData = await Users.listAll();
   if (retrievedData.length > 0) {
     users = retrievedData;
@@ -57,7 +59,7 @@ export const populateUsers = async () => {
 };
 
 export const populateAnimals = async () => {
-  // await Animals.deleteAll();
+  if (deleteAll) await Animals.deleteAll();
   const retrievedData = await Animals.listAll();
   if (retrievedData.length > 0) {
     animals = retrievedData;
@@ -183,7 +185,7 @@ export const populateAnimals = async () => {
 };
 
 export const populateRequests = async () => {
-  // await AdoptionRequests.deleteAll();
+  if (deleteAll) await AdoptionRequests.deleteAll();
   const retrievedData = await AdoptionRequests.listAll();
   if (retrievedData.length > 0) {
     adoptionRequests = retrievedData;
@@ -225,13 +227,12 @@ export const populateRequests = async () => {
 
       switch (item.status) {
         case AdoptionRequestStatus.Approved:
-          AdoptionRequests.approve(result);
+          AdoptionRequests.approve(result.id);
           break;
         case AdoptionRequestStatus.Denied:
-          AdoptionRequests.deny(result);
+          AdoptionRequests.deny(result.id);
           break;
       }
-      AdoptionRequests.create(item);
     }),
   );
   adoptionRequests = await AdoptionRequests.listAll();
