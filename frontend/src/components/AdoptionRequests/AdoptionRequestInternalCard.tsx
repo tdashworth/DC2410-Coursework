@@ -37,7 +37,6 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
   )
 
   private handleApprove = async (event: React.FormEvent<HTMLButtonElement>) => {
-    console.log('approve');
     event.preventDefault();
 
     await API.requests.approve(this.props.request.id);

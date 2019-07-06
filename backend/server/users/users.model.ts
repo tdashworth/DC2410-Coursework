@@ -13,6 +13,7 @@ export const UserSchema = new mongoose.Schema(
     salt: { type: String, required: true },
     displayName: { type: String, required: true },
     type: { type: UserType, required: true },
+    id: { type: String, required: false },
   },
   { strict: 'throw' },
 );
@@ -23,6 +24,7 @@ UserSchema.pre('save', async function (this: IUserModel) {
   this.username = sanitizeHtml(this.username);
   this.displayName = sanitizeHtml(this.displayName);
   this.type = (this.type !== null) ? this.type : UserType.External;
+  this.id = this._id;
 });
 
 // tslint:disable-next-line:variable-name

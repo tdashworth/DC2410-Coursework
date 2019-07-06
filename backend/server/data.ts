@@ -51,7 +51,7 @@ export const populateUsers = async () => {
   ];
 
   console.log('Users population: loading data...');
-  await Promise.all(users.map((item) => Users.create(item)));
+  await Promise.all(users.map(item => Users.create(item)));
   users = await Users.listAll();
   console.log('Users population: loaded data.');
 };
@@ -177,13 +177,13 @@ export const populateAnimals = async () => {
   ];
 
   console.log('Animals population: loading data...');
-  await Promise.all(animals.map((item) => Animals.create(item)));
+  await Promise.all(animals.map(item => Animals.create(item)));
   animals = await Animals.listAll();
   console.log('Animals population: loaded data.');
 };
 
 export const populateRequests = async () => {
-  await AdoptionRequests.deleteAll();
+  // await AdoptionRequests.deleteAll();
   const retrievedData = await AdoptionRequests.listAll();
   if (retrievedData.length > 0) {
     adoptionRequests = retrievedData;
@@ -220,7 +220,7 @@ export const populateRequests = async () => {
 
   console.log('Adoption Requests population: loading data...');
   await Promise.all(
-    adoptionRequests.map((item) => AdoptionRequests.create(item)),
+    adoptionRequests.map(item => AdoptionRequests.create(item)),
   );
   adoptionRequests = await AdoptionRequests.listAll();
   console.log('Adoption Requests population: loaded data.');

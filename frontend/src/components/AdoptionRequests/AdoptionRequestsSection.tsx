@@ -63,38 +63,40 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
   }
 
   public render = () => {
-    // Show empty message
-    if (this.state.allRequests.length === 0) {
-      return (
-        <this.Template>
-          <p>{this.state.config.emptyMessage}</p>
-        </this.Template>
+    const isEmpty = this.state.allRequests.length === 0;
+    const isAnimal = this.props.animal != null;
+    const isUserExternal =
+      this.props.AppContext!.user!.type === UserType.External;
+    const canUserMakeRequest =
+      isAnimal &&
+      isUserExternal &&
+      !this.state.allRequests.some(
+        (request) => request.animal.id === this.props.animal!.id,
       );
-    }
+    const isShowingAll =
+      this.state.showApproved &&
+      this.state.showDenied &&
+      this.state.showPending;
 
     return (
-      <this.Template>
-        <this.RequestFilters />
+      <section className="col-md-12 col-lg-4" id="animal-requests">
+        <h4>{this.state.config.title}</h4>
+
+        {/* Show Make card if being render on an animal page and user is external */}
+        {canUserMakeRequest && (
+          <AdoptionRequestMakeCard
+            animal={this.props.animal!}
+            user={this.props.AppContext!.user!}
+            update={this.update}
+          />
+        )}
+        {isEmpty && <p>{this.state.config.emptyMessage}</p>}
+        {!isEmpty && <this.RequestFilters />}
         <this.RequestCards />
-        <this.ViewAllButton />
-      </this.Template>
+        {!isEmpty && !isShowingAll && <this.ViewAllButton />}
+      </section>
     );
   }
-
-  // tslint:disable-next-line: variable-name
-  private Template = (props: { children?: React.ReactNode }) => (
-    <section className="col-md-12 col-lg-4" id="animal-requests">
-      <h4>{this.state.config.title}</h4>
-
-      {// Show Make card if being render on an animal page and user is external
-      this.props.animal &&
-        this.props.AppContext!.user!.type === UserType.External && (
-          <AdoptionRequestMakeCard animal={this.props.animal} />
-        )}
-
-      {props.children}
-    </section>
-  )
 
   private getFilterRequests = (): IAdoptionRequest[] => {
     const ARS = AdoptionRequestStatus;
@@ -107,7 +109,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       this.state.showPending && request.status === ARS.Pending;
 
     return this.state.allRequests
-      .filter(req => showApproved(req) || showDenied(req) || showPending(req))
+      .filter((req) => showApproved(req) || showDenied(req) || showPending(req))
       .sort((request1, request2) => request1.status! - request2.status!);
   }
 
@@ -171,7 +173,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
 
     return (
       <div className="list-group mb-3">
-        {visibleRequests.map(request => (
+        {visibleRequests.map((request) => (
           <this.state.config.cardClass
             key={request.id!}
             request={request}
@@ -183,30 +185,29 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
   }
 
   // tslint:disable-next-line: variable-name
-  private ViewAllButton = () =>
-    !(
-      this.state.showApproved &&
-      this.state.showDenied &&
-      this.state.showPending
-    ) ? (
-      <button
-        type="button"
-        className="btn btn-primary mb-3"
-        onClick={() =>
-          this.setState({
-            showApproved: true,
-            showDenied: true,
-            showPending: true,
-          })
-        }
-      >
-        View all requests
-      </button>
-    ) : null
+  private ViewAllButton = () => (
+    <button
+      type="button"
+      className="btn btn-primary mb-3"
+      onClick={() =>
+        this.setState({
+          showApproved: true,
+          showDenied: true,
+          showPending: true,
+        })
+      }
+    >
+      View all requests
+    </button>
+  )
 
   private update = async () => {
+    // All updated list of list request.
+    // If an internal user and on an animal page, scope to only that animal.
+    // If an external user, allways show all
     this.setState({
-      allRequests: await (this.props.animal
+      allRequests: await (this.props.animal &&
+      this.props.AppContext!.user!.type === UserType.Internal
         ? API.requests.forAnimal(this.props.animal.id)
         : API.requests.listAll()),
     });
