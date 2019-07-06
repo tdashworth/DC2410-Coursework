@@ -63,12 +63,14 @@ export default class API {
       `/api/requests/animal/${id}`,
       Session.getAuthHeaders(),
     ),
-    approve: id => getJSON(
+    approve: id => postJSON(
       `/api/requests/${id}/approve`,
+      {},
       Session.getAuthHeaders(),
     ),
-    deny: id => getJSON(
+    deny: id => postJSON(
       `/api/requests/${id}/deny`,
+      {},
       Session.getAuthHeaders(),
     ),
   };

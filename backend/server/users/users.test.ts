@@ -62,7 +62,7 @@ describe('Users library', function () {
       const createResult = await Users.create(user);
       if (createResult == null) throw new Error('Result return null');
 
-      const readResult = await Users.get(createResult._id);
+      const readResult = await Users.get(createResult._id!);
 
       if (readResult == null) throw new Error('Result return null');
       expect(readResult).to.have.property('username');

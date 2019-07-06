@@ -52,23 +52,33 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       showPending: true,
       showApproved: false,
       showDenied: false,
-      config: props.AppContext!.user!.type === UserType.Internal ? internalUserConfig : externalUserConfig,
+      config:
+        props.AppContext!.user!.type === UserType.Internal
+          ? internalUserConfig
+          : externalUserConfig,
     };
   }
 
   public async componentDidMount() {
-    this.setState({ allRequests: await (this.props.animal ? API.requests.forAnimal(this.props.animal.id) : API.requests.listAll()) });
+    this.update();
   }
 
   public render = () => {
-    if (this.state.allRequests.length === 0) return (<this.Template><p>{this.state.config.emptyMessage}</p></ this.Template>);
+    // Show empty message
+    if (this.state.allRequests.length === 0) {
+      return (
+        <this.Template>
+          <p>{this.state.config.emptyMessage}</p>
+        </this.Template>
+      );
+    }
 
     return (
       <this.Template>
         <this.RequestFilters />
         <this.RequestCards />
         <this.ViewAllButton />
-      </ this.Template>
+      </this.Template>
     );
   }
 
@@ -77,12 +87,11 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
     <section className="col-md-12 col-lg-4" id="animal-requests">
       <h4>{this.state.config.title}</h4>
 
-      {(
-        this.props.animal &&
-        this.props.AppContext!.user!.type === UserType.External
-      ) ? (
+      {// Show Make card if being render on an animal page and user is external
+      this.props.animal &&
+        this.props.AppContext!.user!.type === UserType.External && (
           <AdoptionRequestMakeCard animal={this.props.animal} />
-        ) : null}
+        )}
 
       {props.children}
     </section>
@@ -99,9 +108,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       this.state.showPending && request.status === ARS.Pending;
 
     return this.state.allRequests
-      .filter(
-        req => showApproved(req) || showDenied(req) || showPending(req),
-      )
+      .filter(req => showApproved(req) || showDenied(req) || showPending(req))
       .sort((request1, request2) => request1.status! - request2.status!);
   }
 
@@ -123,7 +130,9 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
         id="filter-requests-approved"
         emoji="✔"
         isActive={this.state.showApproved}
-        onChange={() => this.setState({ showApproved: !this.state.showApproved })}
+        onChange={() =>
+          this.setState({ showApproved: !this.state.showApproved })
+        }
       />
       <this.FilterButton
         id="filter-requests-denied"
@@ -141,21 +150,21 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
     isActive: boolean;
     onChange: () => void;
   }) => (
-      <div>
-        <label
-          htmlFor={props.id}
-          className={`form-control d-flex justify-content-around ${!props.isActive ? 'bg-secondary' : ''}`}
-        >
-          <Emoji symbol={props.emoji} />
-        </label>
-        <input
-          id={props.id}
-          type="checkbox"
-          className="d-none"
-          onChange={props.onChange}
-        />
-      </div>
-    )
+    <div
+      className={`form-control d-flex justify-content-around ${!props.isActive &&
+        'bg-secondary'}`}
+    >
+      <label htmlFor={props.id}>
+        <Emoji symbol={props.emoji} />
+      </label>
+      <input
+        id={props.id}
+        type="checkbox"
+        className="d-none"
+        onChange={props.onChange}
+      />
+    </div>
+  )
 
   // tslint:disable-next-line: variable-name
   private RequestCards = () => {
@@ -164,7 +173,11 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
     return (
       <div className="list-group mb-3">
         {visibleRequests.map(request => (
-          <this.state.config.cardClass key={request.id!} request={request} />
+          <this.state.config.cardClass
+            key={request.id!}
+            request={request}
+            update={this.update}
+          />
         ))}
       </div>
     );
@@ -177,20 +190,28 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
       this.state.showDenied &&
       this.state.showPending
     ) ? (
-        <button
-          type="button"
-          className="btn btn-primary mb-3"
-          onClick={() =>
-            this.setState({
-              showApproved: true,
-              showDenied: true,
-              showPending: true,
-            })
-          }
-        >
-          View all requests
+      <button
+        type="button"
+        className="btn btn-primary mb-3"
+        onClick={() =>
+          this.setState({
+            showApproved: true,
+            showDenied: true,
+            showPending: true,
+          })
+        }
+      >
+        View all requests
       </button>
-      ) : null
+    ) : null
+
+  private update = async () => {
+    this.setState({
+      allRequests: await (this.props.animal
+        ? API.requests.forAnimal(this.props.animal.id)
+        : API.requests.listAll()),
+    });
+  }
 }
 
 export default withAppContext(AdoptionRequestsSection);

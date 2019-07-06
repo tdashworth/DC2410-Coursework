@@ -22,7 +22,7 @@ export interface IUserModel extends IUser, mongoose.Document { }
 UserSchema.pre('save', async function (this: IUserModel) {
   this.username = sanitizeHtml(this.username);
   this.displayName = sanitizeHtml(this.displayName);
-  this.type = this.type || UserType.External;
+  this.type = (this.type !== null) ? this.type : UserType.External;
 });
 
 // tslint:disable-next-line:variable-name

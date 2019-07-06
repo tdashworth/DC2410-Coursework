@@ -1,5 +1,10 @@
 import { Request, Response, RequestHandler, NextFunction } from 'express';
-import { IUser, IAuthToken, IAuthResponse, UserType } from 'dc2410-coursework-common';
+import {
+  IUser,
+  IAuthToken,
+  IAuthResponse,
+  UserType,
+} from 'dc2410-coursework-common';
 import { sign, decode, verify } from 'jsonwebtoken';
 // tslint:disable-next-line: import-name
 import Users from './users/users.model';
@@ -26,14 +31,16 @@ class Auth {
   }
 
   public static verifyToken(type?: UserType): RequestHandler {
-    return (request: Request, response: Response, next: NextFunction): any => {
+    return async (request: Request, response: Response, next: NextFunction): Promise<any> => {
       try {
         const authorization = request.headers.authorization;
         if (!authorization) {
           throw new Error("No 'authorization' header provided.");
         }
 
-        if (!verify(authorization.substring(7), process.env.AUTH_SHARED_SECRET!)) {
+        if (
+          !verify(authorization.substring(7), process.env.AUTH_SHARED_SECRET!)
+        ) {
           throw new Error('Token not signed by this server.');
         }
 
@@ -43,14 +50,14 @@ class Auth {
           throw new Error('Token has expired');
         }
 
-        Users.get(token.id).then(user => {
-          if (!user) throw new Error('User does not exist.');
-          if (type && user.type !== type) throw new Error('User is of wrong type.');
+        const user = await Users.get(token.id);
+        if (!user) throw new Error('User does not exist.');
+        if (type && user.type !== type) {
+          throw new Error('User is of wrong type.');
+        }
 
-          request.params.user = user;
-          next();
-        });
-
+        request.params.user = user;
+        next();
       } catch (e) {
         console.log(e);
         return response.sendStatus(403);

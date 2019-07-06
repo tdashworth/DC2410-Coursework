@@ -20,7 +20,6 @@ export const AnimalSchema = new mongoose.Schema(
 );
 
 AnimalSchema.pre('save', async function (this: IAnimalModel) {
-  console.log(this._id);
   this.name = sanitizeHtml(this.name);
   this.description = sanitizeHtml(this.description);
   this.id = this._id;
@@ -35,7 +34,7 @@ export default class Animals {
     return new Animal(newAnimal).save();
   }
 
-  public static get(id: any): Promise<IAnimalModel | null> {
+  public static get(id: string): Promise<IAnimalModel | null> {
     if (!(typeof (id) === 'string')) return Promise.resolve(null);
     return Animal.findById(id).exec();
   }

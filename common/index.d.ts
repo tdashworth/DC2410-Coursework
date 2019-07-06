@@ -46,10 +46,16 @@ export declare enum AdoptionRequestStatus {
     Approved = 1,
     Denied = 2
 }
-export interface IAdoptionRequest {
+export interface IAdoptionRequestDB {
     id?: any;
     user: IUser['id'];
     animal: IAnimal['id'];
+    status: AdoptionRequestStatus;
+}
+export interface IAdoptionRequest {
+    id?: any;
+    user: IUser;
+    animal: IAnimal;
     status: AdoptionRequestStatus;
 }
 export interface IAdoptionRequestApi {

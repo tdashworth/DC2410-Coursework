@@ -5,9 +5,12 @@ import {
   IAdoptionRequest,
 } from 'dc2410-coursework-common';
 
-abstract class AdoptionRequestCard extends React.Component<{
+interface IProps {
   request: IAdoptionRequest;
-}> {
+  update: () => void;
+}
+
+abstract class AdoptionRequestCard extends React.Component<IProps> {
   protected getStatusText(): string {
     switch (this.props.request.status) {
       case AdoptionRequestStatus.Approved:

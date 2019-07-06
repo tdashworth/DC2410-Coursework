@@ -3,13 +3,16 @@ import React from 'react';
 import AdoptionRequestCard from './AdoptionRequestCard';
 import Emoji from '../Emoji';
 import { AdoptionRequestStatus } from 'dc2410-coursework-common';
+import API from '../../helpers/API';
 
 class AdoptionRequestInternalCard extends AdoptionRequestCard {
   public render = () => (
     <div className={`list-group-item text-dark ${this.getItemTheme()}`}>
       <div className="d-flex w-100 justify-content-between">
         <h5 className="mb-1">
-          <a href={`/animal/${this.props.request.animal.id}`}>{this.props.request.animal.name}</a>
+          <a href={`/animal/${this.props.request.animal.id}`}>
+            {this.props.request.animal.name}
+          </a>
         </h5>
         <small>{this.getStatusText()}</small>
       </div>
@@ -23,16 +26,31 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
 
       {this.props.request.status === AdoptionRequestStatus.Pending ? (
         <div className="mt-2">
-          <button type="button" className="btn btn-success mr-2">
+          <button className="btn btn-success mr-2" onClick={this.handleApprove}>
             Approve <Emoji symbol="✔" />
           </button>
-          <button type="button" className="btn btn-danger">
+          <button className="btn btn-danger" onClick={this.handleDeny}>
             Deny <Emoji symbol="❌" />
           </button>
         </div>
       ) : null}
     </div>
   )
+
+  private handleApprove = async (event: React.FormEvent<HTMLButtonElement>) => {
+    console.log('approve');
+    event.preventDefault();
+
+    await API.requests.approve(this.props.request.id);
+    await this.props.update();
+  }
+
+  private handleDeny = async (event: React.FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    await API.requests.deny(this.props.request.id);
+    await this.props.update();
+  }
 }
 
 export default AdoptionRequestInternalCard;
