@@ -8,7 +8,7 @@ import Listings from './Listings';
 
 class Home extends React.Component<{ AppContext?: IAppContextInterface }> {
   public render() {
-    if (this.props.AppContext && !this.props.AppContext.user) {
+    if (!this.props.AppContext!.user) {
       return <Unauthorised />;
     }
 

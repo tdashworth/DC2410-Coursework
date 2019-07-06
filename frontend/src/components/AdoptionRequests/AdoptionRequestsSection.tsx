@@ -178,6 +178,7 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
             key={request.id!}
             request={request}
             update={this.update}
+            AppContext={this.props.AppContext}
           />
         ))}
       </div>
@@ -205,12 +206,20 @@ class AdoptionRequestsSection extends React.Component<IProps, IState> {
     // All updated list of list request.
     // If an internal user and on an animal page, scope to only that animal.
     // If an external user, allways show all
-    this.setState({
-      allRequests: await (this.props.animal &&
-      this.props.AppContext!.user!.type === UserType.Internal
-        ? API.requests.forAnimal(this.props.animal.id)
-        : API.requests.listAll()),
-    });
+    try {
+      this.setState({
+        allRequests: await (this.props.animal &&
+        this.props.AppContext!.user!.type === UserType.Internal
+          ? API.requests.forAnimal(this.props.animal.id)
+          : API.requests.listAll()),
+      });
+    } catch (e) {
+      this.props.AppContext!.setError(
+        new Error(
+          'Something when wrong. Please try again or contact us if this continues to happen.',
+        ),
+      );
+    }
   }
 }
 

@@ -39,15 +39,31 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
   private handleApprove = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    await API.requests.approve(this.props.request.id);
-    await this.props.update();
+    try {
+      await API.requests.approve(this.props.request);
+      await this.props.update();
+    } catch (e) {
+      this.props.AppContext!.setError(
+        new Error(
+          'Something when wrong. Please try again or contact us if this continues to happen.',
+        ),
+      );
+    }
   }
 
   private handleDeny = async (event: React.FormEvent<HTMLButtonElement>) => {
     event.preventDefault();
 
-    await API.requests.deny(this.props.request.id);
-    await this.props.update();
+    try {
+      await API.requests.deny(this.props.request);
+      await this.props.update();
+    } catch (e) {
+      this.props.AppContext!.setError(
+        new Error(
+          'Something when wrong. Please try again or contact us if this continues to happen.',
+        ),
+      );
+    }
   }
 }
 

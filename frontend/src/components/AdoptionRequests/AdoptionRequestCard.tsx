@@ -3,8 +3,10 @@ import {
   AdoptionRequestStatus,
   IAdoptionRequest,
 } from 'dc2410-coursework-common';
+import { IAppContextInterface } from '../../AppContext';
 
 interface IProps {
+  AppContext?: IAppContextInterface;
   request: IAdoptionRequest;
   update: () => void;
 }
