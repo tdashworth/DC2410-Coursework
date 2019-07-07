@@ -12,9 +12,9 @@ class AnimalSummaryCard extends React.Component<{ animal: IAnimal }> {
         </h5>
         <p className="card-text">{this.props.animal.description}</p>
         <p className="card-text">
-          <button type="button" className="btn btn-primary">
+          <a className="btn btn-primary text-light text-decoration-none" href={`/animal/${this.props.animal.id}`}>
             View more <Emoji symbol="👀" />
-          </button>
+          </a>
         </p>
       </div>
     </div>

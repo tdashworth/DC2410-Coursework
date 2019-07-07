@@ -11,8 +11,8 @@ class Unauthorised extends React.Component<{}> {
         <WelcomeJumbotron />
 
         <section className="row" id="unauth-forms">
-          <LoginForm className="col-lg-4" />
-          <RegisterForm className="col-lg-8" />
+          <LoginForm className="col-lg-4 mb-4" />
+          <RegisterForm className="col-lg-8 mb-4" />
         </section>
       </main>
     );
