@@ -32,7 +32,8 @@
     "test": "yarn test:backend && yarn test:frontend",
     "test:backend": "cd backend && yarn test",
     "test:frontend": "cd frontend && yarn test",
-    "start": "cd backend && node build/server.js"
+    "start": "cd backend && node build/server.js",
+    "deploy": "git push heroku master"
   },
   "dependencies": {}
 }
