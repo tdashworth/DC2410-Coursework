@@ -29,6 +29,7 @@
     "mocha": "^6.0.2"
   },
   "scripts": {
+    "postinstall": "yarn build",
     "start": "nodemon ./build/server.js",
     "build": "tsc -p .",
     "test": "mocha ./build/**/*.test.ts"
