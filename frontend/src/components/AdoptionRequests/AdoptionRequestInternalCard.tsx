@@ -40,7 +40,7 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
     event.preventDefault();
 
     try {
-      await API.requests.approve(this.props.request);
+      await API.requests.approve(this.props.request.id);
       await this.props.update();
     } catch (e) {
       this.props.AppContext!.setError(
@@ -55,7 +55,7 @@ class AdoptionRequestInternalCard extends AdoptionRequestCard {
     event.preventDefault();
 
     try {
-      await API.requests.deny(this.props.request);
+      await API.requests.deny(this.props.request.id);
       await this.props.update();
     } catch (e) {
       this.props.AppContext!.setError(

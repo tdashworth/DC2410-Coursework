@@ -13,7 +13,7 @@ class NavBar extends React.Component<{ AppContext?: IAppContextInterface }> {
             <div id="nav-right">
               {this.props.AppContext.user ? (
                 <form className="form-inline">
-                  <span className="navbar-text text-light mr-sm-3">
+                  <span className="navbar-text text-light mr-3">
                     Welcome, {this.props.AppContext.user.displayName}.
                   </span>
                   <button
