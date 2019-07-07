@@ -19,11 +19,12 @@
     "install": "yarn install:backend && yarn install:frontend",
     "install:backend": "cd backend && yarn install",
     "install:frontend": "cd frontend && yarn install",
+    "postinstall": "yarn build",
     "build": "yarn build:common && yarn build:backend && yarn build:frontend",
     "build:backend": "cd backend && yarn build",
     "build:frontend": "cd frontend && yarn build",
     "build:common": "cd common && tsc -p .",
-    "start": "concurrently \"yarn start:common\" \"yarn start:backend\" \"yarn start:frontend\"",
+    "start:dev": "concurrently \"yarn start:common\" \"yarn start:backend\" \"yarn start:frontend\"",
     "start:db": "mongod --dbpath data/ --port 27017",
     "start:backend": "cd backend && yarn start",
     "start:frontend": "cd frontend && yarn start",
@@ -31,7 +32,7 @@
     "test": "yarn test:backend && yarn test:frontend",
     "test:backend": "cd backend && yarn test",
     "test:frontend": "cd frontend && yarn test",
-    "serve": "cd backend && node build/server.js"
+    "start": "cd backend && node build/server.js"
   },
   "dependencies": {}
 }

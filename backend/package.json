@@ -30,6 +30,7 @@
   },
   "scripts": {
     "start": "nodemon ./build/server.js",
+    "build": "tsc -p .",
     "test": "mocha ./build/**/*.test.ts"
   }
 }
