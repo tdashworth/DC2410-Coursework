@@ -1,5 +1,5 @@
 import React from 'react';
-import FormInput from './FormInput';
+import FormInput from './Forms/FormInput';
 import { withAppContext, IAppContextInterface } from '../AppContext';
 import Session from '../helpers/Session';
 import API from '../helpers/API';
@@ -45,7 +45,7 @@ class LoginForm extends React.Component<IProps, IState> {
               <FormInput
                 className="col-md-12"
                 type="password"
-                id="login-paasword-form"
+                id="login-password-form"
                 label="Password"
                 icon="🔐"
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

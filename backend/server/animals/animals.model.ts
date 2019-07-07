@@ -53,7 +53,7 @@ export default class Animals {
       throw new Error('Animal is locked because it has already been adopted.');
     }
 
-    return Animal.updateOne(id, updatedAnimal).exec();
+    return Animal.findByIdAndUpdate(id, updatedAnimal).exec();
   }
 
   public static async addImage(id: any, imageLocation: string) {

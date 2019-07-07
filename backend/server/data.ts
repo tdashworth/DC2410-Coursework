@@ -15,7 +15,7 @@ let users: IUser[];
 let animals: IAnimal[];
 let adoptionRequests: IAdoptionRequestDB[];
 
-const deleteAll = true;
+const deleteAll = false;
 
 export const populateUsers = async () => {
   if (deleteAll) await Users.deleteAll();
@@ -114,6 +114,7 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2004, 3, 31),
       type: AnimalType.Pig,
+      pictures: ['/uploads/1562512895486.jpg']
     },
     {
       name: 'Falcon',
@@ -161,6 +162,7 @@ export const populateAnimals = async () => {
       gender: Gender.Female,
       dob: new Date(2003, 5, 3),
       type: AnimalType.Bird,
+      pictures: ['/uploads/56d1d6b3dcc30e3aaf3639c3ec65da2a.jpg'],
     },
     {
       name: 'Piglet',
@@ -169,6 +171,7 @@ export const populateAnimals = async () => {
       gender: Gender.Male,
       dob: new Date(2018, 8, 17),
       type: AnimalType.Pig,
+      pictures: ['/uploads/5f944d806c6bbdb1c31cdd7e62239a7d.jpg'],
     },
   ];
 

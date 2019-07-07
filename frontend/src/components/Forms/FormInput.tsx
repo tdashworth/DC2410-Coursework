@@ -8,30 +8,30 @@ interface IProps
   className?: string;
   id: string;
   label: string;
-  icon: string;
+  icon?: string;
   type: string;
 }
 
 class FormInput extends React.Component<IProps> {
   public render = () => (
-    <div className={this.props.className}>
+    <div className={`input-group mb-2 ${this.props.className}`}>
+      <div className="input-group-prepend">
+        <div className="input-group-text">
+          {this.props.icon || this.props.label}
+        </div>
+      </div>
       <label className="sr-only" htmlFor={this.props.id}>
         {this.props.label}
       </label>
-      <div className="input-group mb-2">
-        <div className="input-group-prepend input-group-text">
-          {this.props.icon}
-        </div>
-        <input
-          {...this.props}
-          type={this.props.type}
-          className="form-control"
-          id={this.props.id}
-          placeholder={this.props.label}
-        />
-      </div>
+      <input
+        {...this.props}
+        type={this.props.type}
+        className="form-control"
+        id={this.props.id}
+        placeholder={this.props.label}
+      />
     </div>
-  )
+  );
 }
 
 export default FormInput;

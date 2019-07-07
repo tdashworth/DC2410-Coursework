@@ -31,6 +31,19 @@ const postJSON = async (url: string, body = {}, headers = {}) => {
   return data;
 };
 
+const putJSON = async (url: string, body = {}, headers = {}) => {
+  const response = await fetch(url, {
+    method: 'PUT',
+    body: JSON.stringify(body),
+    headers: { ...jsonHeaders, ...headers },
+  });
+  const data = await response.json();
+
+  if (response.status !== 200) throw new Error(data.error);
+
+  return data;
+};
+
 export default class API {
   public static users: IUserApi = {
     login: (username, password) => postJSON(
@@ -89,7 +102,7 @@ export default class API {
       `/api/animals/${id}`,
       Session.getAuthHeaders(),
     ),
-    update: (id, animal) => postJSON(
+    update: (id, animal) => putJSON(
       `/api/animals/${id}`,
       animal,
       Session.getAuthHeaders(),

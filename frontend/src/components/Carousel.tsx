@@ -35,7 +35,7 @@ class Carousel extends React.Component<IProps> {
   private Pictures = () => (
     <div className="carousel-inner">
       {this.props.images.map((imageUrl, index) => (
-        <div className={`carousel-item ${index === 0 || 'active'}`} key={index}>
+        <div className={`carousel-item ${index === 0 && 'active'}`} key={index}>
           <img src={imageUrl} className="d-block w-100" alt={imageUrl}/>
         </div>
       ))}

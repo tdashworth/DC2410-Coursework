@@ -1,5 +1,5 @@
 import React from 'react';
-import FormInput from './FormInput';
+import FormInput from './Forms/FormInput';
 import API from '../helpers/API';
 import { IAppContextInterface, withAppContext } from '../AppContext';
 import Session from '../helpers/Session';

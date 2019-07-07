@@ -28,20 +28,27 @@ router.get('/:id', Auth.verifyToken(), async (req, res) =>
   res.json(await Animals.get(req.params.id)),
 );
 
-const fileUploader = multer({
-  dest: path.resolve('..', 'frontend', 'build', 'uploads'),
-});
-
 router.put('/:id', Auth.verifyToken(UserType.Internal), async (req, res) =>
   res.json(await Animals.update(req.params.id, req.body)),
 );
 
+const fileUploader = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) =>
+      cb(null, path.resolve('..', 'frontend', 'build', 'uploads')),
+    filename: (req, file, cb) =>
+      cb(null, Date.now() + path.extname(file.originalname)),
+  }),
+});
+
 router.post(
   '/:id/image',
-  Auth.verifyToken(UserType.Internal),
+  // Auth.verifyToken(UserType.Internal),
   fileUploader.single('image'),
-  async (req, res) =>
-    await Animals.addImage(req.params.id, `/uploads/${req.file.filename}`),
+  async (req, res) => {
+    await Animals.addImage(req.params.id, `/uploads/${req.file.filename}`);
+    res.redirect(`/animal/${req.params.id}`);
+  },
 );
 
 export default router;

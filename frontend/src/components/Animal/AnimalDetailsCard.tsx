@@ -1,6 +1,6 @@
 import React from 'react';
-import { IAnimal } from 'dc2410-coursework-common';
-import Carousel from '../Carosel';
+import { IAnimal, Gender, AnimalType } from 'dc2410-coursework-common';
+import Carousel from '../Carousel';
 
 class AnimalDetailsCard extends React.Component<{ animal: IAnimal }> {
   public render = () => (
@@ -13,22 +13,48 @@ class AnimalDetailsCard extends React.Component<{ animal: IAnimal }> {
       <div className="card-body d-flex justify-content-around tags">
         <h2>
           <span className="badge badge-secondary w-100">
-            {this.props.animal.gender}
+            {this.getGender()}
           </span>
         </h2>
         <h2>
           <span className="badge badge-secondary w-100">
-            {this.props.animal.type}
+            {this.getType()}
           </span>
         </h2>
         <h2>
           <span className="badge badge-secondary w-100">
-            {this.props.animal.dob}
+            {this.getDOB()}
           </span>
         </h2>
       </div>
     </div>
-  )
+  );
+
+  private getGender() {
+    switch (this.props.animal.gender) {
+      case Gender.Male:
+        return 'Male ♂️';
+      case Gender.Female:
+        return 'Female ♀';
+    }
+  }
+
+  private getType() {
+    switch (this.props.animal.type) {
+      case AnimalType.Cat:
+        return 'Cat 🐱';
+      case AnimalType.Dog:
+        return 'Dog 🐶';
+      case AnimalType.Bird:
+        return 'Bird 🐦';
+      case AnimalType.Pig:
+        return 'Pig 🐷';
+    }
+  }
+
+  private getDOB() {
+    return new Date(this.props.animal.dob).toDateString()//toLocaleDateString('en-GB')
+  }
 }
 
 export default AnimalDetailsCard;
