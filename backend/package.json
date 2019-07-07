@@ -31,7 +31,7 @@
   "scripts": {
     "postinstall": "yarn build",
     "start": "nodemon ./build/server.js",
-    "build": "tsc -p .",
+    "build": "ls ./node_modules/@types && tsc -p .",
     "test": "mocha ./build/**/*.test.ts"
   }
 }
