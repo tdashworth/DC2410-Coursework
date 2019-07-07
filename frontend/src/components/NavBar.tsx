@@ -1,6 +1,6 @@
 import React from 'react';
 import { IAppContextInterface, withAppContext } from '../AppContext';
-import Session from '../helpers/Session';
+import Session from '../helpers/session';
 
 class NavBar extends React.Component<{ AppContext?: IAppContextInterface }> {
   public render = () =>

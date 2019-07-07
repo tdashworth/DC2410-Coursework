@@ -1,8 +1,8 @@
 import React from 'react';
 import FormInput from './Forms/FormInput';
 import { withAppContext, IAppContextInterface } from '../AppContext';
-import Session from '../helpers/Session';
-import API from '../helpers/API';
+import Session from '../helpers/session';
+import API from '../helpers/api';
 
 interface IProps {
   className: string;

@@ -8,7 +8,7 @@ import {
   UserType,
 } from 'dc2410-coursework-common';
 import { IAppContextInterface, withAppContext } from '../../AppContext';
-import API from '../../helpers/API';
+import API from '../../helpers/api';
 import AdoptionRequestInternalCard from './AdoptionRequestInternalCard';
 import AdoptionRequestPersonalCard from './AdoptionRequestPersonalCard';
 import AdoptionRequestMakeCard from './AdoptionRequestMakeCard';

@@ -4,7 +4,7 @@ import FormInput from '../Forms/FormInput';
 import FormTextArea from '../Forms/FormTextArea';
 import FormSelect from '../Forms/FormSelect';
 import FormInputFile from '../Forms/FormInputFile';
-import API from '../../helpers/API';
+import API from '../../helpers/api';
 
 interface IProps {
   animal: IAnimal;

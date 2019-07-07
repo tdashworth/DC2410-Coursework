@@ -6,7 +6,7 @@ import { AppContextProvider, IAppContextInterface } from './AppContext';
 import NavBar from './components/NavBar';
 import Error from './components/Error';
 import Home from './routes/Home';
-import Session from './helpers/Session';
+import Session from './helpers/session';
 
 class App extends React.Component<{}, IAppContextInterface> {
   public state: IAppContextInterface = {

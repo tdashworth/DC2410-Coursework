@@ -2,7 +2,7 @@ import React from 'react';
 import AdoptionRequestCard from './AdoptionRequestCard';
 import Emoji from '../Emoji';
 import { AdoptionRequestStatus } from 'dc2410-coursework-common';
-import API from '../../helpers/API';
+import API from '../../helpers/api';
 
 class AdoptionRequestInternalCard extends AdoptionRequestCard {
   public render = () => (

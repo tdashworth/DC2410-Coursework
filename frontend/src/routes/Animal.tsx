@@ -3,7 +3,7 @@ import { IAnimal } from 'dc2410-coursework-common';
 import { IAppContextInterface, withAppContext } from '../AppContext';
 import AnimalDetailsSection from '../components/Animal/AnimalDetailsSection';
 import AdoptionRequestsSection from '../components/AdoptionRequests/AdoptionRequestsSection';
-import API from '../helpers/API';
+import API from '../helpers/api';
 
 interface IProps {
   match: { params: { id: string; }; };

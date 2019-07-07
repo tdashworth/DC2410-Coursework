@@ -1,5 +1,5 @@
 import { IUserApi, IAdoptionRequestApi, IAnimalApi } from 'dc2410-coursework-common';
-import Session from './Session';
+import Session from './session';
 
 const jsonHeaders = {
   Accept: 'application/json',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { IAnimal, IUser, AdoptionRequestStatus } from 'dc2410-coursework-common';
 import Emoji from '../Emoji';
-import API from '../../helpers/API';
+import API from '../../helpers/api';
 
 interface IProps {
   animal: IAnimal;

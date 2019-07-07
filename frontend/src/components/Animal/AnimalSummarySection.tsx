@@ -1,7 +1,7 @@
 import React from 'react';
 import AnimalSummaryCard from './AnimalSummaryCard';
 import { IAnimal, AnimalType, UserType } from 'dc2410-coursework-common';
-import API from '../../helpers/API';
+import API from '../../helpers/api';
 import { IAppContextInterface, withAppContext } from '../../AppContext';
 
 interface IProps {

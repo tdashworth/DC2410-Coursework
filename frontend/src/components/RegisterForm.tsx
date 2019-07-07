@@ -1,8 +1,8 @@
 import React from 'react';
 import FormInput from './Forms/FormInput';
-import API from '../helpers/API';
+import API from '../helpers/api';
 import { IAppContextInterface, withAppContext } from '../AppContext';
-import Session from '../helpers/Session';
+import Session from '../helpers/session';
 import { UserType } from 'dc2410-coursework-common';
 
 interface IProps {
