@@ -4,6 +4,7 @@ import API from '../helpers/api';
 import { IAppContextInterface, withAppContext } from '../AppContext';
 import Session from '../helpers/session';
 import { UserType } from 'dc2410-coursework-common';
+import Password from '../helpers/password';
 
 interface IProps {
   className?: string;
@@ -83,8 +84,13 @@ class RegisterForm extends React.Component<IProps, IState> {
           <div className="row">
             <div className="col-12">
               <button
-              type="submit"
-              className={`btn btn-primary w-100 mb-2 ${this.state.isRequesting ? 'progress-bar-striped progress-bar-animated' : ''}`} >
+                type="submit"
+                className={`btn btn-primary w-100 mb-2 ${
+                  this.state.isRequesting
+                    ? 'progress-bar-striped progress-bar-animated'
+                    : ''
+                }`}
+              >
                 Create & log in
               </button>
             </div>
@@ -92,14 +98,22 @@ class RegisterForm extends React.Component<IProps, IState> {
         </form>
       </div>
     </div>
-  )
+  );
 
   private handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
       this.setState({ isRequesting: true });
-      if (this.state.password !== this.state.passwordConfirmation) throw new Error('Passwords are not the same.');
+      if (this.state.password !== this.state.passwordConfirmation) {
+        throw new Error('Passwords are not the same.');
+      }
+      if (!Password.validate(this.state.password)) {
+        throw new Error(
+          'Password is not strong enough. It should be 8 characters or more and ' +
+          'contain at lease one lower case, upper case, and special character.',
+        );
+      }
 
       await API.users.register({
         username: this.state.username,
@@ -108,7 +122,10 @@ class RegisterForm extends React.Component<IProps, IState> {
         type: UserType.External,
       });
 
-      const { token, expiry, user } = await API.users.login(this.state.username, this.state.password);
+      const { token, expiry, user } = await API.users.login(
+        this.state.username,
+        this.state.password,
+      );
       Session.set(token, expiry, user);
       this.props.AppContext!.setUser(user);
     } catch (e) {
@@ -117,7 +134,7 @@ class RegisterForm extends React.Component<IProps, IState> {
     } finally {
       this.setState({ isRequesting: false });
     }
-  }
+  };
 }
 
 export default withAppContext(RegisterForm);
