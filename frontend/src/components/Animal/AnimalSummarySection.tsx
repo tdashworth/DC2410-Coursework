@@ -3,6 +3,7 @@ import AnimalSummaryCard from './AnimalSummaryCard';
 import { IAnimal, AnimalType, UserType } from 'dc2410-coursework-common';
 import API from '../../helpers/api';
 import { IAppContextInterface, withAppContext } from '../../AppContext';
+import AnimalDetailsEditModal from './AnimalDetailsEditModal';
 
 interface IProps {
   AppContext?: IAppContextInterface;
@@ -31,18 +32,26 @@ class AnimalSummarySection extends React.Component<IProps, IState> {
         ? 'All Animals'
         : 'Available Animals';
 
+    const isUserInternal =
+      this.props.AppContext!.user!.type === UserType.Internal;
+
     return (
       <section className="col-md-12 col-lg-8" id="animal-details">
-        <h3 className="">{title}</h3>
+        <div className="d-flex justify-content-between align-items-center">
+          <h3 className="">{title}</h3>
+          {isUserInternal && <this.AddButton />}
+        </div>
 
         <this.FilterAndSort />
 
-        {filteredAnimals.map(animal => (
+        {filteredAnimals.map((animal) => (
           <AnimalSummaryCard key={animal.id!} animal={animal} />
         ))}
+
+        <AnimalDetailsEditModal animal={{} as IAnimal} />
       </section>
     );
-  }
+  };
 
   private getFilteredAndSortedAnimals = (): IAnimal[] => {
     const filterBy = this.state.filterBy == null ? -1 : this.state.filterBy;
@@ -64,7 +73,20 @@ class AnimalSummarySection extends React.Component<IProps, IState> {
       }
     };
     return this.state.allAnimals.filter(filter).sort(sort);
-  }
+  };
+
+  // tslint:disable-next-line: variable-name
+  private AddButton = () => (
+    <button
+      className="btn btn-primary"
+      type="button"
+      style={{ lineHeight: 1.2 }}
+      data-toggle="modal"
+      data-target="#animalEditModal"
+    >
+      Add
+    </button>
+  );
 
   // tslint:disable-next-line: variable-name
   private FilterAndSort = () => (
@@ -120,7 +142,7 @@ class AnimalSummarySection extends React.Component<IProps, IState> {
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export default withAppContext(AnimalSummarySection);
