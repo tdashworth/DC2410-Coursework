@@ -5,6 +5,7 @@ import { withAppContext, IAppContextInterface } from '../AppContext';
 import Unauthorised from '../routes/Unauthorised';
 import Animal from './Animal';
 import Listings from './Listings';
+import PageNotFound from './PageNotFound';
 
 class Home extends React.Component<{ AppContext?: IAppContextInterface }> {
   public render() {
@@ -15,9 +16,9 @@ class Home extends React.Component<{ AppContext?: IAppContextInterface }> {
     return (
       <Router>
         <Switch>
+          <Route path="/" exact={true} component={Listings} />
           <Route path="/animal/:id" component={Animal} />
-          <Route path="/" component={Listings} />
-          {/* TODO: 404 Page not found? */}
+          <Route component={PageNotFound} />
         </Switch>
       </Router>
 
