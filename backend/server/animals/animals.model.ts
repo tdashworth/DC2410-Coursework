@@ -14,7 +14,7 @@ export const AnimalSchema = new mongoose.Schema(
     gender: { type: Gender, required: true },
     pictures: { type: [String] },
     adoptedBy: { type: String, required: false },
-    id: { type: String, required: false },
+    id: { type: String, required: false, unique: true },
   },
   { strict: 'throw' },
 );
@@ -76,9 +76,5 @@ export default class Animals {
 
   public static deleteAll() {
     return Animal.deleteMany({}).exec();
-  }
-
-  public static disconnect() {
-    return mongoose.disconnect();
   }
 }

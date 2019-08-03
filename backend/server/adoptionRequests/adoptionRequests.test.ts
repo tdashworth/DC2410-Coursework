@@ -7,7 +7,7 @@ import { AnimalType, Gender, AdoptionRequestStatus } from 'dc2410-coursework-com
 const expect = chai.expect;
 
 describe('Adoption Requests library', function () {
-  this.timeout(3000);
+  this.timeout(5000);
 
   before(async () => {
     await mongoose.connect('mongodb://localhost:27017/dc2410-coursework-test', {
@@ -86,7 +86,7 @@ describe('Adoption Requests library', function () {
       };
       const createResult = await AdoptionRequests.create(adoptionRequest);
 
-      const readResult = await AdoptionRequests.get(createResult._id);
+      const readResult = await AdoptionRequests.get(createResult.id);
 
       expect(readResult).to.be.an('object');
       if (readResult == null) throw new Error('Result return null');
@@ -134,12 +134,12 @@ describe('Adoption Requests library', function () {
       const createResult1 = await AdoptionRequests.create(adoptionRequest1);
       const createResult2 = await AdoptionRequests.create(adoptionRequest2);
 
-      await AdoptionRequests.approve(createResult1._id);
+      await AdoptionRequests.approve(createResult1.id);
 
-      const readResult1 = await AdoptionRequests.get(createResult1._id);
+      const readResult1 = await AdoptionRequests.get(createResult1.id);
       if (readResult1 == null) throw new Error('Result return null');
       expect(readResult1.status).to.equal(AdoptionRequestStatus.Approved);
-      const readResult2 = await AdoptionRequests.get(createResult2._id);
+      const readResult2 = await AdoptionRequests.get(createResult2.id);
       if (readResult2 == null) throw new Error('Result return null');
       expect(readResult2.status).to.equal(AdoptionRequestStatus.Denied);
     },
@@ -168,9 +168,9 @@ describe('Adoption Requests library', function () {
       };
       const createResult = await AdoptionRequests.create(adoptionRequest);
 
-      await AdoptionRequests.deny(createResult._id);
+      await AdoptionRequests.deny(createResult.id);
 
-      const readResult = await AdoptionRequests.get(createResult._id);
+      const readResult = await AdoptionRequests.get(createResult.id);
       if (readResult == null) throw new Error('Result return null');
       expect(readResult.status).to.equal(AdoptionRequestStatus.Denied);
     },

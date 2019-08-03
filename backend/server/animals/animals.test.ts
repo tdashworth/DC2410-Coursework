@@ -19,7 +19,7 @@ describe('Animals library', function () {
   });
 
   after(async () => {
-    return Animals.disconnect();
+    return mongoose.disconnect();
   });
 
   it(

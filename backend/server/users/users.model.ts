@@ -13,7 +13,7 @@ export const UserSchema = new mongoose.Schema(
     salt: { type: String, required: true },
     displayName: { type: String, required: true },
     type: { type: UserType, required: true },
-    id: { type: String, required: false },
+    id: { type: String, required: false, unique: true },
   },
   { strict: 'throw' },
 );
@@ -23,7 +23,6 @@ export interface IUserModel extends IUser, mongoose.Document { }
 UserSchema.pre('save', async function (this: IUserModel) {
   this.username = sanitizeHtml(this.username);
   this.displayName = sanitizeHtml(this.displayName);
-  this.type = (this.type !== null) ? this.type : UserType.External;
   this.id = this._id;
 });
 
@@ -35,12 +34,15 @@ export default class Users {
     try {
       const salt = Users.generateSalt();
       const passwordHash = Users.hashPassword(newUser.passwordHash, salt);
-      const user = await new User({ ...newUser, passwordHash, salt }).save();
+      const type = newUser.type || UserType.External;
+      const user = await new User({ ...newUser, type, passwordHash, salt }).save();
       return user;
     } catch (e) {
       switch ((e as MongoError).code) {
         case 11000:
           throw new Error('Username already exists.');
+        default:
+          throw e;
       }
     }
   }
@@ -93,6 +95,7 @@ export default class Users {
   }
 
   public static hashPassword(password: string, salt: string) {
+    if (typeof password !== 'string') throw new Error("Users validation failed: passwordHash required.")
     return pbkdf2Sync(password, salt, 100000, 512, 'sha512').toString('hex');
   }
 
@@ -106,9 +109,5 @@ export default class Users {
 
   public static deleteAll() {
     return User.deleteMany({}).exec();
-  }
-
-  public static disconnect() {
-    return mongoose.disconnect();
   }
 }

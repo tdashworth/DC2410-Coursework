@@ -13,7 +13,7 @@ export const AdoptionRequestSchema = new mongoose.Schema(
     user: { type: String, required: true },
     animal: { type: String, required: true },
     status: { type: AdoptionRequestStatus, required: true },
-    id: { type: String, required: false },
+    id: { type: String, required: false, unique: true},
   },
   { strict: 'throw' },
 );
