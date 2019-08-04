@@ -15,7 +15,7 @@ let users: IUser[];
 let animals: IAnimal[];
 let adoptionRequests: IAdoptionRequestDB[];
 
-const deleteAll = true;
+const deleteAll = false;
 
 export const populateUsers = async () => {
   if (deleteAll) await Users.deleteAll();

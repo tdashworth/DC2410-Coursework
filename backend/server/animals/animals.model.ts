@@ -70,15 +70,7 @@ export default class Animals {
    */
   public static async update(id: any, updatedAnimal: any): Promise<IAnimalModel | null> {
     if (!(typeof id === 'string')) return Promise.resolve(null);
-    const orginal = await this.get(id);
-    if (orginal !== null && orginal.adoptedBy === null) {
-      throw new Error('Animal is locked because it has already been adopted.');
-    }
-
-    return Animal.findByIdAndUpdate(id, {
-      ...orginal,
-      ...updatedAnimal,
-    }).exec();
+    return Animal.findByIdAndUpdate(id, updatedAnimal).exec();
   }
 
   /**
@@ -92,9 +84,6 @@ export default class Animals {
     const orginal = await this.get(id);
     if (orginal == null) {
       throw new Error(`Animal with id ${id} could not be found.`);
-    }
-    if (orginal !== null && orginal.adoptedBy === null) {
-      throw new Error('Animal is locked because it has already been adopted.');
     }
 
     orginal.pictures!.push(imageLocation);
