@@ -6,9 +6,9 @@ import * as path from 'path';
 dotenv.config();
 
 // Import controllers
-import usersController from './users/users.controller';
-import animalsController from './animals/animals.controller';
 import adoptionRequestsController from './adoptionRequests/adoptionRequests.controller';
+import animalsController from './animals/animals.controller';
+import usersController from './users/users.controller';
 
 // Create the express application
 const app = express();
@@ -22,8 +22,8 @@ app.use('/api/requests', adoptionRequestsController);
 app.use(express.static(path.resolve('..', 'frontend', 'build')));
 
 // Intercept requests to return the frontend's static entry point
-app.get('*', (_, response) => {
-  response.sendFile(path.resolve('..', 'frontend', 'build', 'index.html'));
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve('..', 'frontend', 'build', 'index.html'));
 });
 
 export default app;

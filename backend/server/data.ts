@@ -1,60 +1,64 @@
 import {
-  IAnimal,
-  IAdoptionRequestDB,
-  Gender,
-  AnimalType,
   AdoptionRequestStatus,
+  AnimalType,
+  Gender,
+  IAdoptionRequestDB,
+  IAnimal,
   IUser,
   UserType,
 } from 'dc2410-coursework-common';
-import Users from './users/users.model';
-import Animals from './animals/animals.model';
 import AdoptionRequests from './adoptionRequests/adoptionRequests.model';
+import Animals from './animals/animals.model';
+import Users from './users/users.model';
 
 let users: IUser[];
 let animals: IAnimal[];
 let adoptionRequests: IAdoptionRequestDB[];
 
-const deleteAll = false;
+const deleteAll = true;
 
 export const populateUsers = async () => {
   if (deleteAll) await Users.deleteAll();
   const retrievedData = await Users.listAll();
   if (retrievedData.length > 0) {
     users = retrievedData;
-    return console.log('Users population: already loaded.');
+    // tslint:disable-next-line: no-console
+    console.log('Users population: already loaded.');
+    return;
   }
 
   users = [
     {
-      username: 'admin',
       displayName: 'Admin',
-      passwordHash: 'Password for Admin 🔑',
+      passwordHash: 'Password for Admin',
       type: UserType.Internal,
+      username: 'admin',
     },
     {
-      username: 'tdashworth',
       displayName: 'Tom Ashworth',
       passwordHash: 'Password for Tom 🗝',
       type: UserType.Internal,
+      username: 'tdashworth',
     },
     {
-      username: 'user1',
       displayName: 'User 1',
-      passwordHash: 'Password for User 1 🐈',
+      passwordHash: 'Password for User 1',
       type: UserType.External,
+      username: 'user1',
     },
     {
-      username: 'user2',
       displayName: 'User 2',
-      passwordHash: 'Password for User 2 🐕‍',
+      passwordHash: 'Password for User 2',
       type: UserType.External,
+      username: 'user2',
     },
   ];
 
+  // tslint:disable-next-line: no-console
   console.log('Users population: loading data...');
   await Promise.all(users.map((item) => Users.create(item)));
   users = await Users.listAll();
+  // tslint:disable-next-line: no-console
   console.log('Users population: loaded data.');
 };
 
@@ -63,121 +67,125 @@ export const populateAnimals = async () => {
   const retrievedData = await Animals.listAll();
   if (retrievedData.length > 0) {
     animals = retrievedData;
-    return console.log('Animals population: already loaded.');
+    // tslint:disable-next-line: no-console
+    console.log('Animals population: already loaded.');
+    return;
   }
 
   animals = [
     {
-      name: 'Holly',
       description: 'Loved black and white short haired cat.',
-      gender: Gender.Female,
       dob: new Date(2006, 11, 5),
-      type: AnimalType.Cat,
+      gender: Gender.Female,
+      name: 'Holly',
       pictures: [
         '/uploads/14590997_632538036920287_8526888530838814720_n.jpg',
         '/uploads/15876421_1832360853685427_4689974115363192832_n.jpg',
       ],
+      type: AnimalType.Cat,
     },
     {
-      name: 'Example Animal',
       description:
         "Animal Description: Some quick example text to build on the card title and make up the bulk of the card's content.",
-      gender: Gender.Male,
       dob: new Date(2017, 5, 17),
-      type: AnimalType.Dog,
+      gender: Gender.Male,
+      name: 'Example Animal',
       pictures: ['/uploads/18879665_797479403761196_7020233313574977536_n.jpg'],
-    },
-    {
-      name: 'Beau',
-      description: 'Loving grey Weimerana breed',
-      gender: Gender.Male,
-      dob: new Date(2007, 6, 20),
       type: AnimalType.Dog,
     },
     {
-      name: 'Elvis',
-      description: 'Loud colourful cockatoo',
+      description: 'Loving grey Weimerana breed',
+      dob: new Date(2007, 6, 20),
       gender: Gender.Male,
+      name: 'Beau',
+      type: AnimalType.Dog,
+    },
+    {
+      description: 'Loud colourful cockatoo',
       dob: new Date(2011, 4, 19),
+      gender: Gender.Male,
+      name: 'Elvis',
       type: AnimalType.Bird,
     },
     {
-      name: 'Ralphie',
       description: 'Happy and excitable micro pig',
-      gender: Gender.Male,
       dob: new Date(2010, 4, 11),
+      gender: Gender.Male,
+      name: 'Ralphie',
       type: AnimalType.Pig,
     },
     {
-      name: 'Pepper',
       description: 'Curious and intelligent adult pig',
-      gender: Gender.Female,
       dob: new Date(2004, 3, 31),
+      gender: Gender.Female,
+      name: 'Pepper',
+      pictures: ['/uploads/1562512895486.jpg'],
       type: AnimalType.Pig,
-      pictures: ['/uploads/1562512895486.jpg']
     },
     {
-      name: 'Falcon',
       description:
         'Engineering masterpiece that glides elegantly through the sky',
-      gender: Gender.Female,
       dob: new Date(2019, 4, 25),
+      gender: Gender.Female,
+      name: 'Falcon',
       type: AnimalType.Bird,
     },
     {
-      name: 'Zero',
       description: 'Elegant and loyal white dog',
-      gender: Gender.Male,
       dob: new Date(1994, 11, 25),
-      type: AnimalType.Dog,
+      gender: Gender.Male,
+      name: 'Zero',
       pictures: ['/uploads/10354565_646075105472325_233361634_n.jpg'],
-    },
-    {
-      name: "Thomas O'Malley",
-      description: "Charming AristoCat that's smooth talking and streetwise",
-      gender: Gender.Male,
-      dob: new Date(2008, 1, 7),
-      type: AnimalType.Cat,
-    },
-    {
-      name: 'Grumpy Cat',
-      description: 'Miserable looking but famous grey and white cat',
-      gender: Gender.Male,
-      dob: new Date(2012, 4, 4),
-      type: AnimalType.Cat,
-    },
-    {
-      name: 'Lassie',
-      description: 'Well tempered and loyal best friend',
-      gender: Gender.Female,
-      dob: new Date(2018, 6, 30),
       type: AnimalType.Dog,
+    },
+    {
+      description: "Charming AristoCat that's smooth talking and streetwise",
+      dob: new Date(2008, 1, 7),
+      gender: Gender.Male,
+      name: "Thomas O'Malley",
+      type: AnimalType.Cat,
+    },
+    {
+      description: 'Miserable looking but famous grey and white cat',
+      dob: new Date(2012, 4, 4),
+      gender: Gender.Male,
+      name: 'Grumpy Cat',
+      type: AnimalType.Cat,
+    },
+    {
+      description: 'Well tempered and loyal best friend',
+      dob: new Date(2018, 6, 30),
+      gender: Gender.Female,
+      name: 'Lassie',
       pictures: [
         '/uploads/15258572_1191283014270712_6819793761170620416_n.jpg',
       ],
+      type: AnimalType.Dog,
     },
     {
-      name: 'Tweetie Pie',
       description: 'Round yellow bird, very observant',
-      gender: Gender.Female,
       dob: new Date(2003, 5, 3),
-      type: AnimalType.Bird,
+      gender: Gender.Female,
+      name: 'Tweetie Pie',
       pictures: ['/uploads/56d1d6b3dcc30e3aaf3639c3ec65da2a.jpg'],
+      type: AnimalType.Bird,
     },
     {
-      name: 'Piglet',
       description:
         'Kind and compassionate but brave on occasion who loves acorns',
-      gender: Gender.Male,
       dob: new Date(2018, 8, 17),
-      type: AnimalType.Pig,
+      gender: Gender.Male,
+      name: 'Piglet',
       pictures: ['/uploads/5f944d806c6bbdb1c31cdd7e62239a7d.jpg'],
+      type: AnimalType.Pig,
     },
   ];
 
+  // tslint:disable-next-line: no-console
   console.log('Animals population: loading data...');
   await Promise.all(animals.map((item) => Animals.create(item)));
   animals = await Animals.listAll();
+  // tslint:disable-next-line: no-console
   console.log('Animals population: loaded data.');
 };
 
@@ -186,37 +194,40 @@ export const populateRequests = async () => {
   const retrievedData = await AdoptionRequests.listAll();
   if (retrievedData.length > 0) {
     adoptionRequests = retrievedData;
-    return console.log('Adoption Requests population: already loaded.');
+    // tslint:disable-next-line: no-console
+    console.log('Adoption Requests population: already loaded.');
+    return;
   }
 
   adoptionRequests = [
     {
       animal: animals[0].id,
-      user: users[2].id,
       status: AdoptionRequestStatus.Pending,
+      user: users[2].id,
     },
     {
       animal: animals[4].id,
-      user: users[2].id,
       status: AdoptionRequestStatus.Approved,
+      user: users[2].id,
     },
     {
       animal: animals[6].id,
-      user: users[3].id,
       status: AdoptionRequestStatus.Denied,
+      user: users[3].id,
     },
     {
       animal: animals[2].id,
-      user: users[3].id,
       status: AdoptionRequestStatus.Approved,
+      user: users[3].id,
     },
     {
       animal: animals[0].id,
-      user: users[3].id,
       status: AdoptionRequestStatus.Pending,
+      user: users[3].id,
     },
   ];
 
+  // tslint:disable-next-line: no-console
   console.log('Adoption Requests population: loading data...');
   await Promise.all(
     adoptionRequests.map(async (item) => {
@@ -233,5 +244,6 @@ export const populateRequests = async () => {
     }),
   );
   adoptionRequests = await AdoptionRequests.listAll();
+  // tslint:disable-next-line: no-console
   console.log('Adoption Requests population: loaded data.');
 };

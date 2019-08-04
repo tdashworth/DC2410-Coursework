@@ -1,11 +1,10 @@
-import { Request, Response, RequestHandler, NextFunction } from 'express';
 import {
-  IUser,
   IAuthToken,
-  IAuthResponse,
+  IUser,
   UserType,
 } from 'dc2410-coursework-common';
-import { sign, decode, verify } from 'jsonwebtoken';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { decode, sign, verify } from 'jsonwebtoken';
 import Users from './users/users.model';
 
 class Auth {
@@ -15,9 +14,9 @@ class Auth {
 
     const token = sign(
       {
+        exp: Math.round(expiry.getTime() / 1000),
         id: user.id,
         username: user.username,
-        exp: Math.round(expiry.getTime() / 1000),
       } as IAuthToken,
       process.env.AUTH_SHARED_SECRET!,
     );
@@ -30,7 +29,11 @@ class Auth {
   }
 
   public static verifyToken(type?: UserType): RequestHandler {
-    return async (request: Request, response: Response, next: NextFunction): Promise<any> => {
+    return async (
+      request: Request,
+      response: Response,
+      next: NextFunction,
+    ): Promise<any> => {
       try {
         const authorization = request.headers.authorization;
         if (!authorization) {
@@ -58,7 +61,6 @@ class Auth {
         request.params.user = user;
         next();
       } catch (e) {
-        console.log(e);
         return response.sendStatus(403);
       }
     };
